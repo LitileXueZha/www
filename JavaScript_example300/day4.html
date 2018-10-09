@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day4</title>
+    <!--<link rel="SHORTCUT ICON" href="pic/china.ico"/>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        function delChildren() {
+            var ul = document.getElementsByTagName('ul')[0];
+            var len = ul.childNodes.length;
+            for(var i=0;i<len;i++){
+                ul.removeChild(ul.childNodes[0]);
+            }
+        }  //  删除所有子元素
+        function getFormVal() {
+            var f = document.getElementById('form1');
+            var elems = f.elements;     //  获取表单所有控件.elements
+            var str = '';
+            for(var i=0;i<elems.length;i++){
+                str += elems[i].value;
+                str += '\n';
+            }
+            document.getElementById('res1').innerHTML = str;
+        }  //  获取表单的值
+        function visitFormWidget(eName) {
+            var f = document.getElementById('form2');
+            var str = '';
+            switch (eName){
+                case 'txt':
+                    str = f.txt.name+'：'+f.txt.value;
+                    break;
+                case 'sex':
+                    str = f.sex[0].name+'：'+f.sex[0].value;
+                    break;
+                case 'language':
+                    str = f.language.name+'：'+f.language.value;
+                    break;
+            }
+            document.getElementById('res2').innerHTML = str;
+        }  //  获取表单控件的name值
+        function changeFormVal() {
+            var f = document.getElementById('form3');
+            var elems = f.elements;
+            for(var i=0;i<elems.length;i++){
+                elems[i].value = 2;
+            }
+        }  //  修改表单的控件的值
+        function getTextNum() {
+            var f = document.getElementById('form4');
+            var elems = f.elements;
+            var count = 0;
+            for(var i=0;i<elems.length;i++){
+                if(elems[i].tagName == 'INPUT' && elems[i].type == 'text')
+                    count ++;
+            }
+            document.getElementById('res3').innerHTML = count;
+        }  //  获取文本框数量
+        function modifyFormMethod() {
+            var f = document.getElementById('form5');
+            var res = document.getElementById('res4');
+            if(f.myMethod.value == ''){
+                res.innerHTML = f.method+',未修改！';
+            }
+            else{
+                res.innerHTML = f.method+',修改为：'+f.myMethod.value;
+                f.method = f.myMethod.value;
+            }
+        }  //  修改表单提交方法
+        function modifyFormAct() {
+            var f = document.getElementById('form6');
+            f.action = f.myAction.value;
+            document.getElementById('res5').innerHTML = f.action;
+        }  //  修改表单动作属性
+        function focusIt(num) {
+            var f = document.getElementById('form7');
+            switch(num){
+                case 3:
+                    f.password.focus();
+                    break;
+                case 4:
+                    f.sex[0].focus();
+            }
+        }  //  聚焦表单
+        function addBorder() {
+            var f = document.getElementById('form8');
+            f.style.width = '1000px';
+            f.style.border = '1px solid black';
+        }  //  添加边框
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>例31</h1>
+    <article>
+        <blockquote>删除所有子元素</blockquote>
+        <p>用个循环删除ul的第一个子元素<del>2</del>变成1</p>
+        <ul>
+            <li>第一个</li>
+            <li>第二个</li>
+            <li>厉害了，word哥！</li>
+        </ul>
+        <button class="btn btn-primary" onclick="delChildren()">格式化</button>
+    </article>
+    <h1>例32</h1>
+    <article>
+        <blockquote>遍历表单所有控件</blockquote>
+        <form id="form1">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-2">文本框</label>
+                    <div class="col-lg-5">
+                        <input type="text" class="form-control" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-2">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-2">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button class="btn btn-default" onclick="getFormVal()">获取</button>
+        <p id="res1"><strong>表单的值：</strong></p>
+        <p>使用.elements属性获取表单DOM的所有控件，再遍历取值</p>
+    </article>
+    <h1>例33</h1>
+    <article>
+        <blockquote>通过控件名，即name属性访问</blockquote>
+        <form id="form2">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-2">文本框</label>
+                    <div class="col-lg-5">
+                        <input type="text" class="form-control" name="txt" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-2">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-2">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="btn-group">
+            <button class="btn btn-default" onclick="visitFormWidget('txt')">文本获取</button>
+            <button class="btn btn-primary" onclick="visitFormWidget('sex')">性别</button>
+            <button class="btn btn-danger" onclick="visitFormWidget('language')">语言</button>
+        </div>
+        <p id="res2">&nbsp;</p>
+        <p>先获取表单DOM，再使用.mingzi调用name="mingzi"的这个控件.name为其name值.value为其值</p>
+    </article>
+    <h1>例34</h1>
+    <article>
+        <blockquote>修改表单控件的值</blockquote>
+        <form id="form3">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-2">文本框</label>
+                    <div class="col-lg-5">
+                        <input type="text" class="form-control" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-2">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-2">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button class="btn btn-default" onclick="changeFormVal()">全改成2</button>
+        <p>遍历form.elements，即每个控件，.value设置其值</p>
+    </article>
+    <h1>例35</h1>
+    <article>
+        <blockquote>获取表单内文本框个数</blockquote>
+        <form id="form4">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-1">用户名</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" placeholder="精彩在我"/>
+                    </div>
+                    <label class="control-label col-lg-1">密码</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <p>
+            遍历.elements元素，判断.tagName及.type分别为input、text
+            <br/>
+            注意这里的tagName判断需为大写<label class="label label-danger"> ！</label>
+        </p>
+        <button class="btn btn-block" onclick="getTextNum()">个数：<span id="res3"></span></button>
+    </article>
+    <h1>例36</h1>
+    <fieldset>
+        <legend>修改表单的提交方法</legend>
+        <form id="form5">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-1">用户名</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" placeholder="精彩在我"/>
+                    </div>
+                    <label class="control-label col-lg-1">密码</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="myMethod" >
+                            <option class="form-control" value="">选择提交方法</option>
+                            <option class="form-control" value="get">get</option>
+                            <option class="form-control" value="post">post</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button class="btn btn-success col-lg-5" onclick="modifyFormMethod()">选择</button>
+        <div class="btn btn-default" id="res4">未修改！</div><hr/>
+        <p>使用.method操作form表单的提交方法，即method=" "</p>
+    </fieldset>
+    <h1>例37</h1>
+    <fieldset>
+        <legend>动态指定表单的动作属性</legend>
+        <form id="form6" action="">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-1">用户名</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" placeholder="精彩在我"/>
+                    </div>
+                    <label class="control-label col-lg-1">密码</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon" id="res5"></span>
+                <input type="text" class="form-control" name="myAction" placeholder="输入提交地址(动作属性)"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" onclick="modifyFormAct()" type="button">修改</button>
+                </span>
+            </div>
+        </form>
+        <p>何为表单的动作属性，举个简单的例子，我们出拳的动作有个方向，so大致为一个地址，意味着我们表单数据提交到哪里</p>
+    </fieldset>
+    <h1>例38</h1>
+    <fieldset>
+        <legend>动态选择聚焦控件</legend>
+        <form id="form7">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-1">用户名</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="user" placeholder="精彩在我"/>
+                    </div>
+                    <label class="control-label col-lg-1">密码</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="password" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <p>对form元素调用.focus()方法即可</p>
+        <button class="btn btn-primary" onclick="focusIt(3)">跳进第二个碗里</button>
+        <button class="btn btn-default" onclick="focusIt(4)">选第一个框框</button>
+    </fieldset>
+    <h1>例39</h1>
+    <fieldset>
+        <legend>初始化表单状态</legend>
+        <p>使用.reset()方法，当然，我更愿意在表单里加一个类型为submit的按钮，省得我丫丫的写代码</p>
+        <pre>
+            window.onload = function(){
+                var f = document.getElementById('formId');
+                f.reset();
+            }</pre>
+    </fieldset>
+    <h1>例40</h1>
+    <fieldset>
+        <legend>为表单加上一个框</legend>
+        <p>原理很简单，设置个宽度及边框就行了</p>
+        <form id="form8">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-1">用户名</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="user" placeholder="精彩在我"/>
+                    </div>
+                    <label class="control-label col-lg-1">密码</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="password" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button class="btn btn-warning" onclick="addBorder()">加，加，加，就是要加</button>
+        <p>这样的方法太out了，老，实在是太老了。我think用fieldset就ok了，</p>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

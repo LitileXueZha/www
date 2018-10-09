@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>填充彼此依赖的连锁组合框</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select').change(getL);
+            getL();
+            function getL() {
+                var url,target;
+                var id = $(this).attr('id');
+                var selectedValue = $(this).val();
+                switch (id){
+                    case 'countryL':
+                        if (selectedValue == '') return;
+                        url = '8.4results.php?find=states&id='+ selectedValue;
+                        target = 'stateL';
+                        break;
+                    case 'stateL':
+                        if ($(this).val() == '') return;
+                        url = '8.4results.php?find=towns&id='+ selectedValue;
+                        target = 'townL';
+                        break;
+                    case 'townL':
+                        if ($(this).val() == '') return;
+                        url = '8.4results.php?find=information&id='+selectedValue;
+                        target = 'information';
+                        break;
+                    default:
+                        url = '8.4results.php?find=country';
+                        target = 'countryL';
+                }
+                $.get(
+                        url,
+                        { },
+                        function (data) {
+                            $('#'+target).html(data);
+                            var str = $('select option:selected').text();
+                            if (str.indexOf('选择') >= 0){
+                                str = '';
+                            }
+                            console.log('1'+str.indexOf('选择'));
+                            $('#address').html('<em>'+str+'</em>');
+                        }
+                );
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <br/>
+    <div class="col-lg-4">
+        <div class="form-horizontal">
+            <div class="col-lg-3">
+                <label class="control-label" for="countryL">国家：</label>
+            </div>
+            <div class="col-lg-7">
+                <select class="form-control" id="countryL">
+                    <option class="list-group-item" value="">选择:</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-horizontal">
+            <div class="col-lg-4">
+                <label class="control-label" for="stateL">省(state)</label>
+            </div>
+            <div class="col-lg-7">
+                <select class="form-control" id="stateL">
+                    <option class="list-group-item" value="">选择:</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-horizontal">
+            <div class="col-lg-4">
+                <label class="control-label" for="townL">市(town)</label>
+            </div>
+            <div class="col-lg-7">
+                <select class="form-control" id="townL">
+                    <option class="list-group-item" value="">选择:</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <br/><br/><br/>
+    <fieldset style="margin: 0 100px">
+        <legend id="address"></legend>
+        <p id="information"></p>
+    </fieldset>
+</div>
+</body>
+</html>

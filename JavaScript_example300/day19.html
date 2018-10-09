@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day19</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            var str1 = arr1;
+            var str2 = arr1.length;
+            document.getElementById('res').innerHTML = '<b>数组：</b>'+str1+'<br/><b>数组长度</b>：'+str2;
+            for (var i=0;i<10;i++){
+                arr2[arr2.length] = Math.floor(Math.random()*100);
+            }
+            document.getElementById('res1').innerHTML = arr2;
+        };
+        var arr1 = [1,23,4,5,6];
+        var arr2 = [];
+        function doArr(num) {
+            var t1 = document.getElementById('in1').value;
+            var t2 = document.getElementById('in2').value;
+            if (num){
+                arr1.splice(parseInt(t2), 0, t1);
+            }
+            else{
+                arr1.splice(parseInt(t2), 1);
+            }
+            var str1 = arr1;
+            var str2 = arr1.length;
+            document.getElementById('res').innerHTML = '<b>数组：</b>'+str1+'<br/><b>数组长度</b>：'+str2;
+        }  //  任意位置删除和添加元素
+        function natureArr() {
+            arr2.sort();
+            document.getElementById('res2').innerHTML = arr2;
+        }  //  自然排序
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>例181</h2>
+    <article>
+        <blockquote>数组任意位置加入和移除元素</blockquote>
+        <table align="center">
+            <tr>
+                <td>
+                    <div class="input-group col-lg-11">
+                        <span class="input-group-addon">输入要添加的值：</span>
+                        <input type="text" class="form-control" id="in1"/>
+                    </div>
+                </td>
+                <td width="200">
+                    <div class="input-group">
+                        <span class="input-group-addon">下标：</span>
+                        <input type="text" class="form-control" id="in2"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" onclick="doArr(1)">添加</button>
+                        </span>
+                    </div>
+                </td>
+                <td>&nbsp;
+                    <button class="btn btn-danger" onclick="doArr(0)">删除</button>
+                </td>
+            </tr>
+        </table>
+        <p style="text-align: center;margin-top: 10px" id="res"></p>
+        <p>这里我用的是splice方法，号称js里最强大的数组处理方法；源代码挺烦的</p>
+    </article>
+    <h2>例182</h2>
+    <article>
+        <blockquote>把数据转化为对象</blockquote>
+        <p>还以为是啥呢,原来就是简单地存储为对象字面量形式。如你所愿：</p>
+        <pre>
+            <label>  num:</label><input type="text" value="3"/>             {
+                                          ====>>>       'num': 3,value: '我的'
+            <label>value:</label><input type="text" value="我的"/>             }</pre>
+    </article>
+    <h2>例183</h2>
+    <article>
+        <blockquote>数组元素自然排序</blockquote>
+        <p>方法：<b>.sort()</b></p>
+        <p id="res1" style="text-align: center">&nbsp;</p>
+        <p style="text-align: center"><button class="btn btn-default" onclick="natureArr()">排序</button></p>
+        <p id="res2" style="text-align: center">&nbsp;</p>
+        <p>在某种时候，sort()方法有点bug,以下是改进代码：</p>
+        <pre>
+            arr.sort(function (value1, value2){
+                return value1 - value2;
+            });</pre>
+    </article>
+    <h2>例184</h2>
+    <article>
+        <blockquote>数组的本质就是对象</blockquote>
+        <p>这句话真的是有道理，唉呀呀~；对象的key就是数组的下标</p>
+    </article>
+    <h2>例185</h2>
+    <article>
+        <blockquote>创建动态的XMLHttpRequest对象</blockquote>
+        <label>代码如下：</label>
+        <pre>
+            var client = null;
+            function sendAjax(){
+                if(window.ActiveObject){
+                    client = new ActiveObject('Microsoft.XMLHTTP');
+                }else if(window.XMLHttpRequest){
+                    client = new XMLHttpRequest();
+                }else{
+                    alert('浏览器不支持ajax!');
+                }
+                if(client){
+                    client.open('GET', 't001.php', true);
+                    client.send();
+                    alert('成功！');
+                }
+            }</pre>
+        <p>jQuery极大地简化了该过程</p>
+    </article>
+    <h2>例186</h2>
+    <fieldset>
+        <legend>自定义Ajax回调函数</legend>
+        <label>接上段代码：</label>
+        <pre>
+            function sendAjax(){
+                //  接上一段
+                client.onreadystateChange = function(){
+                     if(client.readyState == 4 && client.status == 200){
+                         alert('接收结果：'+ client.responseText);
+                     }
+                }
+            }</pre>
+        <p>jQuery极大地简化了该过程</p>
+        <dl class="list-group">
+            <dt style="text-indent: 3em">readyState的值，判断继续</dt>
+            <dd class="list-group-item">
+                <label>0 ：</label>请求未初始化
+            </dd>
+            <dd class="list-group-item">
+                <label>1 ：</label>服务器连接已建立
+            </dd>
+            <dd class="list-group-item">
+                <label>2 ：</label>请求已接收
+            </dd>
+            <dd class="list-group-item">
+                <label>3 ：</label>请求处理中
+            </dd>
+            <dd class="list-group-item">
+                <label>4 ：</label>请求已完成，且响应已就绪
+            </dd>
+        </dl>
+    </fieldset>
+    <h2>例187</h2>
+    <fieldset>
+        <legend>自定义Ajax请求方法</legend>
+        <pre>
+            client.open(method, '112.php', true);
+            //  这里<b>method</b>是用户定义的</pre>
+        <p>这里所谓自定义即是用户手动输入方法：post、get</p>
+    </fieldset>
+    <h2>例188</h2>
+    <fieldset>
+        <legend>为Ajax请求添加参数</legend>
+        <pre>
+            if(method == 'POST'){  //  把参数写进内容流
+                client.open(...);
+                client.send(value)
+            }else if(method == 'GET'){  //  把参数写进URL后，<b>但是受到url字长的限制</b>
+                client.open('GET', '112.php?' + value, true);
+                client.send();
+            }</pre>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label>GET: </label>&nbsp;&nbsp;&nbsp;&nbsp;写进url后，添加一个 <b>？</b>,再写参数
+            </li>
+            <li class="list-group-item">
+                <label>POST: </label>&nbsp;&nbsp;&nbsp;&nbsp;写进内容流，send()里
+            </li>
+        </ul>
+    </fieldset>
+    <h2>例189</h2>
+    <fieldset>
+        <legend>Ajax中的友好等待界面</legend>
+        <label>这是一个提示框！</label>
+        <div class="alert alert-info" style="width: 300px;text-align: center">加载中......</div>
+        <pre>
+            if(client.readyState == 4 && client.status == 200){
+                div.style.display = 'none';
+            }else{
+                div.style.display = 'block';   //  等待中.....
+            }</pre>
+        <p style="text-indent: 2em">
+            可千万别小看这一个提示框，它带给用户的感觉非常好！想象一下，用户单击一个按钮，等待10秒才有
+            反应，那么用户在这10秒内就有可能离开页面。但如果多了这个提示，至少让用户知道服务器端正在处
+            理数据，那么用户就会安心的等待。
+        </p>
+    </fieldset>
+    <h2>例190</h2>
+    <fieldset>
+        <legend>根据不同HTTP返回代码进行不同的响应</legend>
+        <dl class="list-group">
+            <dt>通过status的值进行判断</dt>
+            <dd class="list-group-item">
+                <label>200：</label> 服务器正常返回
+            </dd>
+            <dd class="list-group-item">
+                <label>404：</label> 输入的URL有误，未找到
+            </dd>
+            <dd class="list-group-item">
+                <label>500：</label> 服务器内部错误
+            </dd>
+        </dl>
+        <p>如你所见，我知道的全说了</p>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

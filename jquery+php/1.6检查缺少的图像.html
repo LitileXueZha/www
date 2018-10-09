@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        img{
+            width: 200px;
+            height: 300px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var Images = ['人.jpg','坦克.jpg','墙.jpg','墨竹.jpg','蒙娜丽莎.jpg'];
+            var html = '';
+            $.each(Images,function (key,value) {
+                html += '<img src="pic/'+value+'"/>';
+            });
+            $('.container').html(html);
+            $('.container img').error(function () {
+                $(this).replaceWith('<img src="pic/雨.jpg" alt="加载失败！"/>');
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="container">
+    <h3>图片</h3>
+</div>
+<div class=" navbar navbar-fixed-bottom">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+
+</body>
+</html>

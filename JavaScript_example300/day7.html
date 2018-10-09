@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day7</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        mark>span{
+            font-size: 30px;
+            color: blue;
+        }
+        p>a{
+            margin: 0 10px;
+        }
+        .l{
+            font-size: 25px;
+            color: blue;
+        }   /*                          这该死的 l ！！！！               */
+        #div1{
+            width: 220px;
+            height: 300px;
+            border: 1px solid burlywood;
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 1% 1% 15% 1%;
+            box-shadow: 10px 10px 10px burlywood;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            cursor: pointer;
+        }  /*  模拟document的div  */
+        #img1{
+            width: 200px;
+            cursor: move;
+            position: absolute;
+            left: 1px;
+            top: 1px;
+        }
+    </style>
+    <script type="text/javascript">
+        var timer = null;  //  定时器变量
+        document.ondblclick = function () {
+            timer = window.setInterval('scrollPage()',10);
+        };  //  开始定时器
+        //////////////////        我擦勒，调试半天，记住原生js双击方法为ondblclick，多了个 l ，my god!
+        document.onmousedown = function () {
+            clearInterval(timer);
+        };  //  停止定时器
+
+        window.onload = function () {
+            var links = document.getElementsByTagName('a');
+            for (var i=0;i<links.length;i++){
+                links[i].onmouseover = function () {
+                    this.style.color = 'red';
+                };
+                links[i].onmouseout = function () {
+                    this.style.color = '#428bca';
+                }
+            }
+            //  以上是鼠标移上链接的变色
+            var img1 = document.getElementById('img1');
+            img1['draging'] = false;
+            if (navigator.userAgent.indexOf("MSIE") > 0)     //  兼容IE
+                img1.attachEvent('onmousedown', dragPic);
+            else
+                img1.addEventListener('mousedown', dragPic, false);
+            //  以上是拖动图片
+        };
+        function scrollPage() {
+            window.scrollBy(0,1);
+        }
+        function mOver(elem) {
+            elem.style.fontSize = '20px';
+        }  //  鼠标进，字变大
+        function mOut(elem) {
+            elem.style.fontSize = '13px';
+        }  //  鼠标出，字变小
+        function defineAD() {
+            window.open('day6_.html','广告','fullScreen=1');
+        }  //  单击弹出广告，即按下鼠标右键
+        function dragPic(e) {
+            var E = e || window.event;      //  兼容
+            var myElem = e.srcElement || e.target;  //  兼容
+//            console.log(myElem);          //  myElem就是img元素
+//            E.preventDefault();             //  禁止默认
+            var img1 = document.getElementById('img1');
+            img1['draging'] = true;         //  这里是给图片加个拖动属性
+            var relLeft = E.clientX - parseInt(myElem.style.left);
+            var relTop = E.clientY - parseInt(myElem.style.top);
+            console.log(E.clientX);
+            console.log(myElem.style.left);
+            console.log(relLeft+'--'+relTop);
+            myElem.onmouseup =function () {
+                img1['draging'] = false;
+            };
+            document.onmousemove = function (ev) {
+                var Ev = ev || window.event;
+                if(img1['draging'] == true){
+                    img1.style.left = Ev.clientX - relLeft +'px';
+                    img1.style.top = Ev.clientY - relTop +'px';
+                    return false;
+                }
+            }
+        }  //  拖动图片
+        function preventM() {
+            document.onmousewheel = function () {
+                alert('禁止使用滑轮！');
+                return false;
+            }
+        }  //  禁用鼠标滑轮
+        function printDoc(){
+            window.print();
+        }  //  打印窗口
+    </script>
+</head>
+<body ondragstart="return false;">  <!--  禁止浏览器选中图片移动打开新窗口  -->
+<div class="container">
+    <h1>例61</h1>
+    <article>
+        <blockquote>鼠标进出时字体大小变化</blockquote>
+        <p>无非就是使用onmouseover及onmouseout这两个方法</p>
+        <pre style="text-align: center" onmouseover="mOver(this)" onmouseout="mOut(this)">
+            如果鼠标放到这里的话呢，，，，，，
+        </pre>
+    </article>
+    <h1>例62</h1>
+    <article>
+        <blockquote>双击鼠标滚动到网页底部</blockquote>
+        <p>Very funny！看小说的同志注意了吼~我将演示自动翻页的技巧，，哈哈哈</p>
+        <mark>
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            <label>注意！————双击事件ondb<span class="l">l</span>click()</label>
+        </mark>
+        <div class="alert alert-danger">千万别忘了这个 <span class="l">l</span> 字母！！！</div>
+        <pre>
+            var timer = null;  //  定时器变量
+            document.ondblclick = function () {
+                timer = window.setInterval('scrollPage()',10);
+            };  //  开始定时器
+            //////////////////        我擦勒，调试半天，记住原生js双击方法为ondblclick，多了个 l ，my god!
+            document.onmousedown = function () {
+                clearInterval(timer);
+            };  //  停止定时器 </pre>
+    </article>
+    <h1>例63</h1>
+    <article>
+        <blockquote>按鼠标左键弹出广告</blockquote>
+        <p>我讨厌广告！此处只为学习！！！</p>
+        <div id="div1" onclick="defineAD()"><h4 align="center">模拟 document</h4>我这里使用css3属性user-select: none;禁止选择文本。。。。。。</div><br/>
+        <p>原理就是<label>onmousedown()</label>，感觉有点懵逼，，，还以为又要咋样咋样呢，习惯性思路，哈哈</p>
+    </article>
+    <h1>例64</h1>
+    <article>
+        <blockquote>鼠标放上链接颜色改变</blockquote>
+        <p>
+            <a>链接一</a><a>链接二</a><a>链接三</a><a>链接四</a><a>链接五</a><a>链接六</a>
+        </p>
+        <p>使用.style.color操作</p>
+    </article>
+    <h1>例65</h1>
+    <article>
+        <blockquote>用鼠标拖动图片<small>这让我想起了老师给我们讲的拖个div</small></blockquote>
+        <p>糟糕了，一大堆的代码</p>
+        <div style="position: relative;height: 160px;">
+            <img src="pic/坦克2.png" id="img1" style="top: 0;left: 0;"/>
+        </div>
+        <div class="alert alert-warning">
+            <button class="close" data-dismiss="alert">&times;</button>
+            注意！ 用.style.top/left获取的值必须在html里定义
+        </div>
+    </article>
+    <h1>例66</h1>
+    <fieldset>
+        <legend>让鼠标滑轮失效</legend>
+        <button class="btn btn-danger" onclick="preventM()">&nbsp;禁用！</button>
+        <p>看到了一个没看到过的，，，.onmousewheel()方法，定义滑轮事件，这也是一个很有趣的例子，占用焦点</p>
+        <label class="l">我擦，firefox不支持！</label>
+    </fieldset>
+    <h1>例67</h1>
+    <fieldset>
+        <legend>按钮背景色</legend>
+        <p>意思意思下，通过.style.background设置即可</p>
+    </fieldset>
+    <h1>例68</h1>
+    <fieldset>
+        <legend>自定义按钮点击事件</legend>
+        <p>.onclick事件自定义</p>
+        <pre>
+            btn.onclick = function(){
+               //  事件
+            }</pre>
+    </fieldset>
+    <h1>例69</h1>
+    <fieldset>
+        <legend>不同按钮提交不同表单地址</legend>
+        <div class="btn-group">
+            <button class="btn btn-default">地址一</button>
+            <button class="btn btn-default">地址二</button>
+        </div>
+        <pre>
+            function submitForm(elem){
+               var btn = elem.id;
+               var f = document.forms[0];
+               if(btn == 'btn1'){
+                  f.action = '1.html';      //
+               } else if(btn == 'btn2'){    //   .action修改表单提交地址
+                  f.action = '2.html';      //
+               }
+               f.submit();
+            }</pre>
+    </fieldset>
+    <h1>例70</h1>
+    <fieldset>
+        <legend>定义一个打印按钮</legend>
+        <p>window.print()方法打印，调用窗口的打印功能</p>
+        <button class="btn btn-success" onclick="printDoc()">打印</button>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

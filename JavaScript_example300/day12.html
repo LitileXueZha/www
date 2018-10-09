@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day12</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{  text-indent: 2em;  }
+        p:first-letter{
+            font-size: 35px;
+            text-shadow: 2px 2px 10px black;
+        }
+        a{  padding: 2px 5px;  }
+        hr{  border-color: slategrey;  }
+        mark{  background: rgba(255, 255, 0, 0.64);cursor: pointer;  }
+        table>thead{  cursor: pointer;   }
+        dl{   font-size: 17px;   }
+        dl>dd{   text-indent: 2em;    }
+        #rongQi{
+            overflow: hidden;
+            visibility: visible;
+            position: relative;
+            height: 294px;
+            z-index: 2;
+        }
+        #u1{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            z-index: 1;
+            height: 296px;
+        }
+        #u1>li{
+            overflow: hidden;
+            margin: 0 5px;
+            float: left;
+            text-align: center;
+            display: inline-block;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('code').wrap('<i></i>');
+        });
+
+        function init111() {
+            var u = document.getElementById('u1');
+            console.log(u.style.width);
+            var timer = null;
+            timer = setInterval(marquee, 10);
+            u.onmouseover = function () {
+                clearInterval(timer);
+            };
+            u.onmouseout = function () {
+                timer = setInterval(marquee, 10);
+            };
+
+            function marquee() {
+                var l = parseInt( u.style.left );
+                u.style.left = (l-1) + 'px';
+                if (l*(-1) == parseInt( u.style.width )){
+                    u.innerHTML += u.innerHTML;
+                }
+            }  //  定时器函数
+        }  //  由左向右滚动
+        function addRow() {
+            var t = document.getElementById('t');
+            t.innerHTML += '<tr><td>又是一行</td><td>又是一行的另一单元格</td></tr>';
+        }  //  给表格添加行
+        function changeTD() {
+            var td = document.getElementsByClassName('bia');
+            for(var i=0;i<td.length;i++){
+                td[i].onmouseover = function () {
+                    this.style.borderColor = 'yellow';
+                };
+                td[i].onmouseout = function () {
+                    this.style.borderColor = '';
+                };
+            }
+        }  //  改变表格边框颜色
+        function cloneT(elem) {
+            var t = elem.parentNode;
+            var ct = document.createElement('table');
+            ct.align = t.align;
+            ct.border = t.border;
+            ct.width = parseInt(t.width) + 10;
+            ct.innerHTML = t.innerHTML;
+            t.parentNode.appendChild(ct);
+        }  //  克隆表格
+        var sortType = 'asc';  //  这个是判断升序（asc）还是降序（desc）的变量
+        function sortTb1() {
+            var t = document.getElementById('tb1');
+            var arr = [];
+            var row = t.rows;
+            for (var i=0;i<row.length;i++){
+                var name = row[i].cells[0].innerHTML;
+                var num = row[i].cells[1].innerHTML;
+                arr[arr.length] = {
+                    'name': name,
+                    'num': num
+                };
+            }  //  保存表格数据
+            for (var j=0;j<arr.length-1;j++){
+                t.deleteRow(1);
+            }  //  删除表格数据
+            arr.shift();  //  本来想删的，但不影响排序结果。。。
+            arr = arr.sort(function (obj1, obj2) {
+                if (sortType == 'asc'){
+                    return obj1['num'] - obj2['num'];
+                }
+                else {
+                    return obj2['num'] - obj1['num'];
+                }
+            });
+            if (sortType == 'asc') {
+                sortType = 'desc';           //
+            } else {                         //  这段代码是为了不同顺序
+                sortType = 'asc';            //
+            }
+            for(var k=0;k<arr.length;k++){
+                var r = t.insertRow();  //  插入一行
+                var t1 = r.insertCell(0);   //
+                var t2 = r.insertCell(1);   //  插入两个单元格
+                t1.innerHTML = arr[k]['name'];
+                t2.innerHTML = arr[k]['num'];
+            }
+        }  //  对表格进行排序
+        function colorTD() {
+            var tds = document.getElementsByClassName('bin');
+            for (var i=0;i<tds.length;i++){
+                tds[i].onmouseover = function () {
+                    this.style.background = 'red';
+                    this.style.color = 'white';
+                    this.style.transition = '1s';
+                };
+                tds[i].onmouseout = function () {
+                    this.style.background = '';
+                    this.style.color = '';
+                };
+            }
+        }  //  单元格颜色
+    </script>
+</head>
+<body onload="init111()">
+<div class="container">
+    <h1>例111</h1>
+    <article>
+        <blockquote>由左向右地滚动广告</blockquote>
+        <hr/>
+        <div id="rongQi" style="width: 800px">
+            <ul id="u1" style="position: relative;left: 0;width: 800px">
+                <li>
+                    <a href="#" target="_blank">
+                        <img src="1.jpg" style="max-width: 300px"/>
+                        <br/>
+                        12345
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <img src="1.jpg" style="max-width: 300px"/>
+                        <br/>
+                        12345
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <img src="1.jpg" style="max-width: 300px"/>
+                        <br/>
+                        12345
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <img src="1.jpg" style="max-width: 300px"/>
+                        <br/>
+                        12345
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <img src="1.jpg" style="max-width: 300px"/>
+                        <br/>
+                        12345
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <img src="1.jpg" style="max-width: 300px"/>
+                        <br/>
+                        12345
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <img src="1.jpg" style="max-width: 300px"/>
+                        <br/>
+                        12345
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <hr/>
+        <p>这缺点贼多</p>
+        <ol><li>只能添加一次</li><li>必需在html里定义样式</li><li>只是滚动，哪是轮播</li></ol>
+    </article>
+    <h1>例112</h1>
+    <article>
+        <blockquote>右下角的提示层</blockquote>
+        <br/><br/><br/>
+        <div style="position: absolute;right: 0;bottom: 0;border: 1px solid saddlebrown">
+            一个提示层
+            <br/><br/><br/>
+        </div>
+        <p>利用跳出文档流的绝对定位即可 <mark>right</mark> <mark>bottom</mark></p>
+    </article>
+    <h1>例113</h1>
+    <article>
+        <blockquote>带关闭按钮的右下角提示层<sub>（ 我擦勒~还没完没了了 ）</sub></blockquote>
+        <div id="guang" style="width: 100px;height: 100px;background: #9acfea">
+            <button style="float: right;background: none;border: none" onclick="document.getElementById('guang').style.display='none'">&times;</button>
+        </div>
+        <p>太无聊了</p>
+    </article>
+    <h1>例114</h1>
+    <article>
+        <blockquote>底部工具栏</blockquote>
+        <p>原理是利用fixed定位到容器底部</p>
+        <code>position: fixed; bottom: 0;</code>
+    </article>
+    <h1>例115</h1>
+    <article>
+        <blockquote>动态的为表格中的单元格文字添加样式</blockquote>
+        <pre>
+            function chCell(){
+                var t = document.getElementById('table');
+                var row = t<mark data-toggle="tooltip" title="获取行"><strong>.rows</strong></mark>;
+                for(var i=0;i&lt;row.length;i++){
+                    var cell = row[i]<mark data-toggle="tooltip" title="获取行的单元格"><strong>.cells</strong></mark>;
+                    for(var j=0;j&lt;cell.length;j++){
+                        cell[i].___<ins>做什么事</ins>___;
+                    }
+                }
+            }</pre>
+        <ul class="list-group">
+            <li class="list-group-item">.rows 获取行</li>
+            <li class="list-group-item">.cells 获取行的单元格</li>
+        </ul>
+    </article>
+    <h1>例116</h1>
+    <fieldset>
+        <legend>动态添加新的行</legend>
+        <table class="table table-hover" id="t">
+            <caption>
+                <button class="btn btn-default" style="position: relative;left: 45%;width: 100px" onclick="addRow()">添加</button>
+            </caption>
+            <tr>
+                <td>这是第一行第一列</td>
+                <td>这是第一行第二列</td>
+            </tr>
+        </table>
+        <p>参照一下一行代码，你就知道</p>
+        <code>tableDOM.innerHTML += '&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr>';</code>
+    </fieldset>
+    <h1>例117</h1>
+    <fieldset>
+        <legend>可变样式的表格边框</legend>
+        <table class="table table-bordered" onmouseover="changeTD()">
+            <tr>
+                <th>个数</th><th>对应</th>
+            </tr>
+            <tr>
+                <td class="bia">第一个</td><td class="bia">我的天</td>
+            </tr>
+            <tr>
+                <td class="bia">第二个</td><td class="bia">oh my god</td>
+            </tr>
+        </table>
+        <p>对于bootstrap里的表格，它的边框真的是醉了，还是不用的好</p>
+    </fieldset>
+    <h1>例118</h1>
+    <fieldset>
+        <legend>克隆表格</legend>
+        <table align="center" border="1" width="200">
+            <thead ondblclick="cloneT(this)">
+            <tr>
+                <th>姓名</th><th>年龄</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>张三</td><td>19</td>
+            </tr>
+            <tr>
+                <td>李四</td><td>20</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <h1>例119</h1>
+    <fieldset>
+        <legend>将表格数据根据某一列排序</legend>
+        <table id="tb1" align="center" border="1">
+            <tr>
+                <th>名字</th>
+                <th>逗比指数</th>
+                <td rowspan="4">
+                    <button style="height: 100px" onclick="sortTb1()">排序</button>
+                </td>
+            </tr>
+            <tr>
+                <td>张三</td><td>3</td>
+            </tr>
+            <tr>
+                <td>李四</td><td>5</td>
+            </tr>
+            <tr>
+                <td>王五</td><td>1</td>
+            </tr>
+        </table>
+        <p>先获取到表格的数据，再用sort方法进行排序，删除表格行并添加行与单元格</p>
+        <dl>
+            <dt>学习以下几项</dt>
+            <dd><code>.rows、.cells</code> 分别为获取的行与单元格</dd>
+            <dd><code>.deleteRow(行数Number)</code> 删除第几行</dd>
+            <dd><code>.insertRow()</code> 插入行</dd>
+            <dd><code>.insertCell(这里最好加个Number)</code> 行插入单元格</dd>
+        </dl>
+    </fieldset>
+    <h1>例120</h1>
+    <fieldset>
+        <legend>让表格行的背景颜色间隔开</legend>
+        <table align="center" border="1" style="height: 80px" onmouseover="colorTD(this)">
+            <tr>
+                <th width="50">地名</th><th width="50">旅游费</th>
+            </tr>
+            <tr>
+                <td class="bin">吉安</td><td class="bin">500</td>
+            </tr>
+            <tr>
+                <td class="bin">淮南</td><td class="bin">50</td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

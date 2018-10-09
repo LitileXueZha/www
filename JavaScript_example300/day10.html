@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day10</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        body{
+            user-select: none;
+            -moz-user-select: none;
+        }
+        p{
+            text-indent: 2em;
+        }
+        p:first-letter{
+            font-size: 35px;
+            text-shadow: 2px 2px 10px black;
+        }
+        a{
+            padding: 2px 5px;
+        }
+        #in1{
+            border-color: black;
+            border-width: 0 0 1px 0;
+            border-style: solid;
+            width: 100px;
+        }  /*  只带下划线的文本框  */
+    </style>
+    <script type="text/javascript">
+        function severalLink() {
+            var res1 = document.getElementById('res1');
+            var arrA = [
+                    ['链接一，百度','http://www.baidu.com'],
+                    ['链接二，百度一下','http://www.baidu.com'],
+                    ['链接三，百度一下，你就知道','http://www.baidu.com']
+            ];
+            var i = 0;
+            setInterval(function () {
+                if (i>2){
+                    i = 0;
+                }
+                var str = '<a href="'+arrA[i][1]+'">'+arrA[i][0]+'</a>';
+                res1.innerHTML = str.concat();
+                i++;
+            },1500);
+        }  //  交替显示链接
+        function validateSomething() {
+            var in2 = document.getElementById('in2');
+            var res2 = document.getElementById('res2');
+            var mail = in2.value;
+            var mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;  //  邮箱正则
+            in2.parentNode.parentNode.classList.remove('has-warning','has-error','has-success');
+            res2.classList.remove('glyphicon-remove-sign','glyphicon-ok-sign');
+            if (mailReg.test(mail)){
+                in2.parentNode.parentNode.classList.add('has-success');
+                res2.classList.add('glyphicon','glyphicon-ok-sign','form-control-feedback');
+            }
+            else{
+                in2.parentNode.parentNode.classList.add('has-error');
+                res2.classList.add('glyphicon','glyphicon-remove-sign','form-control-feedback');
+            }
+        }  //  正则验证表单项
+        function validateWord() {
+            var in3Word = document.getElementById('in3').value;
+            var in4Word = document.getElementById('in4').value;
+            var errMsg = '';
+            if (in3Word != '' && (in3Word.charAt(0)>'Z' || in3Word.charAt(0)<'A')){
+                errMsg += '第一个需要首字母大写\n';
+            }
+            if (in4Word != '' && !/\b[A-Z]+\b/.test(in4Word)){
+                errMsg += '第二个又没写对，全部大写！\n';
+            }
+            if (errMsg){
+                alert(errMsg);
+            }
+        }  //  验证字母大小写
+        function validateNum() {
+            var in5Num = document.getElementById('in5').value;
+            if (!/\b[0-9]\b/.test(in5Num)){
+                alert('只能输入数字！');
+            }
+        }  //  验证数字
+        function sumChineseNum() {
+            var in6Ch = document.getElementById('in6').value;
+            var res3 = document.getElementById('res3');
+            var sum = 0;
+            for (var i=0;i<in6Ch.length;i++){
+                if (isChinese(in6Ch.charAt(i))){
+                    sum++;
+                }
+            }
+            res3.innerHTML = sum;
+        }  //  计算汉字数量 main方法
+        function isChinese(c) {
+            var reg = /[\u4E00-\u9FA5]/;
+            return reg.test(c);
+        }  //  判断汉字 的方法
+        function fillSelect() {
+            var sle1 = document.getElementById('sle1');
+            var str = '';
+            for (var i=1;i<=12;i++){
+                str += '<option>'+i+'月</option>';
+            }
+            sle1.innerHTML = str;
+        }  //  动态添加下拉项
+        var arrPC = [
+            [1, '北京市', null],
+            [2, '四川省', null],
+            [3, '广东省', null],
+            [4, '北京市', 1],
+            [5, '成都市', 2],
+            [6, '广州市', 3],
+            [7, '深圳市', 3]
+        ];  //  联动省市信息数组
+        function fillPro(type) {
+            if (type == 'province'){
+                var sle2 = document.getElementById('sle2');
+                sle2.innerHTML = '';
+                var proStr = '<option></option>';
+                for (var i=0;i<arrPC.length;i++){
+                    if (arrPC[i][2] == null){
+                        proStr += '<option value="'+arrPC[i][0]+'">'+arrPC[i][1]+'</option>';
+                    }
+                }
+                sle2.innerHTML = proStr;
+            }else if (type == 'city'){
+                var proId = document.getElementById('sle2').value;
+                var sle3 = document.getElementById('sle3');
+                sle3.innerHTML = '';
+                var cityStr = '<option></option>';
+                for (var j=0;j<arrPC.length;j++){
+                    if (arrPC[j][2] == proId){
+                        cityStr += '<option>'+arrPC[j][1]+'</option>';
+                    }
+                }
+                sle3.innerHTML = cityStr;
+            }
+        }  //  联动的省市下拉菜单
+    </script>
+</head>
+<body  onload="severalLink();fillPro('province');">
+<div class="container">
+    <h1>例91</h1>
+    <article>
+        <blockquote>几条链接交替显示</blockquote>
+        <div id="res1"><a>链接一，百度</a></div>
+        <p>利用定时器，.innerHTML设置链接，一个二维数组存储a链接的href值和内容</p>
+    </article>
+    <h1>例92</h1>
+    <article>
+        <blockquote>让文本框只带下划线</blockquote>
+        <label for="in1">填写你的名字：</label><input type="text" id="in1"/>
+        <p>对该文本框样式设置即可，我推荐用css写，<strong><em>代码如下：</em></strong></p>
+        <pre>
+            #in1{
+                border-color: black;
+                border-width: 0 0 1px 0;
+                border-style: solid;
+                width: 100px;
+            }  /*  只带下划线的文本框  */</pre>
+        <mark>这里不错，以后申请式表单可以采用这种格式，very nice!</mark>
+    </article>
+    <h1>例93</h1>
+    <article>
+        <blockquote>用正则表达式验证E-mail格式</blockquote>
+        <div class="form-horizontal">
+            <div class="form-group has-feedback">
+                <label class="control-label col-lg-2">电子邮箱：</label>
+                <div class="col-lg-5">
+                    <input type="text" class="form-control" id="in2" placeholder="xxx@xx.com"/>
+                    <span id="res2"></span>
+                </div>
+            </div>
+        </div>
+        <h3 align="center"><button class="btn btn-default" onclick="validateSomething()">验证吧，</button></h3>
+        <p>RegExp.test()校验正则</p>
+        <label>邮箱正则表达式：</label>
+        <var>var mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/</var>
+        <br/>
+        <label>原生js添加class属性的方法：</label>
+        <ul>
+            <li><label>添加：</label>.classList.add('类1','类2')</li>
+            <li><label>删除：</label>.classList.remove('类1','类2')</li>
+        </ul>
+    </article>
+    <h1>例94</h1>
+    <article>
+        <blockquote>首(全部)字母大写<sub>&nbsp;一般来讲，俺们中国人不大用，这里我就一笔带过</sub></blockquote>
+        <div class="form-horizontal">
+            <div class="form-group has-feedback">
+                <label class="control-label col-lg-2">第一个哦：</label>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" id="in3" placeholder="首字母大写"/>
+                </div>
+                <span>//  我的</span>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group has-feedback">
+                <label class="control-label col-lg-2">第二个啊：</label>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" id="in4" placeholder="全部字母大写"/>
+                </div>
+            </div>
+        </div>
+        <h3 align="center"><button class="btn btn-default" onclick="validateWord()">提交喽~</button></h3>
+        <p>首字母判断<b>.charAt(0)</b>,全字母用正则，，，</p>
+    </article>
+    <h1>例95</h1>
+    <article>
+        <blockquote>只能输入数字的文本框</blockquote>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-lg-2">年龄：</label>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" id="in5" placeholder="数字"/>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-default" onclick="validateNum()">验验验尸！</button>
+        <p>正则表达式&nbsp;<mark>/\b[0-9]\b/</mark>&nbsp;检测是否为数字</p>
+    </article>
+    <h1>例96</h1>
+    <fieldset>
+        <legend>判断汉字的个数</legend>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-lg-2">中文名：</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" id="in6" placeholder="小明"/>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="sumChineseNum()" data-toggle="modal" data-target="#modal1">说，你有多少个</button>
+        <div class="modal fade" id="modal1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">汉字个数</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p id="res3" style="text-align: center"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>/[\u4E00-\u9FA5]/，判断汉字，遍历用charAt</p>
+    </fieldset>
+    <h1>例97</h1>
+    <fieldset>
+        <legend>成为焦点时清除文本框内容</legend>
+        <p>对.onfocus事件设置一个<code>.value = ''</code>即可</p>
+    </fieldset>
+    <h1>例98</h1>
+    <fieldset>
+        <legend>动然为下拉菜单设置项</legend>
+        <label>选一个买了呗~</label>&nbsp;&nbsp;
+        <select id="sle1"></select>
+        <br/>
+        <button class="btn btn-warning" onclick="fillSelect()">添加</button>
+    </fieldset>
+    <h1>例99</h1>
+    <fieldset>
+        <legend>有联系的省市下拉菜单</legend>
+        <h4 align="center">
+            <label>省：</label><select id="sle2" onchange="fillPro('city')"></select>
+        </h4>
+        <h4 align="center">
+            <label>市：</label><select id="sle3"></select>
+        </h4>
+        <pre>
+        function fillPro(type) {
+            if (type == 'province'){
+                var sle2 = document.getElementById('sle2');
+                sle2.innerHTML = '';
+                var proStr = '&lt;option>&lt;/option>';
+                for (var i=0;i&lt;arrPC.length;i++){
+                    if (arrPC[i][2] == null){
+                        proStr += '&lt;option value="'+arrPC[i][0]+'">'+arrPC[i][1]+'&lt;/option>';
+                    }
+                }
+                sle2.innerHTML = proStr;
+            }else if (type == 'city'){
+                var proId = document.getElementById('sle2').value;
+                var sle3 = document.getElementById('sle3');
+                sle3.innerHTML = '';
+                var cityStr = '&lt;option&gt;&lt;/option>';
+                for (var j=0;j&lt;arrPC.length;j++){
+                    if (arrPC[j][2] == proId){
+                        cityStr += '&lt;option>'+arrPC[j][1]+'&lt;/option>';
+                    }
+                }
+                sle3.innerHTML = cityStr;
+            }
+        }  //  联动的省市下拉菜单</pre>
+    </fieldset>
+    <h1>例100</h1>
+    <fieldset>
+        <legend>三级省市下拉菜单</legend>
+        <p>这里我就展示下数据结构，方法与上述一样</p>
+        <var style="white-space: pre">var arr = [
+                [1, '北京市', null],
+                [2, '四川省', null],
+                [3, '广东省', null],
+                [4, '北京市', 1],
+                [5, '成都市', 2],
+                [6, '广州市', 3],
+                [7, '深圳市', 3],
+                [8, '武侯区', 5],
+                [9, '青羊区', 5],
+                [10, '白云区', 6],
+                [11, '增城市', 6],
+                [12, '从化市', 6]
+            ];</var>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

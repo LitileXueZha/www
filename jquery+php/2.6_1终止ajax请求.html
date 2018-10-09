@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ajax;
+            $('select').change(function () {
+                if(ajax){
+                    ajax.abort();
+                }
+                ajax = $.get(
+                        '2.6_2wait.php',
+                        { what: $(this).val() },
+                        function (data) {
+                            $('#res').html(data);
+                        },
+                        'html'
+                );
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <h1 align="center">abort()方法</h1>
+</div>
+<div class="container">
+    <form>
+        <br/>
+        <div class="row">
+            <div class="col-md-3 visible-md visible-lg">
+                <p>选择你的：</p>
+            </div>
+            <div class="col-md-5">
+                <select class="form-control" name="country">
+                    <option class="form-control" value="">选择</option>
+                    <option class="form-control" value="good">好大好大一条鱼</option>
+                    <option class="form-control" value="bad">坏蛋，菜比</option>
+                </select>
+            </div>
+        </div>
+        <p id="res"></p>
+    </form>
+</div>
+<div class="navbar navbar-fixed-bottom">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+</body>
+</html>

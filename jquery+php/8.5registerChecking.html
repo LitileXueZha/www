@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>检查数据库中用户名可用性</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        #sp1{
+            font-size: 25px;
+        }
+        .form-horizontal{
+            position: relative;
+            left: 20px;
+        }
+        #login{
+            margin-top: 10%;
+        }
+        fieldset{
+            box-shadow: 20px 20px 10px silver;
+            border-radius: 5px;
+        }
+        button.btn.pull-right{
+            position: relative;
+            right: 5px;
+            bottom: 2px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#res').prev().blur(function () {
+                $('.form-control-feedback').remove();
+                $('#res').html('&nbsp;');
+                if (jQuery.trim($(this).val()) != ''){
+                    $.post(
+                            '8.5check.php',
+                            { name : jQuery.trim($(this).val()) },
+                            function (data) {
+                                if (data){
+                                    $('#res').prev().after('<span class="glyphicon glyphicon-ok-sign form-control-feedback">&nbsp;</span>');
+                                    $('#save').removeClass('disabled');
+                                }
+                                else {
+                                    $('#res').html('邮箱被人使用了哦！').css({
+                                        'color': 'red',
+                                        'opacity': '0.7'
+                                    });
+                                }
+                            }
+                    );
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <!--<div id="pen"><img src="../pen.png"/> </div>-->
+    <table align="center" id="login"><tr><td class="col-lg-6">
+        <fieldset>
+            <legend><table align="center"><tr><td>
+                <span class="glyphicon glyphicon-inbox" id="sp1">&nbsp;注册<sub><small>——我们的邮箱</small></sub></span>
+            </td></tr></table></legend>
+            <div class="form-horizontal">
+                <div class="row has-feedback">
+                    <!--<div class="col-lg-1">-->
+                        <label class="control-label pull-left">邮箱：</label>
+                    <!--</div>-->
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" class="form-control" placeholder="ningtao@study.cn" autofocus/>
+                        <!--<span class="glyphicon glyphicon-remove form-control-feedback"></span>-->
+                        <p id="res">&nbsp;</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="control-label pull-left" for="p">密码：</label>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="password" class="form-control" id="p" placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <button class="btn pull-right disabled" id="save"><span class="glyphicon glyphicon-hand-right"></span> &nbsp;确定</button>
+        </fieldset>
+    </td></tr></table>
+</div>
+</body>
+</html>

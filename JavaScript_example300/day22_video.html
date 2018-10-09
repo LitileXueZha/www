@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day22</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        input.bt{
+            position: absolute;
+            top: 15px;
+            border: none;
+            border-radius: 2px;
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-shadow: 0 0 5px 1px black;
+        }
+        input.bt.act{
+            color: black;
+            background: rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 5px 1px white;
+        }
+        time>label{
+            font-size: 14px;
+            color: green;
+            font-weight: normal;
+            margin: 0;
+            /*vertical-align: text-top;*/
+        }
+        #c1{
+            position: relative;
+            background: radial-gradient(white,black);
+        }  /*  容器，第一个td  */
+        #v1{
+            display: block;
+            margin: 0 auto;
+            border-radius: 2px;
+        }  /*  视频，video  */
+        #kz1 span{
+            display: block;
+            width: 20px;
+            height: 20px;
+            margin: 5px auto;
+            font-size: 20px;
+            cursor: pointer;
+            text-shadow: 0 0 3px yellow;
+        }
+        div.list{
+            width: 100px;
+            height: 30px;
+            position: absolute;
+            top: 0;
+            left: 20px;
+            padding: 6px 0 4px 0;
+            text-align: center;
+        }
+        div.list-li{
+            width: 100px;
+            position: absolute;
+            top: 30px;
+            left: 20px;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .list-li>input{
+            width: 100px;
+            border: none;
+            padding: 2px 0;
+            background: rgba(255, 255, 255, 0.91);
+            transition: 1s;
+        }
+        .list-li>input:nth-child(1){
+            border-top: 1px solid black;
+        }
+        .list-li>input:hover{
+            background: #eee;
+            transition: 1s;
+        }
+        #act{
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            left: 10px;
+            top: -7px;
+        }
+        #act::before{
+            font-size: 10px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            doSize();
+            $('#c1').click(function (e) {
+                var E = e || event;
+                console.log($(E.target).val());
+                switch($.trim($(E.target).val())){
+                    case '75%':
+                        $('#c1').width(853).height(480);
+                        $('#v1').width(853*0.75).height(480*0.75);
+                        $(E.target).addClass('act');
+                        $('.bt').not(E.target).removeClass('act');
+                        doSize();
+                        break;
+                    case '100%':
+                        $('#c1').width(853).height(480);
+                        $('#v1').width(853).height(480);
+                        $(E.target).addClass('act');
+                        $('.bt').not(E.target).removeClass('act');
+                        doSize();
+                        break;
+                    case '125%':
+                        $('#c1').width(853*1.25).height(480*1.25);
+                        $('#v1').width(853*1.25).height(480*1.25);
+                        $(E.target).addClass('act');
+                        $('.bt').not(E.target).removeClass('act');
+                        doSize();
+                        break;
+                }
+            });
+            //  以上是对尺寸修改功能
+            $('.glyphicon-play').click(function () {
+                document.getElementById('v1').play();
+            });
+            $('.glyphicon-pause').click(function () {
+                document.getElementById('v1').pause();
+            });
+            $('.glyphicon-off').click(function () {
+                var v1 = document.getElementById('v1');
+                if(v1.controls){
+                    v1.controls = null;
+                } else{
+                    v1.controls = true;
+                }
+            });
+            //  以上是播放、暂停功能
+            var timer = null;
+            timer = setInterval(function () {
+                var t1 = parseInt(document.getElementById('v1').currentTime);
+                var t2 = parseInt(document.getElementById('v1').duration);
+                $('time').html('<label>'+parseInt(t1/60) + ':' +
+                        t1%60 + '</label> / ' + parseInt(t2/60) + ':' + t2%60);
+                if(t1 == t2){
+                    clearInterval(timer);
+                }
+            },1000);
+            //  以上是播放进度功能
+            $('.glyphicon-eject').click(function () {
+                $('.list-li').slideDown(1000);
+            });
+            $('.list-li').slideToggle(0).click(function (e) {
+                var E = e || event;
+                var n = -7;
+                var s1 = '$("#act").css("top","';
+                var s2 = 'px")';
+                var el = $('#v1');
+                switch(E.target.value){
+                    case '花千骨-1':
+                        $('.list').text('花千骨-1');
+                        $('.list-li').slideUp(500);
+                        eval(s1+n+s2);
+                        $(el).attr('src', '1.mp4');
+                        break;
+                    case '花千骨-2':
+                        $('.list').text('花千骨-2');
+                        $('.list-li').slideUp(500);
+                        eval(s1+(n+24)+s2);
+                        $(el).attr('src', '2.mp4');
+                        break;
+                    case '花千骨-3':
+                        $('.list').text('花千骨-3');
+                        $('.list-li').slideUp(500);
+                        eval(s1+(n+48)+s2);
+                        $(el).attr('src', '3.mp4');
+                        break;
+                    case '花千骨-4':
+                        $('.list').text('花千骨-4');
+                        $('.list-li').slideUp(500);
+                        eval(s1+(n+72)+s2);
+                        $(el).attr('src', '4.mp4');
+                        break;
+                    case '花千骨-5':
+                        $('.list').text('花千骨-5');
+                        $('.list-li').slideUp(500);
+                        eval(s1+(n+96)+s2);
+                        $(el).attr('src', '5.mp4');
+                        break;
+                }
+            });
+            function doSize() {
+                var m = $('#c1').width() - parseInt($('.bt').eq(1).css('width'));
+//            console.log($('.bt').eq(0).css('width'));
+                $('.bt').eq(0).css('left', (m/2 - 150 + parseInt($('.bt').eq(1).css('width'))-parseInt($('.bt').eq(0).css('width'))) + 'px');
+                $('.bt').eq(1).css('left', m/2 + 'px');
+                $('.bt').eq(2).css('left', (m/2 + 150) + 'px');
+            }
+        })
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1 align="center">HTML5新应用</h1>
+    <h2>例257</h2>
+    <article>
+        <blockquote>对视频的操作</blockquote>
+        <table align="center">
+            <tr>
+                <td id="c1" colspan="5">
+                    <input type="button" class="bt" value="&nbsp;75%&nbsp;"/>
+                    <input type="button" class="bt act" value="100%"/>
+                    <input type="button" class="bt" value="125%"/>
+                    <video id="v1" width="853" height="480" src="1.mp4" controls>
+                        <!--<source src="1.mp4" type="video/mp4"/>-->
+                    </video>
+                </td>
+            </tr>
+            <tr id="kz1" style="position: relative">
+                <td width="20">
+                    <span class="glyphicon glyphicon-eject"></span>
+                    <div class="list">花千骨-1</div>
+                    <div class="list-li">
+                        <input type="button" value="花千骨-1"/>
+                        <input type="button" value="花千骨-2"/>
+                        <input type="button" value="花千骨-3"/>
+                        <input type="button" value="花千骨-4"/>
+                        <input type="button" value="花千骨-5"/>
+                        <span id="act" class="glyphicon glyphicon-share-alt"></span>
+                    </div>
+                </td>
+                <td><span class="glyphicon glyphicon-play"></span></td>
+                <td align="center" width="100"><time><label>0:0</label>&nbsp;/&nbsp;5:0</time></td>
+                <td><span class="glyphicon glyphicon-pause"></span></td>
+                <td width="20"><span class="glyphicon glyphicon-off"></span></td>
+            </tr>
+        </table>
+        <pre>   document.getElementById('v1').width/height = 修改数值;</pre>
+        <ul class="list-group">
+            <li class="list-group-item">videoDOM.currentTime：获取视频当前播放进度或设置</li>
+            <li class="list-group-item">videoDOM.duration：视频总长度</li>
+            <li class="list-group-item">videoDOM.play()/pause()：播放/暂停视频</li>
+            <li class="list-group-item">videoDOM.paused：返回是否暂停的布尔值，类似checked</li>
+            <li class="list-group-item">videoDOM.controls = null：隐藏控制按钮</li>
+        </ul>
+        <p>As you as you can see，跟图片的宽度、高度修改一样</p>
+        <label>——笔者注：对于video元素的修改，得改本身，对子元素source的修改并不起作用</label>
+    </article>
+</div>
+<hr/>
+</body>
+</html>

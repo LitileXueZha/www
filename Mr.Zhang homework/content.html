@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生成绩管理系统</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="Font-Awesome-master/css/font-awesome.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        hr{
+            margin-bottom: 1px;
+        }
+        #h-title span{
+            font-family: 华文行楷;
+            font-style: italic;
+            text-shadow: 1px 1px 5px rgba(255, 228, 52, 0.66);
+        }
+        div.tab-content>div{
+            padding-top: 50px;
+        }
+        button.btn{
+            margin-left: 40px;
+        }
+        #tb2 input{
+            line-height: 27px;
+            text-indent: 1em;
+            border: none;
+            width: 100px;
+            font-size: 15px;
+            text-align: justify;
+        }
+        #tb2 th{
+            text-align: right;
+            padding-right: 50px;
+            padding-top: 13px;
+        }
+        #differ{
+            position: absolute;
+            left: 330px;
+            top: 158px;
+            display: none;
+        }
+        #same{
+            position: absolute;
+            left: 330px;
+            top: 110px;
+            display: none;
+        }
+    </style>
+    <script src="cookie.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            doInfo();
+            loadInfo();  //  加载数据
+            var arrFont = [50,47,44,41,41,44,47,50];
+            var arrSpan = $('#h-title').children('span');
+            for(var i=0;i<arrFont.length;i++){
+                $(arrSpan[i]).css('font-size', arrFont[i]+'px');
+            }  //  循环美化标题
+            $('#add').click(function () {
+                $.ajax({
+                    url: 'add.php',
+                    type: 'get',
+                    data: $('#addModal').find('form').serialize(),
+                    success: function (data) {
+                        if (data == 1){
+                            $('#addModal').modal('toggle');
+                            $('#addModal').find('form').find('input').val('');
+                            doSuccess();
+                        }
+                    },
+                    error: function () {
+                        doDanger();
+                    }
+                });
+            });  //  添加信息
+            $('#save').click(function () {
+                $.ajax({
+                    url: 'update.php',
+                    type: 'post',
+                    data: $('#editModal').find('form').serialize(),
+                    success: function (data) {
+                        if (data == 1){
+                            doSuccess();
+                        }else{
+                            doDanger();
+                        }
+                    }
+                });
+            });  //  修改信息
+
+        });
+        function editInfoo() {
+            var arr = [];
+            $('.table input:checked').each(function () {
+                arr.push($(this).val());
+            });
+            if(arr.length == 1){
+                $('#editModal').modal('toggle');
+                $.ajax({
+                    url: 'edit.php',
+                    type: 'get',
+                    data: { number: arr[0] },
+                    success: function (data) {
+                        var arr1 = eval(data);  //  解析
+                        $('#editModal').find('select').val(arr1[0]);
+                        var inps = $('#editModal input');
+                        for(var i=1;i<=5;i++){
+                            $(inps[i-1]).val(arr1[i]);
+                        }
+                    }
+                });
+            }else{
+                doWarning();
+            }
+        }  //  编辑数据
+        function delInfo() {
+            var arr = [];
+            $('.table input:checked').each(function () {
+                arr.push($(this).val());
+            });
+            if (confirm('Are you sure?')){
+                $.ajax({
+                    url: 'delete.php',
+                    type: 'get',
+                    data: { a: arr,len: arr.length},
+                    success: function (data) {
+//                    loadInfo();
+                        $('#res').html(data);
+                        doSuccess();
+                    },
+                    error: function () {
+                        doDanger();
+                    }
+                });
+            }
+        }  //  删除信息
+        function checkD(elem, num) {
+            var t = document.getElementsByClassName('table')[0];
+            var trs = t.getElementsByTagName('tr');
+            var inps = t.getElementsByTagName('input');
+            if (num){
+                if (elem.checked){
+                    for (var i=0;i<inps.length;i++){
+                        inps[i].checked = true;
+                        trs[i].className = 'active';
+                    }
+                }else{
+                    for (var j=0;j<inps.length;j++){
+                        inps[j].checked = false;
+                        trs[j].className = '';
+                    }
+                }
+            }else{
+                if (elem.checked){
+                    elem.parentNode.parentNode.className = 'active';
+                }else{
+                    elem.parentNode.parentNode.className = '';
+                }
+            }
+        }  //  小功能，必须原生js，否则出现问题
+        function loadInfo() {
+            var num = $('#class').val();
+            if (num) {
+                $.ajax({
+                    url: 'load.php',
+                    type: 'get',
+                    data: { classId: num},
+                    success: function (data) {
+                        $('#tb1').children('tbody').html(data);
+                        doSuccess();
+                    },
+                    error: function () {
+                        doDanger();
+                    }
+                });
+            }
+        }  //  加载数据
+        var successAlertStr = '<div class="alert alert-success"><button class="close" data-dismiss="alert">&times</button> 操作成功！</div>';
+        var infoAlertStr = '<div class="alert alert-info"><button class="close" data-dismiss="alert">&times</button> 欢迎进来！</div>';
+        var dangerAlertStr = '<div class="alert alert-danger"><button class="close" data-dismiss="alert">&times</button> 无效的操作！</div>';
+        var warningAlertStr = '<div class="alert alert-warning"><button class="close" data-dismiss="alert">&times</button> 警告！警告！</div>';
+        //  四个字符串，用来显示操作信息
+        function doSuccess() {
+            $('#A').append(successAlertStr);
+            setTimeout(function () {
+                $('div.alert-success').alert('close');
+            },5000);
+        }  //  成功消息提示
+        function doDanger() {
+            $('#A').append(dangerAlertStr);
+            setTimeout(function () {
+                $('div.alert-danger').alert('close');
+            },5000);
+        }  //  失败消息提示
+        function doInfo() {
+            $('#A').append(infoAlertStr);
+            setTimeout(function () {
+                $('div.alert-info').alert('close');
+            },5000);
+        }  //  欢迎消息提示
+        function doWarning() {
+            $('#A').append(warningAlertStr);
+            setTimeout(function () {
+                $('div.alert-warning').alert('close');
+            },5000);
+        }  //  警告消息提示
+        var user = getCookie('userNumber');  //  利用cookie加载用户
+        function loadUserInfo() {
+            $('#user').val(user);
+            $.ajax({
+                url: 'get.php',
+                type: 'get',
+                data: { number: user},
+                success: function (data) {
+                    var d = eval(data);
+                    var inps = $('#B div.form-horizontal input');
+                    for(var i=0;i<d.length;i++){
+                        $(inps[i]).val(d[i]);
+                    }
+                }
+            })
+        }  //  加载用户信息
+        function saveInfo() {
+            $('#B').find('input').eq(0).removeAttr('disabled');
+            $.ajax({
+                url: 'save.php',
+                type: 'get',
+                data: $('#B').find('form').serialize(),
+                success: function () {
+                    $('#B').find('input').eq(0).attr('disabled', 'disabled');
+                    doSuccess();
+                },
+                error: function () {
+                    doDanger();
+                }
+            });
+        }  //  保存用户信息
+        function modifyPas() {
+            $.ajax({
+                url: 'getPass.php',
+                type: 'post',
+                data: { number: user, tp: 'huoqu' },
+                success: function (data) {
+                    var d = eval(data);
+                    $('#C input').eq(0).val(d[0]);
+                    $('#C input').eq(1).val(d[1]);
+                }
+            });
+        }  //  查询密码
+        function savePas() {
+            var p1 = $('#C input').eq(1);
+            var p2 = $('#C input').eq(2);
+            var p3 = $('#C input').eq(3);
+            if ($(p2).val() != $(p3).val()){
+                $('#differ').show().css('opacity', 1).animate({ opacity: 0 },2000);
+                $(p2).val('');  $(p3).val('');  //  置空并提示
+            } else if($(p1).val() == $(p2).val()){
+                $('#same').show().css('opacity', 1).animate({ opacity: 0 },2000); //  不置空提示
+            }
+            if($(p2).val() != '' && $(p3).val() != ''){
+                $.ajax({
+                    url: 'getPass.php',
+                    type: 'post',
+                    data: { password: $(p2).val(), number: user, tp: 'save' },
+                    success: function () {
+                        $(p2).val('');
+                        $(p3).val('');
+                    }
+                });
+            }
+        }  //  保存密码
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1 align="center" id="h-title">
+        <span>学</span>
+        <span>生</span>
+        <span>成</span>
+        <span>绩</span>
+        <span>管</span>
+        <span>理</span>
+        <span>系</span>
+        <span>统</span>
+    </h1>
+    <hr/>
+    <div id="body">
+        <div id="nav">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#A" data-toggle="tab">成绩管理</a></li>
+                <li><a href="#B" data-toggle="tab" onclick="loadUserInfo()">个人信息</a></li>
+                <li><a href="#C" data-toggle="tab" onclick="modifyPas()">密码管理</a></li>
+            </ul>
+        </div>
+        <!--  导航  -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="A">
+                <div class="col-lg-6">
+                    <button class="btn btn-default" onclick="loadInfo()"><i class="fa fa-refresh"></i> 刷新</button>
+                    <!--  刷新按钮  -->
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> 新增</button>
+                    <!--  添加按钮  -->
+                    <div class="modal fade" id="addModal">
+                        <div class="modal-dialog" style="width: 400px">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" align="center">添加学生成绩 &nbsp;&nbsp;<i class="fa fa-plus"></i></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">班级：</label>
+                                                <div class="col-lg-6">
+                                                    <select id="addClass" class="form-control" name="classId">
+                                                        <option class="form-control" value="">请添加</option>
+                                                        <option class="form-control" value="1">信计一班</option>
+                                                        <option class="form-control" value="2">信计二班</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--  班级  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">学号：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="number"/>
+                                                </div>
+                                            </div>
+                                            <!--  学号  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">姓名：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="name"/>
+                                                </div>
+                                            </div>
+                                            <!--  姓名  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">英语：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="english"/>
+                                                </div>
+                                            </div>
+                                            <!--  英语  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">计算机：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="computer"/>
+                                                </div>
+                                            </div>
+                                            <!--  计算机  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">数学：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="math"/>
+                                                </div>
+                                            </div>
+                                            <!--  数学  -->
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button class="btn btn-primary" id="add">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  添加信息的表单  -->
+                    <button class="btn btn-danger" onclick="delInfo()"><i class="fa fa-trash-o"></i> 删除</button>
+                    <!--  删除按钮  -->
+                    <button class="btn btn-info" onclick="editInfoo(this)"><i class="fa fa-edit"></i> 编辑</button>
+                    <!--  编辑按钮  -->
+                    <div class="modal fade" id="editModal">
+                        <div class="modal-dialog" style="width: 400px">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 align="center">编辑学生成绩 &nbsp;&nbsp;<i class="fa fa-edit"></i></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">班级：</label>
+                                                <div class="col-lg-6">
+                                                    <select class="form-control" name="classId">
+                                                        <option class="form-control" value="">请选择</option>
+                                                        <option class="form-control" value="1">信计一班</option>
+                                                        <option class="form-control" value="2">信计二班</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--  班级  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">学号：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="number" disabled/>
+                                                </div>
+                                            </div>
+                                            <!--  学号  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">姓名：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="name"/>
+                                                </div>
+                                            </div>
+                                            <!--  姓名  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">英语：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="english"/>
+                                                </div>
+                                            </div>
+                                            <!--  英语  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">计算机：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="computer"/>
+                                                </div>
+                                            </div>
+                                            <!--  计算机  -->
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">数学：</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="math"/>
+                                                </div>
+                                            </div>
+                                            <!--  数学  -->
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button class="btn btn-primary" onclick="editInfoo()" id="save">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-horizontal">
+                        <label class="control-label col-lg-4">班级列表：</label>
+                        <div class="col-lg-7">
+                            <select class="form-control" id="class" onchange="loadInfo()">
+                                <option class="form-control" value="">请选择</option>
+                                <option class="form-control" value="1">信息与计算科学1班</option>
+                                <option class="form-control" value="2">信息与计算科学2班</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--  选择班级列表  -->
+                <div style="width: 800px;margin: 50px 0 0 100px">
+                    <table class="table" id="tb1">
+                        <thead>
+                        <tr style="background: rgba(0, 0, 0, 0.15)">
+                            <td><input type="checkbox" onclick="checkD(this, 1)" value="0"/></td>
+                            <td>班级</td><td>学号</td><td>姓名</td><td>英语</td><td>计算机</td><td>数学</td>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <!--  成绩管理  -->
+            <div class="tab-pane" id="B">
+                <div class="container">
+                    <form style="padding-top: 50px">
+                        <fieldset>
+                        <legend>
+                            <strong>个人信息</strong>&nbsp;
+                            <sub>——学号：<input type="text" name="number" id="user" style="border: none" disabled/></sub>
+                        </legend>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-4">用户名：</label>
+                                    <div class="col-lg-4">
+                                        <input class="form-control" name="name"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-4">性别：</label>
+                                    <div class="col-lg-4">
+                                        <input class="form-control" name="sex"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-4">E-mail：</label>
+                                    <div class="col-lg-4">
+                                        <input class="form-control" name="mail"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-4">电话：</label>
+                                    <div class="col-lg-4">
+                                        <input class="form-control" name="phone"/>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="modal-footer" style="width: 50%;position: relative;left: 22%">
+                            <button class="btn btn-primary" type="button" onclick="saveInfo()">保存</button>
+                        </div>
+                    </fieldset>
+                    </form>
+                </div>
+            </div>
+            <!--  个人信息  -->
+            <div class="tab-pane" id="C">
+                <div class="panel panel-primary" style="width: 400px;margin: 0 auto">
+                    <div class="panel-heading"><h4 align="center">密码管理</h4></div>
+                    <div class="panel-body">
+                        <form style="position: relative">
+                            <table class="table table-bordered" id="tb2" align="center" style="width: 250px;margin: 50px auto">
+                                <tr>
+                                    <th>用户名</th>
+                                    <td width="50"><input type="text" name="name"/></td>
+                                </tr>
+                                <tr>
+                                    <th>原密码</th>
+                                    <td><input type="text" name="password"/></td>
+                                </tr>
+                                <tr>
+                                    <th>新密码</th>
+                                    <td><input type="password" name="newPassword"/></td>
+                                </tr>
+                                <tr>
+                                    <th>确认密码</th>
+                                    <td><input type="password"/></td>
+                                </tr>
+                            </table>
+                            <span class="glyphicon glyphicon-remove" id="differ"></span>
+                            <span class="glyphicon glyphicon-warning-sign" id="same"></span>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-block" onclick="savePas()" style="margin: 0">修改</button>
+                    </div>
+                </div>
+            </div>
+            <!--  密码管理  -->
+        </div>
+    </div>
+</div>
+<div style="position: fixed;bottom: 0;width: 100%">
+    <hr/>
+    <h5 align="center">CopyRight<sub>@</sub>宁涛 <small>未经授权，严禁盗用</small></h5>
+</div>
+</body>
+</html>

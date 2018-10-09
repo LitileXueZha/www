@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>向文本框添加自动提示功能</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        *{
+            position: relative;
+        }
+        p{
+            white-space: pre;
+        }
+        #suggestion{
+            opacity: 0.8;
+            display: none;
+            position: absolute;
+        }
+        .jihuo{
+            background: rgba(0, 0, 0, 0.59);
+            color: white;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var timer = null;
+            $('#in1').keyup(function () {
+                $(this).next().hide();
+                var val = jQuery.trim($(this).val()),xhr;
+                clearTimeout(timer);
+                if (val == ''){
+                    $('#suggestion').empty().hide();
+                }
+                else {
+                    if (xhr) xhr.abort();
+                    if (val.length >= 1){
+                        xhr = $.getJSON(
+                                '8.7suggestion.php',
+                                { input : val },
+                                function (data) {
+                                    if (data == 96){
+                                        $('#suggestion').html('<li class="form-control"> 无记录！</li>').show();
+                                        timer = setTimeout(function () {
+                                            $('#suggestion').hide();
+                                        },2000);
+                                    }
+                                    else {
+                                        var str = '';
+                                        for (var i=0;i<data.length;i++){
+                                            str+= '<li class="form-control">'+data[i]+'</li>';
+                                        }
+                                        $('#suggestion').html(str).show();
+                                        optE();
+                                    }
+                                }
+                        );
+                    }
+                }
+            });
+            $('#in2').keyup(function () {
+                var val = jQuery.trim($(this).val()),xhr;
+                if (val == ''){
+                    $('#li1').empty();
+                }
+                else {
+                    if (xhr) xhr.abort();
+                    if (val.length > 0){
+                        xhr = $.getJSON(
+                                '8.7suggestion.php',
+                                { input : val },
+                                function (data) {
+                                    var str = '';
+                                    for (var i=0;i<data.length;i++){
+                                        str+= '<option>'+data[i]+'</option>';
+                                    }
+                                    $('#li1').html(str);
+                                }
+                        );
+                    }
+                }
+            });
+            function optE() {
+                $('#suggestion').on('mouseover','li',function () {
+                    $(this).parent().find('li').removeClass('jihuo');
+                    $(this).addClass('jihuo');
+                    $(this).click(function () {
+                        $('#in1').val($(this).text());
+                        $('#suggestion').hide();
+                    });
+                })
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-lg-4">
+            <h2>datalist</h2>
+            <p>  使用datalist提供提示，
+                <code>&lt;input type="text" id="in1"/&gt;</code>
+                <code>&lt;datalist list="in1"&gt;</code>
+                <code>    &lt;option&gt;提示选项&lt;option&gt;</code>
+                <code>&lt;/datalist&gt;</code>
+            </p>
+        </div>
+        <div class="col-lg-4">
+            <h2>js</h2>
+            <p>  js方法ajax调用sql数据
+                <code>$('input').keyup($.getJSON); //这里我觉得用focus更好些、或许keydown</code>
+                <code>$('input').keydown(function(){ //对列表的操作});</code>
+            </p>
+        </div>
+    </div>
+</div>
+<!--  以上是标题部分   -->
+<!--==================-->
+<hr/>
+<div class="form-horizontal">
+    <div class="form-group">
+        <label for="in1" class="control-label col-lg-4">输入：</label>
+        <div class="col-lg-4">
+            <input type="text" class="form-control" id="in1"/>
+            <ul id="suggestion" class="form-control" style="z-index: 2">
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="in2" class="control-label col-lg-4">输入：</label>
+        <div class="col-lg-4">
+            <input type="text" class="form-control" id="in2" list="li1" placeholder="datalist" style="z-index: 1"/>
+            <datalist id="li1">
+
+            </datalist>
+        </div>
+    </div>
+</div>
+</body>
+</html>

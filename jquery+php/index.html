@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery+php</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        .jumbotron{
+            position: relative;
+            top: 0;
+        }
+        .jumbotron img{
+            /*box-shadow: -10px -10px 100px rgba(206, 62, 15, 0.82);*/
+            margin: 0 180px;
+            border: none;
+        }
+        .jumbotron label{
+            font-size: 50px;
+            text-shadow: 1px 1px black;
+        }
+        .jumbotron p{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+        table{
+            box-shadow: 10px 0 100px gray;
+        }
+        #pageContainer{
+            width: 800px;
+            padding: 0;
+        }
+        #pageContainer ul li a{
+            color: black;
+            font-size: 18px;
+        }
+        #pageContainer ul li:hover{
+            background: radial-gradient(white, rgba(0, 0, 0, 0.73));
+            transition: 2s;
+        }
+    </style>
+    <script type="text/javascript">
+//        var x = 10;
+//        console.log('Value is '+x);
+    </script>
+</head>
+<body data-spy="scroll" data-target="#div1">
+<div class="jumbotron">
+    <a href="pic/book.jpg" target="_blank" id="a1">
+        <img class="img-rounded" src="pic/book.png"/>
+    </a>
+    <label>&nbsp;&nbsp;jquery+php</label>
+    <p>——帅气涛的学习笔记</p>
+</div>
+<div class="container">
+    <table align="center">
+        <tr>
+            <td>
+                <div class="container" id="pageContainer">
+                    <ul class="list-group" id="group1">
+                        <li class="list-group-item">
+                            <a href="1.5jquery提交表单.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>jquery提交表单</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="1.6检查缺少的图像.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>检查缺少的图像</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="1.9创建键盘快捷键.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>创建键盘快捷键</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="2.2_1jquery从php获取数据.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>jquery从php获取数据</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="2.3自动查询字符串.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>自动查询字符串</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="2.4_1php中检测AJAX.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>php中检测AJAX</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="2.5_1向php发送数据.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>向php发送数据</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="2.6_1终止ajax请求.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>终止ajax请求</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="2.7_1加载其他html内容.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>加载其他html内容</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="2.8_1处理ajax请求错误.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>处理ajax请求错误</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="2.9_1点击即用javascript.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>点击即用javascript</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="3.2sampleXML.php" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>sampleXML.php</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="3.3_1simpleXML().php" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>使用simpleXML访问元素和特性</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="3.4_1使用XPath搜素元素.html" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>使用XPath搜素元素</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="3.5DOM's%20extension.php" class="btn btn-block"><label class="glyphicon glyphicon-file pull-left"></label>使用DOM扩展读取、创建、修改XML</a>
+                        </li>
+<!--      添加信息    -->
+<!--==================-->
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<!--   affix插件   -->
+<div class="container">
+    <table align="center">
+        <tr>
+            <td>
+                <ul class="pagination" style="margin-bottom: 0">
+                    <li><a href="">上一页</a></li>
+                    <li><a>下一页</a></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+<br/>
+<hr/>
+<h5 align="center">
+    <span class="glyphicon glyphicon-tag"></span>借书处：北区图书馆书库
+    <span class="glyphicon glyphicon-tag"></span>书本编码：TP312PH Q879
+    <span class="glyphicon glyphicon-tag"></span>借书时间：9.11</h5>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day18</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+
+        function chkform() {
+            var str = document.forms[0].address.value;
+            var name = str.substring(str.lastIndexOf('.')+1).toLowerCase();
+            if (name != 'jpg' && name != 'png' && name != 'bmp' && name != 'gif'){
+                alert('格式不正确！');
+                return false;
+            }else{
+                document.forms[0].submit();
+            }
+        }  //  判断类型
+        function doPrint() {
+            window.open('day18_print.html');
+        }  //  打印选择项
+        function chksform(elem) {
+            var files = elem.address.files;
+            for(var i in files){
+                if (isNaN(i) == false){
+                    var name = files[i].name;
+                    name = name.substring(name.lastIndexOf('.')+1).toLowerCase();
+                    if (name != 'jpg' && name != 'gif' && name != 'png' && name != 'bmp'){
+                        alert('格式不正确！');
+                        return false;
+                    }
+                }
+            }
+        }  //  判断多项
+        function init171() {
+            var t1 = document.getElementById('img1').offsetTop;
+            var img = document.getElementById('img1');
+            window.onscroll = function () {
+//                console.log(window.scrollY, t1-window.innerHeight);
+//                console.log(img.src);
+                //  控制台记录的img.src是完整的url地址
+                if (img.dataset.doIt){
+                    return false;
+                }  //  优化，通过自定义属性data-赋值来判断图片src是否有值，避开了img.src判断
+                if((window.scrollTop || window.scrollY) >= (t1-window.innerHeight)){
+                    img.src = img.dataset.src;
+                    img.dataset.doIt = 1;
+                }
+            };
+        }  //  延迟加载图片
+        var arr = [1, '我的', 10];
+        function arrElem(num1, num2) {
+            if (num2 == 1){
+                var t1 = document.getElementById('in2').value;
+                if (num1 == 1){
+                    if (t1.trim() == ''){
+                        alert('插入失败！');
+                    }else{
+                        arr.unshift(t1);
+                    }
+                }else{
+                    if (confirm('确认扔了吗？')){
+                        arr.shift();
+                    }
+                }
+            }  //  首部增删
+            else{
+                var t2 = document.getElementById('in1').value;
+                if (num1 == 1){
+                    if (t2.trim() == ''){
+                        alert('插入失败！');
+                    }else{
+                        arr.push(t2);
+                    }
+                }else{
+                    if (confirm('确认扔了吗？')){
+                        arr.pop();
+                    }
+                }
+            }  //  尾部增删
+            document.getElementById('res').innerHTML = arr;
+            document.getElementById('res1').innerHTML = arr.length;
+            document.getElementById('res2').innerHTML = arr;
+            document.getElementById('res3').innerHTML = arr.length;
+        }
+        function init180() {
+            document.getElementById('res').innerHTML = arr;
+            document.getElementById('res1').innerHTML = arr.length;
+            document.getElementById('res2').innerHTML = arr;
+            document.getElementById('res3').innerHTML = arr.length;
+        }  //  数组插入和删除元素
+    </script>
+</head>
+<body onload="init171(); init180()">
+<div class="container">
+    <h2>例172</h2>
+    <article>
+        <blockquote>判断文档上传类型</blockquote>
+        <form action="" method="post" enctype="multipart/form-data" onsubmit="chkform();return false;">
+            <label><input type="file" name="address"/></label>
+            <button class="btn btn-primary">上传</button>
+        </form>
+        <p>先获取file的值，在截取后缀名进行判断</p>
+    </article>
+    <h2>例173</h2>
+    <article>
+        <blockquote>单独打开一个页面来完成打印功能</blockquote>
+        <form>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-5">姓名：</label>
+                    <div class="col-lg-4 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span> 姓名
+                        </span>
+                        <input type="text" class="form-control" name="name"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-5">性别：</label>
+                    <div class="col-lg-4" style="padding-top: 7px">
+                        <label>
+                            <input type="radio" name="sex" value="男"/> 男
+                        </label>
+                        <label>
+                            <input type="radio" name="sex" value="女"/> 女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-5">年龄：</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="age"/>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center">
+                <button class="btn btn-default" type="button" onclick="doPrint()">打印此表单</button>
+            </p>
+        </form>
+    </article>
+    <h2>例174</h2>
+    <article>
+        <blockquote>限制多文件上传的文件类型</blockquote>
+        <form action="" method="post" enctype="multipart/form-data" onsubmit="chksform(this);return false;">
+            <label><input type="file" name="address" multiple></label>
+            <label><input type="submit" value="上传"></label>
+        </form>
+        <br/>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <p>选择多个文件，input的file类型有个属性：<strong>multiple</strong></p>
+            </li>
+            <li class="list-group-item">
+                <p>多个文件用到这个file框的.files数组，再对其循环遍历；这并不明显，得按Ctrl键多选。</p>
+            </li>
+        </ul>
+    </article>
+    <h2>例175</h2>
+    <article>
+        <blockquote>上传图片后显示缩略图</blockquote>
+        <p style="text-align: center"><img src="" id="img2" width="400" height="333" style="border: 1px solid black"/></p>
+        <form action="" method="post" target="frame" enctype="multipart/form-data">
+            <label><input type="file" name="pic" class="form-control"></label>
+            <input type="submit" class="btn btn-primary" value="上传"/>
+        </form>
+        <!--<iframe id="frame" name="frame" style="display: none"></iframe>-->
+        <p>搞了半天，，还是得先把图片传到服务器上才能预览,file框的value就是文件名，再动态加载</p>
+    </article>
+    <h2>例171</h2>
+    <article>
+        <blockquote>延迟加载图片</blockquote>
+        <p style="text-align: center">
+            <img src="" id="img1" data-src="p4.jpg" width="400"/>
+        </p>
+        <p>百闻不如一见，看源代码吧</p>
+        <label>源代码</label>
+        <pre>
+            function init171() {
+            var t1 = document.getElementById('img1').offsetTop;
+            var img = document.getElementById('img1');
+            window.onscroll = function () {
+//                console.log(window.scrollY, t1-window.innerHeight);
+//                console.log(img.src);
+                //  控制台记录的img.src是完整的url地址
+                if (img.dataset.doIt){
+                    return false;
+                }  //  优化，通过自定义属性data-赋值来判断图片src是否有值，避开了img.src判断
+                if((window.scrollTop || window.scrollY) >= (t1-window.innerHeight)){
+                    img.src = img.dataset.src;
+                    img.dataset.doIt = 1;
+                }
+            };
+        }  //  延迟加载图片</pre>
+    </article>
+    <h2>例176</h2>
+    <fieldset>
+        <legend>在打印内容里隐藏打印按钮</legend>
+        <button class="btn btn-primary" onclick="window.print()">打印</button>
+        <p>好吧，我就给大家解释下</p>
+        <pre>
+            &lt;link type='text/css' rel='stylesheet' href='print.css' <strong>media='print'</strong>/&gt;
+            &lt;!--  外部样式  --&gt;
+            button.btn-primary{
+                display: none;
+            }</pre>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;外部样式CSS样式表的引用语法中的参数<b> media</b>，在默认情况下其值
+            是‘screen’，但是如果将其改为‘print’，它的含义则是该样式表仅适用于打印内容。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;哦，我知道了；不知道你又能怎么样，有本事打我啊
+        </p>
+    </fieldset>
+    <hr/>
+    <h1 align="center">接下来的内容可能引起您的不适，考虑清楚哦<sub><small>so boring!</small></sub></h1>
+    <hr/>
+    <h2>例177</h2>
+    <fieldset>
+        <legend>创建自定义对象</legend>
+        <pre>
+<b>1.  最简单的创建对象的办法，用一对大括号括起来</b>
+        var obj001 = { };
+        obj001.prop1 = 100;
+        obj001.prop2 = function () {
+            alert('我是方法！');
+        };
+        obj001.prop2();  //  调用
+<b>2.  使用function创建一个对象</b>
+        function createObj002() {
+            this.prop1 = 200;
+            this.prop2 = function () {
+                alert('有本事你打我啊');
+            };
+        }
+        var obj002 = new createObj002();
+<b>3.  使用new Object()形式创建对象</b>
+        var obj003 = new Object();
+        obj003.prop1 = 300;
+        obj003.prop2 = function () {
+            alert('玛德，终于最后一个了');
+        };
+        obj003.prop2();</pre>
+    </fieldset>
+    <h1>例178</h1>
+    <fieldset>
+        <legend>创建数组的多种方法</legend>
+        <pre>
+<b>//  1.  使用Array(num)创建,num可有可无，表示初始长度</b>
+        var arr01 = new Array();
+        arr01[0] = 1;
+        arr01[2] = 3;
+        console.log(arr01);  //  1, undefined, 3
+<b>//  2.  使用中括号创建</b>
+        var arr02 = [];
+        arr02[arr02.length] = 3;
+        arr02[arr02.length] = '3';
+        arr02[arr02.length] = 3;
+        console.log(arr02);  //  3, "3", 3</pre>
+    </fieldset>
+    <h1>例179</h1>
+    <fieldset>
+        <legend>扩展数组的元素数目</legend>
+        <pre>
+        var arr = new Array(5);
+        arr[0] = 1;
+        arr[4] = 5;
+        arr[9] = 10;
+        alert(arr);</pre>
+        <p>代码首先初始化一个长度为5的数组，然后对超出长度的部分赋值。其他编程语言会提示数组越界，js则扩展</p>
+    </fieldset>
+    <h1>例180</h1>
+    <fieldset>
+        <legend>在数组末尾加入和移除元素</legend>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label>添加(push)：</label><var>arr.push(value);</var>
+            </li>
+            <li class="list-group-item">
+                <label>移除(pop)：</label><var>arr.pop();</var>
+            </li>
+        </ul>
+        <table align="center"><tr><td>
+            <div class="input-group">
+                <span class="input-group-addon">输入添加值：</span>
+                <input type="text" class="form-control" id="in1"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" onclick="arrElem(1)">添加</button>
+                </span>
+            </div>
+        </td><td>
+            <button class="btn btn-danger" style="margin-left: 50px" onclick="arrElem(0)">删除</button>
+        </td></tr>
+            <tr><td colspan="2" style="text-align: center;padding: 10px 0">
+                <label>数组：</label><var><label id="res"></label></var>
+            </td></tr>
+            <tr><td colspan="2" style="text-align: center">
+                <label>长度：</label><span id="res1"></span>
+            </td></tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>数组首部插入、删除元素</legend>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label>添加(unshift)：</label><var>arr.unshift(value);</var>
+            </li>
+            <li class="list-group-item">
+                <label>移除(shift)：</label><var>arr.shift();</var>
+            </li>
+        </ul>
+        <table align="center"><tr><td>
+            <div class="input-group">
+                <span class="input-group-addon">输入添加值：</span>
+                <input type="text" class="form-control" id="in2"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" onclick="arrElem(1,1)">添加</button>
+                </span>
+            </div>
+        </td><td>
+            <button class="btn btn-danger" style="margin-left: 50px" onclick="arrElem(0,1)">删除</button>
+        </td></tr>
+            <tr><td colspan="2" style="text-align: center;padding: 10px 0">
+                <label>数组：</label><var><label id="res2"></label></var>
+            </td></tr>
+            <tr><td colspan="2" style="text-align: center">
+                <label>长度：</label><span id="res3"></span>
+            </td></tr>
+        </table>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

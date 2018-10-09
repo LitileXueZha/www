@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day23</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        td{
+            vertical-align: middle !important;
+        }
+        tr td:nth-child(3){
+            text-align: left;
+        }
+        /*td>button{*/
+            /*vertical-align: middle;*/
+        /*}*/
+        #yuan{
+            max-width: 500px;
+            /*outline: 5px solid black;*/
+        }
+        #yanzh{
+            cursor: move;
+            width: 120px;
+            height: 74px;
+            background-image: url("pic/炮弹.png");
+            background-size: contain;
+            position: absolute;
+            top: 200px;
+            left: 0;
+        }
+        #mudi{
+            width: 120px;
+            height: 75px;
+            position: absolute;
+            top: 70px;
+            left: 260px;
+        }
+        #c1{
+            width: 300px;
+            height: 150px;
+            border: 1px solid silver;
+            border-radius: 2px;
+            box-shadow: 1px 1px 5px 0 black;
+        }  /*  矩形canvas  */
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            var btns = document.querySelectorAll('.btn-default');
+//            console.info(btns);
+            var c = document.getElementById('c1');
+            var pen = c.getContext('2d');
+            btns[0].onclick = function () {
+                pen.clearRect(0, 0, 300, 100);
+                pen.fillStyle = 'red';
+                pen.shadowColor = 'blue';
+                pen.shadowBlur = 5;
+                pen.shadowOffsetX = -1;
+                pen.shadowOffsetY = 1;
+                pen.fillRect(100, 50, 100, 50);
+            };  //  画矩形
+            btns[1].onclick = function () {
+                pen.clearRect(0, 0, 300, 100);
+                pen.strokeStyle = 'yellow';
+                pen.arc(150, 50, 20, Math.PI*2, false);
+                pen.stroke();
+            }
+        };
+        window.onerror = function (msg, url, line) {
+            console.warn(msg+'\n'+url+'\n'+line);
+        };
+        function dr1(e) {
+//            e = e || event;
+            e.dataTransfer.setData('id', e.target.id);
+        }
+        function dr2(e) {
+            e.preventDefault();
+        }
+        function dr3(e) {
+            e.preventDefault();
+            var data = e.dataTransfer.getData('id');
+            var pic = document.getElementById(data);
+            e.target.appendChild(pic);
+            pic.style.left = 0;
+            pic.style.top = 0;
+            console.log(e.dataTransfer.dropEffect);
+            console.info(e.dataTransfer.effectAllowed);
+        }  //  这是放到哪那个地方的设置
+        function seeLocation(str, elem) {
+            var t;
+            if(elem.parentNode.previousSibling.nodeName == 'TD'){
+                t = elem.parentNode.previousSibling;
+            } else{
+                t = elem.parentNode.previousSibling.previousSibling;
+            }  //  这里主要是为了兼容火狐，火狐里换行符\n会被当作文本节点textNode
+            switch(str){
+                case 'hash':
+                    t.textContent = location.hash ? location.hash : '无';
+                    break;
+                case 'host':
+                    t.textContent = location.host ? location.host : '无';
+                    break;
+                case 'hostname':
+                    t.textContent = location.hostname ? location.hostname : '无';
+                    break;
+                case 'href':
+                    t.textContent = location.href ? location.href : '无';
+                    console.info(location.toString());
+                    break;
+                case 'pathname':
+                    t.textContent = location.pathname ? location.pathname : '无';
+                    break;
+                case 'port':
+                    t.textContent = location.port ? location.port : '无';
+                    break;
+                case 'protocol':
+                    t.textContent = location.protocol ? location.protocol : '无';
+                    break;
+                default:
+                    t.textContent = location.search ? location.search : '无';
+            }
+        }  //  location属性列表方法
+        function getLocation() {
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function (pos) {
+                    var x = pos.coords.longitude;
+                    var y = pos.coords.latitude;
+                    document.getElementsByTagName('input')[1].value = '(' + x.toFixed(1) + '，'+ y.toFixed(1) +')';
+                })
+            }
+        }  //  获取地理位置
+        function getCity(elem) {
+            if(google.loader.ClientLocation.address.city){
+                var city = google.loader.ClientLocation.address.city;
+                elem.parentNode.insertBefore('<mark>'+city+'</mark>', elem.nextSibling);
+            }
+        }  //  获取城市
+        function loadBaidu() {
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                var x = pos.coords.longitude;
+                var y = pos.coords.latitude;
+                var map = new BMap.Map('wo');
+                var point = new BMap.Point(x, y);
+                map.centerAndZoom(point, 15);
+                for(var i=0;i<10;i++){
+                    var x2 = x;
+                    var y2 = y;
+                    if(i%2 == 0){
+                        x2 += 1*i;
+                    }
+                    if(i%2 != 0){
+                        y2 += 1*i;
+                    }
+                    var p2 = new BMap.Point(x2, y2);
+                    var marker = new BMap.Marker(p2);
+                    map.addOverlay(marker);
+                }
+            })
+        }  //  加载百度地图
+        function loadBaidu1() {
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                var x = pos.coords.longitude;
+                var y = pos.coords.latitude;
+                var map = new BMap.Map('wo');
+                map.centerAndZoom(new BMap.Point(x, y), 11);
+                map.addControl(new BMap.MapTypeControl());
+                map.setCurrentCity('淮南');
+                map.enableScrollWheelZoom(true);
+            })
+        }  //  加载新版
+        function createStorage1(elem) {
+            if(typeof localStorage != 'undefined'){
+                if(!localStorage.count){
+                    localStorage.count = 1;
+                } else{
+                    localStorage.count ++;
+                }
+            }
+            var p = document.createElement('p');
+            p.innerHTML = '这是个计数器，我用localStorage搞的，你用了<mark>'+ localStorage.count +'</mark>次！';
+            elem.parentNode.appendChild(p);
+        }  //  H5 全新本地存储一、localStorage
+        function createStorage2(elem) {
+            if(typeof sessionStorage != 'undefined'){
+                if(!sessionStorage.count){
+                    sessionStorage.count = 1;
+                } else{
+                    sessionStorage ++;
+                }
+            }
+            var p = document.createElement('p');
+            p.innerHTML = '这可以当作购物车，我用sessionStorage搞的，你搞了<mark>'+ localStorage.count +'</mark>次！';
+            elem.parentNode.appendChild(p);
+        }  //  H5 全新本地存储二、sessionStorage
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>例261</h2>
+    <article style="text-align: center;position: relative">
+        <blockquote style="text-align: left">
+            拖动页面上的元素
+            <small>小小验证</small>
+        </blockquote>
+        <img src="pic/坦克2.png" id="yuan"/>
+        <div id="yanzh" draggable="true" ondragstart="dr1(event)"></div>
+        <div id="mudi" ondragover="dr2(event)" ondrop="dr3(event)"></div>
+    </article>
+    <h2>例263</h2>
+    <article style="text-align: center">
+        <blockquote style="text-align: left">使用canvas画个矩形</blockquote>
+        <canvas id="c1"></canvas>
+        <br/><br/>
+        <div class="btn-group">
+            <button class="btn btn-default">画个矩形</button>
+            <button class="btn btn-default">画个圆形</button>
+        </div>
+    </article>
+    <h2>例265</h2>
+    <article>
+        <blockquote>SVG标量图形绘制</blockquote>
+        <svg width="250" height="250" style="border: 1px dashed black;float: left">
+            <circle id="cc" r="75" cx="125" cy="125" stroke="red" fill="transparent" stroke-width="4"></circle>
+        </svg>
+        <div class="input-group" style="float: left;margin: 110px 0 0 100px;width: 300px">
+            <input type="text" class="form-control" name="banj" placeholder="输入半径重绘"/>
+            <span class="input-group-btn">
+                <button class="btn btn-success" onclick="document.getElementById('cc').r.baseVal.value = document.getElementsByName('banj')[0].value">
+                    &nbsp;<span class="glyphicon glyphicon-ok"></span>
+                </button>
+            </span>
+        </div>
+    </article>
+    <br style="clear: left"/>
+    <h2>例266</h2>
+    <article>
+        <blockquote>获取用户当前的地理坐标</blockquote>
+        <table class="table" style="text-align: center">
+            <caption>location对象，号称<q>BOM对象里最6的那个</q>。</caption>
+            <thead>
+            <tr>
+                <td>属性</td><td colspan="3">效果</td>
+            </tr>
+            </thead>
+            <tr>
+                <td>location.hash</td>
+                <td>返回URL中的hash值，无则返回空字符串</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="seeLocation('hash', this)">看一下</button>
+                </td>
+            </tr>
+            <tr>
+                <td>location.host</td>
+                <td>返回服务器名称和端口号</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="seeLocation('host', this)">看一下</button>
+                </td>
+            </tr>
+            <tr>
+                <td>location.hostname</td>
+                <td>返回不带端口号的服务器名称<small>(醉了，你丫直接搞基毛)</small></td>
+                <td></td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="seeLocation('hostname', this)">看一下</button>
+                </td>
+            </tr>
+            <tr>
+                <td>location.href</td>
+                <td>返回完整url,等同于.toString()</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="seeLocation('href', this)">看一下</button>
+                </td>
+            </tr>
+            <tr>
+                <td>location.pathname</td>
+                <td>返回URL中目录和文件名</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="seeLocation('pathname', this)">看一下</button>
+                </td>
+            </tr>
+            <tr>
+                <td>location.port</td>
+                <td>返回URL中端口号</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="seeLocation('port', this)">看一下</button>
+                </td>
+            </tr>
+            <tr>
+                <td>location.protocol</td>
+                <td>返回页面使用的协议</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="seeLocation('protocol', this)">看一下</button>
+                </td>
+            </tr>
+            <tr>
+                <td>location.search</td>
+                <td>返回URL中的查询字符串</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="seeLocation('search', this)">看一下</button>
+                </td>
+            </tr>
+        </table><!--  这是location对象表格  -->
+        <div class="input-group">
+            <input type="text" class="form-control" style="text-align: center" placeholder="(经度，纬度)" disabled/>
+            <span class="input-group-btn">
+                <button class="btn btn-success" onclick="getLocation()">&nbsp;定位</button>
+            </span>
+        </div>
+    </article>
+    <h2>例267</h2>
+    <article>
+        <blockquote>根据地理位置信息定位城市</blockquote>
+        <script src="https://www.google.com/jsapi"></script>
+        <button class="btn btn-default" onclick="getCity(this)">哪里？</button>
+    </article>
+    <h2>例268</h2>
+    <fieldset>
+        <legend>在地图上标识附近加油站的地址</legend>
+        <button class="btn btn-block" onclick="loadBaidu()">加载百度地图&nbsp;<label class="label label-info">源代码已失效！</label></button>
+        <script src="http://api.map.baidu.com/api?v=1.5&ak=7ada0390a58b3e01fef08022c073ff78"></script>
+        <p>详细使用请进入百度api官网。以下是新版</p>
+        <script src="http://api.map.baidu.com/api?v=2.0&ak=1begGdgTjavFf31l4R4pslSKfGoyBp5U"></script>
+        <button class="btn btn-block" onclick="loadBaidu1()">加载百度地图</button>
+        <div class="container" id="wo" style="height: 400px;border: 1px solid black"></div>
+    </fieldset>
+    <h2>例269</h2>
+    <fieldset>
+        <legend>使用localStorage实现计数器</legend>
+        <p>在html5之前，客户端本地存储只能依赖于cookie，但是cookie效率低，不安全。h5带来全新的本地存储，一是localStorage，二是sessionStorage</p>
+        <button class="btn btn-success" onclick="createStorage1(this)">创建localStorage本地永久存储</button>
+    </fieldset>
+    <h2>例270</h2>
+    <fieldset>
+        <legend>使用sessionStorage实现计数器</legend>
+        <p>这个一般用来保存购物车的信息</p>
+        <button class="btn btn-success" onclick="createStorage2(this)">创建sessionStorage,器在数据在，器亡人亡</button>
+    </fieldset>
+    <hr/>
+    <blockquote><b>注意了啊！</b>这里两个估计是用的同一个内存，他们会<strong>共用变量名</strong></blockquote>
+    <hr/>
+</div>
+<hr>
+</body>
+</html>

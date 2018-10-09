@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day24</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{
+            text-indent: 2em;
+        }
+        .media-body{
+            width: 800px;
+        }
+        #d1{
+            width: 200px;
+            height: 150px;
+            background: darkgreen;
+            transition: 2s;
+        }
+        #d2:hover #d1{
+            background: darkred;
+            transition: 2s;
+        }
+        @keyframes myAnimation1 {
+            0% {
+                background: darkgreen;
+                border-width: 1px;
+            }
+            40%{
+                background: darkred;
+                border-width: 1px;
+            }
+            100% {
+                background: darkred;
+                border-width: 20px;
+            }
+        }
+        #d3{
+            animation: myAnimation1 5s ease-in 0s 10 alternate;
+        }
+    </style>
+    <script type="text/javascript">
+        function doExam() {
+            if(typeof Worker != 'undefined'){
+                var w = new Worker('js/worker.js');
+                w.onmessage = function (e) {
+                    var sec = e.data;
+                    var min = 0;
+                    if(sec/60 >= 1){
+                        min = parseInt(sec/60);
+                        sec = sec%60;
+                    }
+                    var res = document.querySelector('.label-default');
+                    res.textContent = '考试已过去'+ min +'分' + sec + '秒';
+                }
+            }
+        }  //  考试计时
+    </script>
+</head>
+<body>
+<hr/>
+<div class="container">
+    <h2>例271</h2>
+    <article>
+        <blockquote>使用Web Wroker为学生考试计时</blockquote>
+        <button class="btn btn-success" onclick="doExam()">开始考试</button>
+        <label class="label label-default"></label>
+        <p>Web Worker真正意义上把js单线程变为多线程！通常使用来创建更耗费CPU资源的任务</p>
+    </article>
+    <h2>例272</h2>
+    <article>
+        <blockquote>以下是CSS3的新体验</blockquote>
+        <div class="media">
+            <div class="media-left media-bottom">
+                <img src="#" class="media-object" style="width: 200px;height: 150px;background: darkgreen;border-radius: 5px"/>
+            </div>
+            <div class="media-body">
+                <h4 align="center">圆角边框</h4>
+                <p>常见的网页特效，还有border-left-top-radius、border-left-bottom-radius..这种更精细的控制</p>
+                <pre>
+                    border-radius: 5px;  /*  css  */
+
+                    DOM.style.borderRadius = '5px';  //  js</pre>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left media-bottom">
+                <div class="media-object" style="width: 200px;height: 150px;background: darkgreen;border-image: url('pic/星空1.jpg') 20 20 stretch !important;border: 20px solid transparent"></div>
+            </div>
+            <div class="media-body">
+                <h4 align="center">图形边框</h4>
+                <p>虽然说挺好看的，但是下面代码一个都不能少才能显示，醉了</p>
+                <pre>
+                    border-image: url("pic/星空1.jpg") 20 20 stretch !important;
+                    width: 200px;
+                    height: 150px;
+                    border: 20px solid transparent;</pre>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left media-bottom">
+                <div class="media-object" style="width: 200px;height: 150px;background:url('pic/吊扇.png') no-repeat;background-size: contain;box-shadow: 10px 10px 15px 5px black inset"></div>
+            </div>
+            <div class="media-body">
+                <h4 align="center">图片阴影</h4>
+                <p>说一下啊，一二偏移量，三模糊，四缩小范围，五颜六内向*</p>
+                <pre>
+                    box-shadow: 10px 10px 15px 5px black <b>inset</b>;  /*  css  */
+
+                    DOM.style.boxShadow = '10px 10px 15px 5px black <b>inset</b>';  //  js</pre>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left media-bottom">
+                <div class="media-object" style="width: 200px;height: 150px;text-align: center;line-height: 150px;font-size: 20px;text-shadow: 0 -2px 3px red,0 -2px 6px blue;">我是几个字</div>
+            </div>
+            <div class="media-body">
+                <h4 align="center">文本阴影</h4>
+                <p>这个可以搞多个，赶脚不错，通常两个偏移量之后是模糊的，你懂的</p>
+                <pre>
+                    text-shadow: 0 -2px 3px red, 0 -2px 6px blue;  /*  css  */
+
+                    DOM.style.textShadow = '0 -2px 3px red, 0 -2px 6px blue';  //  js</pre>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left media-bottom">
+                <div class="media-object" style="width: 200px;height: 150px;text-align: center;line-height: 150px;font-size: 20px;background: rgba(0,255,255,0.5)">我是几个字</div>
+            </div>
+            <div class="media-body">
+                <h4 align="center">带有可见度的背景颜色</h4>
+                <p>也就是rgba()的应用，醉了</p>
+                <pre>
+                    background: rgba(0,255,255,0.5);  /*  css  */
+
+                    DOM.style.background = 'rgba(0,255,255,0.5)';  //  js</pre>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left media-bottom">
+                <div class="media-object" style="width: 200px;height: 150px;overflow: hidden;resize: horizontal;-moz-column-count: 2;-moz-column-rule: 3px double silver">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet ipsum, iure. Ab alias aliquid, atque, distinctio eligendi error facilis illo iste, itaque libero modi molestiae neque possimus quisquam reprehenderit veritatis.
+                </div>
+            </div>
+            <div class="media-body">
+                <h4 align="center">多列显示文字</h4>
+                <p>兼容性不咋滴，得加前缀,可以用column-width来自适应</p>
+                <pre>
+                    -moz-column-count: 2;
+                    -moz-column-rule: 3px double silver;
+                    /*  -moz-column-gap: 2em; 这是间隙  */</pre>
+            </div>
+        </div>
+        <div class="media" id="d2">
+            <div class="media-left media-bottom">
+                <div class="media-object" id="d1" style=""></div>
+            </div>
+            <div class="media-body">
+                <h4 align="center">过渡效果，洋名叫hover</h4>
+                <p>嘿嘿嘿嘿嘿，之前以为的只有js才能实现的，现在你试试看.<small>——这里关系必须是父子元素，还有渐褪效果是在元素本身加上个transition</small></p>
+                <pre>
+                    #d2:hover #d1{
+                        background: darkred;
+                        transition: 2s;
+                    }</pre>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left media-middle">
+                <div class="media-object" id="d3" style="width: 200px;height: 150px;background: darkgreen;border: 1px solid black"></div>
+            </div>
+            <div class="media-body">
+                <h4 align="center">动画效果，更高大上</h4>
+                <p>贼高大上，@keyframes:几个关键帧组成，<b>0%</b>和100%是必须的或者from和to</p>
+                <pre>
+                    @keyframes myAnimation1 {
+                        0% {
+                            background: darkgreen;           | animation: myAnimation1 5s ease-in 0s 10 alternate;
+                            border-width: 1px;               | 调用动画：
+                        }                                    | 1. 动画名 - <i>animation-name</i>
+                        40%{                                 | 2. 持续时间 - <i>animation-duration</i>
+                            background: darkred;             | 3. 动画方式 - <i>animation-timing-function</i>
+                            border-width: 1px;               | 4. 延迟 - <i>animation-delay</i>
+                        }                                    | 5. 播放次数 - <i>animation-iteration-count</i>
+                        100% {                               | 5. 平滑播放 - <i>animation-direction</i>
+                            background: darkred;             | 兼容webkit浏览器(safari / chrome)：
+                            border-width: 20px;              | @-webkit-keyframes{ ...
+                        }
+                    }</pre>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left media-bottom">
+                <div class="media-object" style="width: 200px;height: 150px;background:url('pic/吊扇.png') no-repeat;background-size: contain;border: 1px solid silver;transform: rotate(30deg)"></div>
+            </div>
+            <div class="media-body">
+                <h4 align="center">图片旋转</h4>
+                <p>使用transform里的rotate()方式</p>
+                <pre>
+                    transform: rotate(30deg);  /*  css  */
+
+                    DOM.style.transform = 'rotate(30deg)';  //  js
+                </pre>
+            </div>
+        </div>
+    </article>
+</div>
+<hr/>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>login</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="jac/demo.css">
+	<script src="jac/jquery.min.js"></script>
+	<script src="jac/demo.js"></script>
+</head>
+<body>
+	<!--object class="hideem" type="application/x-shockwave-flash" data="img/ime.swf" width="500" height="500"></object-->
+	<form class="login">
+		<img src="img/2.png">
+		<div class="yourn">your name?</div>
+		<input class="name" name="name" type="text" maxlength="8" autocomplete="off"/>
+		<a class='testa' href="#">
+			<div class="enter" role="button">enter</div>
+		</a>
+		<div class="inhere">wrong</div>
+		<canvas id="mycanvas"></canvas>
+		<input type="button" class="hidebtn"/>
+	</form>
+	<script type="text/javascript">
+		var c=document.getElementById("mycanvas");
+			var context=c.getContext("2d");
+			context.fillStyle="#ddd";
+			context.beginPath();
+			context.arc(10,130,2,0,Math.PI*2,true);
+			context.arc(20,130,1,0,Math.PI*2,true);
+			context.arc(190,130,2,0,Math.PI*2,true);
+			context.arc(180,130,1,0,Math.PI*2,true);
+			context.closePath();
+			context.fill();
+		</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        .btn{
+            margin: 0 30px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn1').click(function () {
+                $('#mo1').modal({ backdrop: 'static' });
+                $('#close').click(function () {
+                    $('#mo1').modal('hide');
+                });
+                $.getScript('2.9_2new.js',function () {
+                    addE();
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <h2>按需加载JavaScript以减少页面加载时间</h2>
+    <p>当我们使用大量js文件让我们的网页更有趣时，页面加载时间随加载文件的增多而增加，浏览器无法同时下载这么多的文件</p>
+</div>
+<div class="container">
+    <label class="list-group-item" id="txt">这是一段文字。</label>
+    <input type="button" class="btn btn-primary" id="btn1" value="加载js文件"/>
+    <div class="modal fade" id="mo1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h3>来自帅气涛的提示：</h3></div>
+                <div class="modal-body"><p>加载成功！</p></div>
+                <div class="modal-footer"><button class="btn btn-info" id="close">我知道了</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group">
+        <input type="button" class="btn" value="bold" id="bold"/>
+        <input type="button" class="btn" value="color" id="color"/>
+        <input type="button" class="btn" value="text" id="text"/>
+    </div>
+</div>
+<!--========================================================-->
+<div class="navbar navbar-fixed-bottom" style="opacity: 0.7">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+
+</body>
+</html>

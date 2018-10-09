@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>投票系统</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        *{
+            position: relative;
+            left: 0;
+        }
+        .img-circle1{
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            margin: 2% 2% 2% 2% ;
+            z-index: +1;
+        }
+        label{
+            padding-top: 10px;
+        }
+        .jum1{
+            padding: 10px 50px;
+            margin: 0;
+            opacity: 0.8;
+        }
+        .ol1{
+            padding: 0;
+            margin: 0;
+        }
+        #save{
+            background: rgba(233, 146, 0, 0.47);
+            margin-left: 0;
+            padding-left: 2px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //动态效果
+            $('.img-circle1').mouseover(function () {
+                for (var i=5;i>=1;i--){
+                    $(this).animate({ left: (i)+'px',width: '80px',height: '80px'},100);
+                    $(this).animate({ left: (-i)+'px',width: '70px',height: '70px'},100);
+                }
+                $('.img-responsive.'+$(this).val()).animate({ width: '450px',height: '240px'},100);
+            }).mouseout(function () {
+                $('.img-responsive.'+$(this).val()).animate({ width: '460px',height: '250px'},100);
+            }).click(function (e) {
+                e.preventDefault();
+                var x = parseInt(e.pageX);
+                var y = parseInt(e.pageY);
+                var str = '.'+$(this).val();
+                $('img,input:image').not(str).each(function () {
+                    var t = parseInt($(this).offset().top);
+                    var l = parseInt($(this).offset().left);
+                    $(this).animate({
+                        width: 0,height: 0, opacity: 0,left: (x-l)+'px',top: (y-t)+'px'
+                    },2000);
+                });
+                $(this).after('<button class="btn btn-danger btn-block" id="cancel" type="button">取消</button>');
+                //获取该值并发送ajax请求
+                //====================
+                var llq = $(this).val();
+                console.log(llq);
+                $('#save').click(function () {
+                    if(llq != ''){
+                        $.ajax({
+                            url: '5.9_3vote.php',
+                            type: 'post',
+                            data: { 'value': llq },
+                            success: function (data) {
+                                if (data == 'ok') {
+                                    $('.container').html('');
+                                    $('.jumbotron').removeClass('navbar-fixed-bottom').removeClass('jum1')
+                                            .children().removeClass('ol1');
+                                    $('#save').button('complete');
+                                }
+                                else {
+                                    alert(data);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            //取消
+            $('.col-xs-5').on('click','#cancel',function () {
+                $(this).remove();
+                var str = '.'+$(this).children().children().val();
+                $('.img-responsive').not(str).each(function () {
+                    $(this).animate({
+                        width: '460px',height: '250px', opacity: 1,left: 0,top: 0
+                    },2000);
+                });
+                $('input:image').not(str).each(function () {
+                    $(this).animate({
+                        width: '70px',height: '70px', opacity: 1,left: 0,top: 0
+                    },2000);
+                });
+            });
+            //按钮保存工作
+        });
+    </script>
+</head>
+<body>
+<br/>
+<div class="container">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-7 col-lg-5">
+                <img class="img-responsive ie" src="pic/IE.jpg"/>
+            </div>
+            <div class="col-xs-5 col-xs-offset-4 col-sm-5 col-sm-offset-3 col-md-5 col-md-offset-0 col-lg-1">
+                <label><input type="image" class="img-circle1 ie" src="pic/IE.png" value="ie"/></label>
+                <!--<input type="radio" name="browser" class="danxuan" id="ie" value="ie"/>-->
+            </div>
+            <div class="col-md-7 col-lg-5">
+                <img class="img-responsive 360" src="pic/360.jpg"/>
+            </div>
+            <div class="col-xs-5 col-xs-offset-4 col-sm-5 col-sm-offset-3 col-md-5 col-md-offset-0 col-lg-1">
+                <label><input type="image" class="img-circle1 360" src="pic/360.png" value="360"/></label>
+                <!--<input type="radio" name="browser" class="danxuan" id="360" value="360"/>-->
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-7 col-lg-5">
+                <img class="img-responsive google" src="pic/谷歌.jpg"/>
+            </div>
+            <div class="col-xs-5 col-xs-offset-4 col-sm-5 col-sm-offset-3 col-md-5 col-md-offset-0 col-lg-1">
+                <label><input type="image" class="img-circle1 google" src="pic/Google.png" value="google"/></label>
+                <!--<input type="radio" name="browser" class="danxuan" id="goole" value="goole"/>-->
+            </div>
+            <div class="col-md-7 col-lg-5">
+                <img class="img-responsive firefox" src="pic/火狐.jpg"/>
+            </div>
+            <div class="col-xs-5 col-xs-offset-4 col-sm-5 col-sm-offset-3 col-md-5 col-md-offset-0 col-lg-1">
+                <label><input type="image" class="img-circle1 firefox" src="pic/Firefox.png" value="firefox"/></label>
+                <!--<input type="radio" name="browser" class="danxuan" id="firefox" value="firefox"/>-->
+            </div>
+        </div>
+    </form>
+</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
+    <div class="jumbotron navbar-fixed-bottom jum1">
+        <ol type="I" reversed class="ol1">
+            <li><a href="5.9_4result.php" style="color: red;font-weight: bolder">查看结果</a></li>
+            <li><button class="btn btn-block" data-complete-text="Congratulations!" id="save">确定！</button></li>
+            <li><h3>选择你的浏览器</h3></li>
+        </ol>
+    </div>
+</div>
+</body>
+</html>

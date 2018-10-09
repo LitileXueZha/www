@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预览</title>
+    <!--<link rel="SHORTCUT ICON" href="pic/china.ico"/>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            alert(1);
+//            alert(document.getElementsByTagName('input')[1].value);
+//            top.document.getElementById('img2').src = 'p1.jpg';
+            var t = document.getElementById('t1');
+            t.onselect = function () {
+              alert(this.value.substring(this.selectionStart, this.selectionEnd));
+            };
+            var btn = document.getElementById('btn1');
+            var txt = t.value.substring(t.selectionStart, t.selectionEnd);
+            btn.onclick = function () {
+                alert(1);
+                alert(txt);
+            };
+            frames[0].document.designMode = 'on';
+            frames[0].document.execCommand('italic', false, null);
+            alert(document.cookie);
+            console.log(document.cookie);
+        };
+        function add1() {
+            var sle = document.getElementById('sle1');
+            var op1 = document.createElement('option');
+            op1.appendChild(document.createTextNode('新增1'));
+            op1.setAttribute('value', '我的');
+            sle.appendChild(op1);
+        }
+        function add2() {
+            var sle = document.getElementById('sle1');
+            var op2 = new Option('新增2', '醉了');
+            sle.appendChild(op2);
+        }
+        function add3() {
+            var sle = document.getElementById('sle1');
+            var op3 = new Option('新增3', 'ooo2');
+            sle.add(op3, undefined);
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <input type="text" readonly/>
+    <input type="text" disabled value="你是时寒冰"/>
+    <textarea name="" id="t1" cols="30" rows="10">
+
+    </textarea>
+    <button id="btn1">查看</button>
+    <input type="text" required>
+    <br/>
+    <select id="sle1">
+        <option value="ww">wwww</option>
+        <option value="ww">我的太不</option>
+        <option value="ww">天啊</option>
+    </select>
+    <button onclick="add1()">添加1</button>
+    <button onclick="add2()">添加2</button>
+    <button onclick="add3()">添加3</button>
+    <!--  富文本编辑  -->
+    <iframe></iframe>
+    <div style="width: 100px;height: 100px;border: 1px solid black" contenteditable onclick="alert(this.innerHTML)"></div>
+</div>
+</body>
+</html>

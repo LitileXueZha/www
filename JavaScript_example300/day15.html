@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day15</title>
+    <!--<link rel="SHORTCUT ICON" href="pic/china.ico"/>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{
+            text-indent: 2em;
+            text-align: left;
+            -moz-user-select: none;
+        }
+        p:first-letter{
+            font-size: 35px;
+            text-shadow: 2px 2px 10px black;
+        }
+        #tes{
+            background: darkgray;
+            padding: 5px 5px;
+        }
+    </style>
+    <script type="text/javascript">
+        var h = 0,
+                m = 0,
+                s = 0;
+        function init143() {
+            setInterval(function () {
+                s ++;
+                if (s == 60){
+                    s = 0;
+                    m ++;
+                }
+                if (m == 60){
+                    m = 0;
+                    h ++;
+                }
+                document.getElementById('t').innerHTML = '你已经登陆：'+h+'时'+m+'分'+s+'秒！';
+            },1000);
+        }  //  显示登陆时间
+        function endHide() {
+            var t = document.getElementById('tes');
+            if (t.style.opacity == 0){
+                t.style.opacity = 1;
+            }
+            setInterval(function () {
+                if (t.style.opacity > 0){
+                    t.style.opacity -= 0.1;
+                }else{
+                    return false;
+                }
+            },220);
+        }  //  滤镜效果
+        function showStyle() {
+            var cs = document.styleSheets[0].rules;
+            var a = cs[0].style;
+            var str = '';
+            for (var aa in a){
+                str += aa;
+                str += '：';
+                str += a[aa];
+                str += '<br/>';
+            }
+            document.getElementById('res').innerHTML = str;
+            var a1 = cs[0];
+            var str1 = '';
+            for (var aa1 in a1){
+                str1 += aa;
+                str1 += '：';
+                str1 += a1[aa1];
+                str1 += '<br/>';
+            }
+            document.getElementById('res1').innerHTML = str1;
+        }  //  显示样式文件
+        function changeCss() {
+            var cs = document.styleSheets;
+//            alert(cs);
+            var str = '';
+            for(var css in cs){
+                str += css;
+                str += '：';
+                str += cs[css];
+                str += '\n';
+            }
+//            alert(str);
+            console.log(cs[0]);
+            console.log(cs[1]);
+            cs[1].disabled = true;
+        }  //  切换样式表
+        function changeFont(num) {
+            var all = document.getElementsByTagName('*');
+            for(var i=0;i<all.length;i++){
+                if (all[i].style.fontSize){
+                    all[i].style.fontSize = num + 'px';
+                }
+            }
+            console.log(all);
+        } //  改变字体
+    </script>
+</head>
+<body onload="init143()">
+<div class="container">
+    <h1>例141</h1>
+    <article>
+        <blockquote>用表格来完成一个日历特效</blockquote>
+        <p>详情见<mark>例138</mark></p>
+    </article>
+    <h1>例142</h1>
+    <article>
+        <blockquote>月底、月初标题不同</blockquote>
+        <p>关键在于document的title属性，设置即可，另外判断月初还是月底</p>
+    </article>
+    <h1>例143</h1>
+    <article style="text-align: center">
+        <blockquote style="text-align: left">显示登陆时间</blockquote>
+        <time id="t">&nbsp;</time>
+        <p>利用定时器，原理很简单，用户点击页面即开始计时，登陆显示，，，</p>
+    </article>
+    <h1>例144</h1>
+    <article>
+        <blockquote>不同浏览器加载不同css文件</blockquote>
+        <p>判断navigator的userAgent属性：</p>
+        <ul class="list-group">
+            <li class="list-group-item">1.indexOf("MSIE") <label>若值大于-1，则为IE浏览器</label></li>
+            <li class="list-group-item">2.indexOf("Firefox") <label>若值大于-1，则为火狐浏览器</label></li>
+        </ul>
+        <pre>
+            &lt;link type='text/css' rel='stylesheet' href='css1.css' />
+            &lt;link type='text/css' rel='stylesheet' href='css2.css' />
+
+            (function (){
+                if(window.navigator.userAgent.indexOf('MSIE') >= 1){
+                    document.styleSheets[1].disabled = true;
+                }  //  IE浏览器
+                if(window.navigator.userAgent.indexOf('Firefox') >= 1){
+                    document.styleSheets[0].disabled = true;
+                }  //  火狐浏览器
+                else{
+                    document.styleSheets[1].disabled = true;
+                }  //  谷歌浏览器等
+            })();</pre>
+    </article>
+    <h1>例145</h1>
+    <article>
+        <blockquote>动态滤镜效果</blockquote>
+        <p style="text-align: center;text-indent: 0">
+            <label id="tes">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus alias beatae debitis dicta dolores, explicabo fugiat laudantium minus nihil officia perspiciatis provident quia quidem quis repellat totam velit veniam, vitae.</label>
+            <br/><br/>
+            <button class="btn btn-primary" onclick="endHide()">渐隐</button>
+        </p>
+        <p>一个定时器，对透明度进行渐变,最好给定时器搞个名字，不然没法结束，导致后来开启越来越快</p>
+    </article>
+    <h1>例146</h1>
+    <article>
+        <blockquote>访问外部的CSS样式</blockquote>
+        <p style="text-align: center">
+            <button class="btn btn-danger" onclick="showStyle()">查看</button>
+        </p>
+        <p style="text-align: center" id="res">&nbsp;</p>
+        <p id="res1">&nbsp;</p>
+    </article>
+    <h1>例147</h1>
+    <fieldset>
+        <legend>访问元素中style属性的CSS样式</legend>
+        <p>通过.style.propertyName来访问，也可以设置，<strong>注意：若为left、top则需在行间样式设置</strong></p>
+    </fieldset>
+    <h1>例148</h1>
+    <fieldset>
+        <legend>切换样式表</legend>
+        <br/>
+        <button class="btn btn-primary" onclick="changeCss()">换一个妹纸！</button>
+        <p>document的styleSheets对象是一系列css的信息数组；按顺序来的呦</p>
+    </fieldset>
+    <h1>例149</h1>
+    <fieldset>
+        <legend>让样式动起来</legend>
+        <p>这里先获得css样式表.styleSheets[0],再用.rules获取具体信息，.style.propertyName设置</p>
+        <p>我想吐槽下，还不如直接获取元素修改，毕竟我们通常是用css给一个元素设置</p>
+    </fieldset>
+    <h1>例150</h1>
+    <fieldset>
+        <legend>同时改变多个DOM的样式</legend>
+        <pre>
+            function changeFont(num){
+                var fontSize = num + 'px';
+                var contents = document.getElementsByClassName('content');
+                for(var i=0;i&lt;contents.length;i++){
+                    contents[i].style.fontSize = fontSize;
+                }
+            }</pre>
+        <p>对相同类名的元素进行设置，通过style属性设置</p>
+        <label>获得全部元素：</label>
+        <code>var all = document.getElementsByTagName('<b>*</b>')</code>
+        <br/>
+        <div class="btn-group">
+            <button class="btn btn-default" onclick="changeFont(16)">大字体</button>
+            <button class="btn btn-default" onclick="changeFont(12)">小字体</button>
+        </div>
+        <p>要命，这全都来了，html、head、link、meta、script啥的</p>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript">
+      window.onload = function(){
+        var arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+        console.log(arr);
+
+        //  先序遍历完全二叉树
+        var arrr = [];
+        for(var i=0;i<arr.length;i++){
+          var num = Math.pow(2, i);
+
+          if(num-1 < arr.length){
+            arrr.push(arr[num -1]);
+          }
+        }
+
+        var depth = arrr.length;
+        for(;depth >= 0; depth--){
+          var n = Math.pow(2, depth-1);
+          if(arr[n]){
+            arrr.push(arr[n]);
+            if(arr[2*n+3]){
+              arrr.push(arr[2*n]);
+            }
+            if(arr[2*n+4]){
+              arrr.push(arr[2*n+1]);
+            }
+            console.log('深度为：',depth,n, arrr, '计算完成');
+            // debugger;
+          }
+        }
+
+        console.log(arrr);
+        document.getElementById('a').innerHTML = '0,1,2,3,4,5,6,7,8,9,10<br>'+ arrr.join(',');
+
+        var tree = {
+          value: 'A',
+          left: {
+            value: 'B',
+            left: {
+              value: 'D',
+              left: {
+                value: 'H'
+              },
+              right: {
+                value: 'I'
+              }
+            },
+            right: {
+              value: 'E',
+              left: {
+                value: 'J'
+              },
+              right: {
+                value: 'K'
+              }
+            }
+          },
+          right: {
+            value: 'C',
+            left: {
+              value: 'F',
+            },
+            right: {
+              value: 'G',
+            }
+          }
+        }
+        arrrr = [];
+        var preOrder = function (node) {
+          if (node) {
+            console.log(node.value);
+            arrrr.push(node.value);
+            preOrder(node.left);
+            preOrder(node.right);
+          }
+        }
+        document.getElementById('b').innerHTML = '0,1,2,3,4,5,6,7,8,9,10<br>'+ arrrr.join(',');
+        console.log(preOrder(tree));
+      };
+    </script>
+  </head>
+  <body style="font-family: 幼圆">
+    <pre style="font-family: 幼圆">
+
+                      A
+                B          C
+             D      E      F    G
+          H   I   J   K
+
+        输入 A,B,C,D,E,F,G,H,I,J,K
+             0,1,2,3,4,5,6,7,8,9,10
+        输出 A,B,D,H,I,E,J,K,C,F,G
+    </pre>
+    <div id="a">
+
+    </div>
+    <div id="b">
+
+    </div>
+  </body>
+</html>

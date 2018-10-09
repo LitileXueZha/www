@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>允许在文本区内使用HTML和限制使可使用的HTML标签</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        li{
+            padding: 5%;
+        }
+        textarea{
+            resize: none;
+            border-radius: 5px;
+            background: rgba(58, 255, 41, 0.46);
+            font-size: 20px;
+        }
+        .row{
+            padding-top: 10px;
+        }
+        .glyphicon-facetime-video{
+            transform: scale(2);
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#check').click(function () {
+                $.post(
+                        '5.10.php',
+                        { text: $('#text').val() },
+                        function (data) {
+                            $('#show').val(data);
+                        }
+                );
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2">
+            <span class="glyphicon glyphicon-facetime-video"></span>
+            <p>在右边的文本域里写一些html代码（我只会允许下面这些标签出现：
+                <ul style="display: inline-flex">
+                    <li><br/><div>&lt;b&gt;</div></li>
+            <li><br/><div>&lt;ins&gt;</div></li>
+            <li><br/><div>&lt;i&gt;</div></li>
+            <li><br/><div>&lt;strong&gt;</div></li>
+                </ul>
+                ），其它的我会扔掉
+            <p>
+        </div>
+        <div class="col-lg-2"></div>
+        <div class="col-lg-5">
+            <textarea id="text" rows="8" cols="50" placeholder=""></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <span class="glyphicon glyphicon-facetime-video"></span>
+            <label>你的网页看起来会这样：</label>
+        </div>
+        <div class="col-lg-2"></div>
+        <div class="col-lg-5">
+            <textarea id="show" rows="8" cols="50" placeholder=""></textarea>
+        </div>
+    </div>
+    <button class="btn btn-warning" id="check">确定</button>
+</div>
+</body>
+</html>

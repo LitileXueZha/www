@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('button').click(function () {
+                var data = $('form').serialize();
+//                alert(data);
+                $.post(
+                        '2.5_2process.php',
+                        data,
+                        function (data) {
+                            $('#infor').hide();
+                            $('#res').html(data).show();
+                        },
+                        'html'
+                );
+            });
+        });
+    </script>
+</head>
+<body>
+<form>
+    <ul class="list-group" id="infor">
+        <li class="list-group-item form-inline">
+            <label>Email: </label><input type="email" class="form-control" name="Email" placeholder=""/>
+        </li>
+        <li class="list-group-item form-inline">
+            <label>Name: </label><input type="email" class="form-control" name="Name" placeholder=""/>
+        </li>
+        <li class="list-group-item input-group form-inline">
+            <label>Sex: </label>
+            <input type="radio" class="form-control" id="in1" name="Sex" value="male"/>
+            <label class="input-group-addon" for="in1">男</label>
+            <input type="radio" class="form-control" id="in2" name="Sex" value="female"/>
+            <label class="input-group-addon" for="in2">女</label>
+        </li>
+        <li class="list-group-item">
+            <label>国家：</label>
+            <select class="form-control" name="country">
+                <option class="form-control" value="India">印度</option>
+                <option class="form-control" value="UK">英国</option>
+                <option class="form-control" value="USA">美国</option>
+            </select>
+        </li>
+        <li class="list-group-item">
+            <button class="btn btn-primary" name="submit">交作业了！！！</button>
+        </li>
+    </ul>
+</form>
+<p id="res"></p>
+<div class="navbar navbar-fixed-bottom">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+
+</body>
+</html>

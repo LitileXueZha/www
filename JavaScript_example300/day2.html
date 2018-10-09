@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day2</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{ text-indent: 3em }
+        p:first-letter{ font-size: 25px;font-style: italic }
+        #ad1{
+            border: 1px solid black;
+            border-radius: 2px;
+            width: 200px;
+            height: 150px;
+            position: absolute;
+            background: rgba(101, 205, 105, 0.47);
+        }
+        #ad1>a{
+            cursor: pointer;
+            float: right;
+            white-space: pre;
+            font-size: 20px;
+            text-decoration: none;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        window.onload = function () {
+            var ad = document.getElementById('ad');
+            ad.innerHTML = '<img src="11.jpg" width="300" height="200">';
+            setTimeout(function () {
+                ad.style.display = 'none';
+                ad.remove();
+            },5000);
+            //  以上是动态关闭广告
+            var ad1 = document.getElementById('ad1');
+            rightCorner();
+
+            function rightCorner() {
+                ad1.style.top = (window.pageYOffset+window.innerHeight-150)+'px';
+                ad1.style.left = (window.pageXOffset+window.innerWidth-250)+'px';
+                setTimeout(rightCorner,100);  //  这里实现了类似于一种动画效果
+            }
+        };
+
+        function sethomePage() {
+            if (document.all){   //  ie设置首页
+                document.body.style.behavior = 'url(#default#homepage)';
+                document.body.setHomePage('http://www.baidu.com');
+            }
+            else if (window.sidebar){    //  火狐组件设置首页
+                var prefs = Components.classes['@mozilla.org/preferences-services;1']
+                        .getServices(Components.interfaces.nsIPrefBranch);
+                prefs.setCharPref('browser.startup.homepage','http://www.baidu.com');
+            }
+        }     //  设为首页
+        function addFavirote() {
+            if (window.external.AddFavorite){      //  ie设为首页
+                window.external.AddFavorite('./day2.html','第二天');
+            }
+            else {   //  其他
+                window.sidebar.addPanel('百度','http://www.baidu.com',"");
+            }
+        }  //  收藏此页
+        function closeAd() {
+            var ad1 = document.getElementById('ad1');
+            ad1.remove();
+        }  //  关闭广告
+        function getDOMValues() {
+            var myLink = document.getElementById('myLink');
+            var str = '';
+            for(var prop in myLink){
+                str += prop + ': ' + myLink[prop] + '<br/>';
+            }
+            document.getElementById('res').innerHTML = str;
+        }  //  遍历打印一个DOM的所有属性，用于测试
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1>例11</h1>
+        <article>
+            <blockquote>设为首页</blockquote>
+            <p><a href="#" onclick="sethomePage()" data-toggle="tooltip" data-original-title="没用了，估计书太旧了" data-placement="right">设为首页</a></p>
+            <label>代码如下：</label>
+            <pre>
+            if (document.all){   //  ie设置首页
+                document.body.style.behavior = 'url(#default#homepage)';
+                document.body.setHomePage('http://www.baidu.com');
+            }
+            else if (window.sidebar){    //  火狐组件设置首页
+                var prefs = Components.classes['@mozilla.org/preferences-services;1']
+                        .getServices(Components.interfaces.nsIPrefBranch);
+                prefs.setCharPref('browser.startup.homepage','http://www.baidu.com');
+            }</pre>
+        </article>
+    </div>
+    <h1>例12</h1>
+    <article>
+        <blockquote>收藏此页</blockquote>
+        <a href="javascript: addFavirote()">收藏</a>
+        <span>又没用，控制台提示window.sidebar.addPanel()不是一个方法</span>
+    </article>
+    <h1>例13</h1>
+    <article>
+        <fieldset>
+            <legend>判断文档加载完毕</legend>
+            <ol>
+                <li>
+                    <label>window.onload()</label>
+                    <p>全部加载完成，包括文档、脚本、图片、样式</p>
+                    <pre>
+                        window.onload = fucntion(){
+
+                        }</pre>
+                </li>
+                <li>
+                    <label>document.onreadystatechange()</label>
+                    <p>文档本身就ok了</p>
+                    <pre>
+                        document.onreadystatechange = function(){
+                            if (document.readyState == 'Complete'){
+
+                            }
+                        }</pre>
+                </li>
+            </ol>
+        </fieldset>
+    </article>
+    <h1>例14</h1>
+    <article>
+        <blockquote>避免浏览器使用缓存加载页面</blockquote>
+        <p>原理是，浏览器会判断网页是否过期，过期的话会重新加载，利用这点，我们给链接的href添加一个time毫秒参数
+        ，当点击此链接时就会设置这个href，no no no,原理是在不同时间设置不同url重新加载，醉了。。。
+        </p>
+    </article>
+    <h1>例15</h1>
+    <article>
+        <blockquote>窗口打开时显示大广告图片并自动关闭</blockquote>
+        <p>网页上部</p>
+        <p id="ad"></p>
+        <p>网页下部</p>
+    </article>
+    <h1>例16</h1>
+    <article>
+        <blockquote>带关闭按钮的右下角图片广告</blockquote>
+        <div id="ad1">
+            <a title="关闭" onclick="closeAd()"> <strong>&times;</strong> </a><br/><br/><br/>
+            <p>this is is is is is si a AD!</p>
+        </div>
+        <p>我真的是醉了，书上介绍说是用document.body.scrollTop/clientHeight,很旧的版本了，html4
+        ,头部要写标准，不然没用，so我用了<em>window.pageYOffset/innerHeight</em>，还有一点我想说
+        的是，要注意浏览器的滚动条，这个不会被计算，所以会被挡住</p>
+    </article>
+    <h1>例17、例18、例19</h1>
+    <article id="p">
+        <section>
+            <label class="label label-primary"
+                   data-toggle="collapse"
+                   data-parent="#p"
+                   data-target="#p1">document.getElementById(' ')</label>
+            <p id="p1">通过id名获取，只能得到一个对象，具有唯一的id名</p>
+        </section>
+        <section>
+            <label class="label label-primary"
+                   data-toggle="collapse"
+                   data-parent="#p"
+                   data-target="#p2">document.getElementsByName(' ')</label>
+            <p id="p2">通过标签里的name属性，进行获取DOM，表单里的复选框应用比较广，不唯一</p>
+        </section>
+        <section>
+            <label class="label label-primary"
+                   data-toggle="collapse"
+                   data-parent="#p"
+                   data-target="#p3">document.getElementsByTagName(' ')</label>
+            <p id="p3">通过标签名获取一系列DOM，由于标签大小写不敏感，so这个也是</p>
+        </section>
+    </article>
+    <h1>例20</h1>
+    <article>
+        <blockquote>遍历打印一个DOM的所有属性</blockquote>
+        <div class="panel panel-info" style="width: 600px">
+            <div class="panel-heading">
+                <a id="myLink" href="javascript: void(0)" data-toggle="collapse" data-target="#res">链接</a>
+                <button class="btn btn-info" onclick="getDOMValues()">获取</button>
+            </div>
+            <div class="panel-body">
+                <article id="res"></article>
+            </div>
+            <div class="panel-footer">
+                <p style="text-align: right;margin: 0;"><label>————帅气涛</label></p>
+            </div>
+        </div>
+    </article>
+</div>
+</body>
+</html>

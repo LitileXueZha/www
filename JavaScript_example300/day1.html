@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>自动刷新页面</title>
+    <!--<link rel="SHORTCUT ICON" href="pic/china.ico"/>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <!--<base href="http://">-->
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{ text-indent: 3em }
+        p:first-letter{ font-size: 25px;font-style: italic }
+        input{ font-weight: bolder;font-style: italic}
+        #doing{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: gray;
+            z-index: 99;
+            display: none;
+        }
+        @font-face {
+            font-family: "bootFonts";
+            src: url('fonts/glyphicons-halflings-regular.eot');
+            src: url('fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('fonts/glyphicons-halflings-regular.woff') format('woff'), url('fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+        }
+        #sp1{
+            font-family: "bootFonts";
+        }
+        #sp1:before{
+            content: "\e003";
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload= function () {
+//            setTimeout(function () {
+//                window.location.reload();
+//            },2000);
+        };
+        function goForward(){
+            window.history.forward();
+        }
+        function goBack() {
+            window.history.back();
+        }
+        function closeWindow() {
+            window.close();
+            console.log(1);
+        }
+        function submitForm() {
+            var doing = document.getElementById('doing');
+            doing.style.display = '';
+            self.location.reload();
+        }
+        var willClose = true;
+        function clickHere() {
+            willClose = false;
+        }
+        setInterval(function () {
+            if (willClose){
+                window.close();
+            }
+            else{
+                willClose = true;
+            }
+        },5000);
+        function changeTitle() {
+            var newTitle = document.getElementById('in1').value;
+            document.title = ''+newTitle;
+        }
+//        例7
+        if(self != top){                                 // 判断当前网页是否为最顶层框架
+            top.location.href = self.localtion.href;     // 如果不是得话，或独立窗口打开的本网页，则跳转
+        }
+//
+        function changeUrl() {
+            var superUrl = document.getElementById('in2').value;
+            self.location.href = superUrl+'';
+        }
+        function loadJs() {
+            var theHead = document.getElementsByTagName('head').item(0);   //获取html的头部dom
+            var myScript = document.createElement('script');
+            myScript.src = 'js/npm.js';            // 指定脚本路径
+            myScript.type = 'text/javascript';     // 指定脚本类型
+            myScript.defer = true;                 // 程序下载完成后再解析和执行
+            theHead.appendChild(myScript);
+        }
+    </script>
+</head>
+<body>
+<span id="sp1"></span>
+<div class="container">
+    <h1>例1</h1>
+    <article>
+        <blockquote>网页自动刷新...</blockquote>
+        <label>代码：</label>
+        <pre>
+        window.onload= function () {
+            var timer = null;
+            clearInterval(timer);
+            timer = setInterval(function () {
+                window.location.reload();
+            },2000)
+        }
+        </pre>
+        <p>1.使用window对象的location属性的reload()方法</p>
+        <p>2.在头部meta标签里用，下例为每隔20秒</p>
+        <code> &lt;meta http-equiv="refresh" content="20"/&gt;</code>
+    </article>
+    <h1>例2</h1>
+    <article>
+        <blockquote>页面前进和后退</blockquote>
+        <button class="btn btn-success" onclick="goForward()">前进</button>
+        <button class="btn btn-info" onclick="goBack()">后退</button>
+        <pre>window.history.forward();  //前进方法
+         window.history.back();  //后退方法</pre>
+        <p>window对象的history属性的两个方法：forward()、back()。<cite>go()方法里写个参数，前进或后退多少页</cite></p>
+    </article>
+    <h1>例3</h1>
+    <article>
+        <blockquote>关闭页面</blockquote>
+        <button class="btn btn-danger btn-block" onclick="closeWindow()">关闭</button>
+        <p>使用window对象的close()方法</p>
+    </article>
+    <h1>例4</h1>
+    <article>
+        <blockquote>页面载入等待界面</blockquote>
+        <button class="btn btn-default" onclick="submitForm()">提交</button>
+        <pre>
+            var doing = document.getElementById('doing');
+            doing.style.display = '';
+            self.location.reload();</pre>
+    </article>
+    <h1>例5</h1>
+    <article onclick="clickHere()">
+        <blockquote>10，9，8...自动关闭窗口,如果不单击这里的话</blockquote>
+        <p>使用window.close()方法，外加一个定时器</p>
+    </article>
+    <h1>例6</h1>
+    <article>
+        <blockquote>输入改变网页标题</blockquote>
+        <div class="input-group col-lg-4" style="margin: 0 auto">
+            <input type="text" id="in1" class="form-control" value="" placeholder="写入标题"/>
+            <span class="input-group-btn"><button class="btn btn-info" onclick="changeTitle()">修改</button></span>
+        </div>
+        <P>使用document对象的title方法写入______<code>document.title = '';</code></P>
+    </article>
+    <h1>例7</h1>
+    <article>
+        <blockquote>禁止网页放入框架</blockquote>
+        <pre>        if(self != top){                                 // 判断当前网页是否为最顶层框架
+            top.location.href = self.localtion.href;     // 如果不是得话，或独立窗口打开的本网页，则跳转
+        }</pre>
+        <p>晕哪，不知道说的啥</p>
+    </article>
+    <h1>例8</h1>
+    <article>
+        <blockquote>跳转到其他页面<sub>超级链接，这是啥么鬼</sub></blockquote>
+        <div class="input-group col-lg-4" style="margin: 0 auto">
+            <input type="text" id="in2" class="form-control" value="" placeholder="输入连接"/>
+            <span class="input-group-btn"><button class="btn btn-info" onclick="changeUrl()">修改</button></span>
+        </div>
+        <p>擦嘞~not Found·什么鬼，居然只在本地目录跳转
+            <ul class="form-control">
+        <li class="form-control">给网址加上http，使之成为绝对url</li>
+        <li class="form-control">给头部标签里加个基准url，，base标签____<code>&lt;base href="http://"&gt;</code></li>
+    </ul>
+        <p>
+    </article>
+    <hr/>
+    <h1>例10</h1>
+    <article>
+        <blockquote>动态加载javascript</blockquote>
+        <button class="btn btn-primary" onclick="loadJs()">点点点，加载</button>
+        <pre>            var theHead = document.getElementsByTagName('head').item(0);   //获取html的头部dom
+            var myScript = document.createElement('script');
+            myScript.src = 'js/npm.js';            // 指定脚本路径
+            myScript.type = 'text/javascript';     // 指定脚本类型
+            myScript.defer = true;                 // 程序下载完成后再解析和执行
+            theHead.appendChild(myScript);</pre>
+        <p></p>
+    </article>
+</div>
+<!---->
+<div id="doing"><br/><br/><br/><br/><br/>载入中.....</div>
+<iframe id="iframe4"></iframe>
+</body>
+</html>

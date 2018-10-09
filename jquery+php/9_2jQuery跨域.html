@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用jQuery创建跨域请求</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#search').click(function () {
+                var query = jQuery.trim($('#query').val());
+                if (query != ''){
+                    $.get(
+                            'https://gdata.youtube.com/feeds/api/vedios?q='+query+'&alt=json-in-script',
+                            {},
+                            function (data) {
+                                var totalResults = data['feed']['openSearch$totalResults']['$t'];
+                                if (parseInt(totalResults,10) > 0){
+                                    var entries = data.feed.entry;
+                                    var str = '<ul>';
+                                    for (var i=1;i<entries.length;i++){
+                                        var value = entries[i];
+                                        var title = value['title']['$t'];
+                                        var mediaGroup = value['media$Group'];
+                                        var vedioUrl = mediaGroup['media$player'][0]['url'];
+                                        var thumb = mediaGroup['media$thumbnail'][0]['url'];
+                                        var thumbW = mediaGroup['media$thumbnail'][0]['width'];
+                                        var thumbH = mediaGroup['media$thumbnail'][0]['height'];
+                                        var numComments = value['gd$comments']['gd$feedLink']['countHint'];
+                                        var rating = parseFloat(value['gd$rating']['average']).toFixed(2);
+                                        str+= '<li>';
+                                        str+= '<a href="'+vedioUrl+'" target="_blank">';
+                                        str+= '<img src="'+thumb+'" width="'+thumbW+'" height="'+thumbH+'" title="'+title+'"/>';
+                                        str+= '</a>';
+                                        str+= '<hr/>';
+                                        str+= '<p style="width: 120px;font-size: 12px">Comments:'+numComments;
+                                        str+= '<br/>';
+                                        str+= 'Rating:'+rating;
+                                        str+= '</p>';
+                                        str+= '</li>';
+                                    }
+                                    str+= '</ul>';
+                                    $('#res').html(str);
+                                }
+                            },
+                            'jsonp'
+                    );
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <div class="container">
+        <h2><span class="glyphicon glyphicon-fire" style="font-size: larger"></span> JSONP技术</h2>
+        <p style="text-indent: 2em">上次我使用了php文件作为代理来查询跨域URL<small>file_get_contents()</small>。这次
+        直接使用了jQuery本身查询跨域url，基于JSONP技术。</p>
+    </div>
+</div>
+<div class="container">
+    <fieldset>
+        <legend>搜索油桶上的视频</legend>
+        <div class="form-horizontal">
+            <label class="control-label" for="query">输入相关信息</label>
+            <div class="col-lg-6">
+                <input type="text" class="form-control" id="query" placeholder="English on Youtube"/>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-lg" id="search" style="position: relative;top: 25px;left: 20px">搜索</button>
+    </fieldset>
+    <p id="res"></p>
+</div>
+</body>
+</html>

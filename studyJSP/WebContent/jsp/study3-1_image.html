@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用canvas绘图</title>
+<style>
+		#c1{
+				margin: 0 auto;
+				display: block;
+		}
+</style>
+<script type="text/javascript">
+		window.onload = function () {
+				var c = document.getElementById('c1');
+				var pen = c.getContext('2d');
+				pen.beginPath();
+				pen.moveTo(100, 100);
+				pen.bezierCurveTo(130, 80,170, 80, 200, 100);
+				pen.bezierCurveTo(170, 120, 130, 120, 100, 100);
+				pen.rotate(1);
+				pen.translate(150, 100);
+				pen.stroke();
+		}
+</script>
+</head>
+<body>
+<canvas id='c1'></canvas>
+</body>
+</html>

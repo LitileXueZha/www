@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>加强验证：在PHP中再次验证</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        #save{
+            position: relative;
+            left: 188px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('button').click(function () {
+                $('#errorM').html('');
+                $.ajax({
+                    url: '5.8_2yanzheng.php',
+                    type: 'POST',
+                    data: $('form').serialize(),
+                    success: function (data) {
+                        $('#errorM').html(data);
+                    },
+                    error: function () {
+                        $('#errorM').text('调用ajax出错！');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <form method="post">
+        <fieldset>
+            <legend>信息列表</legend>
+            <div class="row">
+                <div class="input-group col-lg-5">
+                    <label class="input-group-addon">名字：</label>
+                    <input type="text" class="form-control" id="name" name="Name" placeholder=""/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-lg-5">
+                    <label class="input-group-addon">年龄：</label>
+                    <input type="text" class="form-control" id="age" name="Age" placeholder=""/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-lg-5">
+                    <label class="input-group-addon">地址：</label>
+                    <input type="text" class="form-control" name="Address" placeholder=""/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-lg-5">
+                    <label class="input-group-addon">网站：</label>
+                    <input type="text" class="form-control" name="Website" placeholder=""/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-lg-5">
+                    <label class="input-group-addon">电子邮箱：</label>
+                    <input type="text" class="form-control" name="Email" placeholder=""/>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <button class="btn col-lg-3" name="save" id="save">提交</button>
+    <br/><br/><br/><br/>
+    <p id="errorM">&nbsp;</p>
+</div>
+</body>
+</html>

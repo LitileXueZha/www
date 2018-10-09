@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day21</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('.btn-default').eq(2).click(function () {
+                $('#dd1').slideToggle();
+            });
+            $('.btn-danger').eq(0).click(function () {
+                $('#dd1').slideUp();
+            });
+            $('.btn-success').eq(0).click(function () {
+                $('#dd1').slideDown();
+            })
+            $('.btn-default').eq(3).click(function () {
+                $('#dd2').fadeToggle();
+            });
+            $('.btn-danger').eq(1).click(function () {
+                $('#dd2').fadeOut();
+            });
+            $('.btn-success').eq(1).click(function () {
+                $('#dd2').fadeIn();
+            })
+        });
+        function se() {
+            var loves = $(':checkbox:checked');
+            var love = [];
+            for (var i=0;i<loves.length;i++){
+                love.push($(loves[i]).val());
+            }
+            alert(love);
+        }
+        function seeStyle(elem) {
+            var w1 = $('#se1').width();
+            var h1 = $('#se1').height();
+            var w2 = $('#se2').width();
+            var h2 = $('#se2').height();
+            var td = $('td');
+            $(td).eq(1).text(w1);
+            $(td).eq(2).text(h1);
+            $(td).eq(4).text(w2);
+            $(td).eq(5).text(h2);
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item">Prototype.js</li>
+        <li class="list-group-item">Dojo.js</li>
+        <li class="list-group-item">YUI</li>
+    </ul>
+    <h1 align="center">以上是JavaScript经典框架</h1>
+    <h2>例216</h2>
+    <article>
+        <blockquote>选择所有元素</blockquote>
+        <pre>
+            $('*')...;</pre>
+        <p>类似于CSS的选择器一样，<b>* </b>表示选中所有元素</p>
+    </article>
+    <h2>例217</h2>
+    <article>
+        <blockquote>选择相同标签的元素</blockquote>
+        <pre>   $('a')...;</pre>
+        <p>选择a标签，并且这是个数组，<ins>[ ] = $('a')</ins></p>
+        <blockquote>选择相同class元素</blockquote>
+        <pre>   $('.btn')...;</pre>
+        <p>选择类名为btn的元素</p>
+        <blockquote>快速选择表单元素</blockquote>
+        <pre>   $(':input[type="text"]').val();</pre>
+        <p>选择类型为文本的input元素，用val()获取值</p>
+        <blockquote>选择被选中的复选框</blockquote>
+        <pre>   $(':checkbox:checked')...;</pre>
+        <label><input type="checkbox" name="love" value="刘芬"/>刘芬</label>
+        <label><input type="checkbox" name="love" value="于霄霄"/>于霄霄</label>
+        <label><input type="checkbox" name="love" value="王珍"/>王珍</label>
+        <input type="button" class="btn btn-default" value="看看呗" onclick="se()">
+        <p>选中了的，，，</p>
+        <blockquote>指定下拉菜单的已选项</blockquote>
+        <pre>   $('select').val('刘芬');</pre>
+        <p><b>val()</b>可以获取值，也可以赋值；如果是下拉菜单的话呢就会指定val值里的那个下拉项</p>
+        <blockquote>选择包含特定内容的层</blockquote>
+        <pre>   $('div:contains("abc")');</pre>
+        <blockquote>修改指定元素的属性</blockquote>
+        <pre>   $('#a1').attr('href', 'https://www.baidu.com');</pre>
+        <p>这里用的是<code>attr()</code>，可以说这是jquery里的<q>万能属性修改器</q></p>
+        <blockquote>一次选择多个不同元素</blockquote>
+        <pre>   $('input<strong>,</strong> div')...;</pre>
+        <p>与css里的选择一样，用逗号隔开即可</p>
+        <blockquote>删除部分文档内容</blockquote>
+        <pre>   $('p').remove(':contains("abc")');</pre>
+        <p>删除包含abc的段落，remove()方法里也是选择器一样的使用；这里使用的是jquery里的选择器</p>
+        <blockquote>批量替换元素的内容</blockquote>
+        <pre>   $('&lt;p>&lt;a href="#">链接一&lt;/a>&lt;/p>').replaceAll('p:contains("abc")');</pre>
+        <p>使用repleceAll()替换选择的所有元素，</p>
+        <blockquote>快速修改样式规则</blockquote>
+        <pre>   .css('cssName', 'attribute');</pre>
+        <p>很简单适用的一个方法</p>
+        <blockquote>获取元素的宽度和高度</blockquote>
+        <pre>   .width\height();</pre>
+        <label id="se1">行内元素</label>
+        <div id="se2">块状元素</div>
+        <button class="btn btn-default" onclick="seeStyle()">查看</button>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>元素</th><th>宽度</th><th>高度</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>行内</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>块状</td><td></td><td></td>
+            </tr>
+        </table>
+        <p>由此可见，元素的宽高均可以用width/height来显示；只是css不能动行内元素而已</p>
+        <blockquote>指定页面加载完时的回调</blockquote>
+        <pre>
+            $('document').ready(function(){
+                //  ...
+            });
+        或者是：
+            $(function(){
+                //  ...
+            });</pre>
+        <p>也可以用body的onload事件，<q cite="http://115.159.148.54">但这样不是很严谨</q></p>
+        <blockquote>为元素动态添加某种事件</blockquote>
+        <pre>   $(element).click(function(){ })</pre>
+        <p>也就是点击事件，click这样的，学名叫做事件监听器</p>
+        <blockquote>隐藏或显示元素</blockquote>
+        <pre>   $(element),toggle()</pre>
+        <p>显示或隐藏元素</p>
+        <blockquote>滑动效果</blockquote>
+        <pre>   $(element).slideDown();  //  滑入</pre>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <code>slideDown：</code>从none到block，滑入，出现在视野里
+            </li>
+            <li class="list-group-item">
+                <code>slideUp：</code>从block到none，滑出，消失在视野
+            </li>
+            <li class="list-group-item">
+                <code>slideToggle()：</code>切换block、none状态
+            </li>
+        </ul>
+        <div id="dd1" style="width: 200px;height: 50px;background: #ccc"></div>
+        <div class="btn-group">
+            <button class="btn btn-default" data-toggle="tooltip" title="切换">slideToggle</button>
+            <button class="btn btn-danger" data-toggle="tooltip" title="滑出">slideUp</button>
+            <button class="btn btn-success" data-toggle="tooltip" title="滑入">slideDown</button>
+        </div>
+        <blockquote>淡入淡出效果</blockquote>
+        <pre>   $(element).fadeIn();  //  淡入</pre>
+        <div id="dd2" style="width: 200px;height: 50px;background: #ccc"></div>
+        <div class="btn-group">
+            <button class="btn btn-default" data-toggle="tooltip" title="切换">fadeToggle</button>
+            <button class="btn btn-danger" data-toggle="tooltip" title="淡出">fadeOut</button>
+            <button class="btn btn-success" data-toggle="tooltip" title="淡入">fadeIn</button>
+        </div>
+        <blockquote>ajax加载文档内容</blockquote>
+        <pre>
+            $.ajax(function(){
+                type: 'get',
+                url: '新建文本文档.txt',
+                data: '',
+                success: function(msg){
+                    //  这里msg就是文档内容
+                }
+            });
+        ============== action2 ============
+            $.getJSON('ajax_json.txt', function(data){
+                //  这里json就是储存的json数据
+            });        </pre>
+    </article>
+    <h1 align="center">以下将使用jquery ui，我懒得写了</h1>
+</div>
+<hr/>
+</body>
+</html>

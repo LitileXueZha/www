@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<browsers>
+    <browser name="IE" value="ie" votes="16"/>
+    <browser name="360" value="360" votes="14"/>
+    <browser name="Firefox" value="firefox" votes="12"/>
+    <browser name="Google" value="google" votes="24"/>
+</browsers>

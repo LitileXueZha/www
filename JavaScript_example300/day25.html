@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width"/>
+    <title>day25</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        sub{
+            font-size: 6px;
+        }
+    </style>
+    <script type="text/javascript">
+        var x = 0;
+        function yiDong(dr) {
+            x = x + dr*100;
+            document.images[0].style.transform = 'translate(' + x + 'px,0)';
+            document.images[0].style.transition = '1s ease-out';
+        }  //  移动
+        function suoFang(sz,szz) {
+            if(szz){
+                document.images[2].style.transform = 'scale('+sz+','+szz+')';
+                document.images[2].style.transition = '3s';
+            } else{
+                sz = sz/10 + 1;
+                document.images[1].style.transform = 'scale('+ sz +')';
+                document.images[1].style.transition = '3s';
+            }
+        }  //  缩放
+        function niuQu(xy) {
+            if(xy > 0){
+                document.images[3].style.transform = 'skewX(30deg)';
+                document.images[3].style.transition = '2s';
+            } else{
+                document.images[3].style.transform = 'skewY(30deg)';
+                document.images[3].style.transition = '2s';
+            }
+        }  //  扭曲
+        var y = 0;
+        var timer = null;
+        var xx = 0, yy = 0;
+        function liTing(dr, my) {
+            if(my){
+                y ++;
+                if(my > 0){
+                    document.images[5].style.transform = 'rotateX('+ y*dr/2 +'deg)';
+                    document.images[5].style.transition = '2s';
+                } else{
+                    document.images[5].style.transform = 'rotateY('+ y*dr/2 +'deg)';
+                    document.images[5].style.transition = '2s';
+                }
+            } else{
+                clearInterval(timer);
+                timer = setInterval(function () {
+                    if(dr > 0){
+                        xx ++;
+                    } else{
+                        yy ++;
+                    }
+                    document.images[4].style.transform = 'skew('+ xx +'deg,'+ yy +'deg)';
+                    document.images[4].style.transition = '1s';
+                }, 1000);
+            }
+        }  //  3d旋转
+        function getUserAgent() {
+            var ua = navigator.userAgent;
+            console.log(ua);
+            if(ua.indexOf('Gecko') > -1){
+                alert('火狐移动端访问！');
+            }
+        }  //  获取版本
+        function getTouchIf() {
+            try{
+                document.createEvent('TouchEvent');
+                alert('支持触屏！');
+            } catch (e){
+                alert('不支持触屏!'+ e.message);
+            }
+        }  //  是否支持触屏
+        var x1=0, y1=0;
+        function init() {
+            document.addEventListener('touchstart', function (e) {
+                var touch = e.touches[0];
+                x1 = Number(touch.pageX);
+                y1 = Number(touch.pageY);
+            }, false);
+            var t = document.getElementById('te1');
+            var fs = t.style.fontSize;
+            document.addEventListener('touchmove', function (e) {
+                var touch = e.touches[0];
+                var x2 = Number(touch.pageX);
+                var y2 = Number(touch.pageY);
+                if(x2 > x1){
+                    console.info(fs);
+                    t.style.fontSize = parseInt(fs)+5 +'px';
+                } else{
+                    t.style.fontSize = parseInt(fs)-5 +'px';
+                }
+            }, false);
+            document.addEventListener('touchend', function () {
+                console.log(x1, y1);
+            }, false)
+        }  //  滑动触摸
+        function init1() {
+            var img = document.getElementById('img1');
+            var d = img.parentNode;
+            d.ongesturechange = function (e) {
+                var s = e.scale;
+                alert(12);
+                console.log(img.width,img.height);
+            };
+            try{
+                document.createEvent('gesturechange');
+                alert('支持手势');
+            } catch(e){
+                alert('不支持，'+ e.message);
+            }
+        }  //  手势,这里我测试了手机火狐，发现触发
+        function init3() {
+
+        }  //  手机GPS
+    </script>
+</head>
+<body onload="init(); init1(); init3()">
+<hr/>
+<div class="container">
+    <h2>例281</h2>
+    <article>
+        <blockquote>可移动的图片</blockquote>
+        <p style="text-align: center">
+            <img src="p1.jpg" style="max-height: 300px;margin-bottom: 10px"/>
+            <br/>
+            <button class="btn" style="width: 100px" onclick="yiDong(-1)">左移</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="btn" style="width: 100px" onclick="yiDong(1)">右移</button>
+        </p>
+    </article>
+    <h2>例282</h2>
+    <article>
+        <blockquote>缩放图片</blockquote>
+        <p style="display: table-cell;text-align: center;width: 1%;padding: 0 10px">
+            <img src="p1.jpg" style="max-height: 300px;margin-bottom: 10px"/>
+            <br/>
+            <button class="btn" style="width: 100px" onclick="suoFang(-1)">缩小 </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="btn" style="width: 100px" onclick="suoFang(1)">放大</button>
+        </p>
+        <p style="display: table-cell"></p>
+        <p style="display: table-cell;text-align: center;width: 1%;padding: 0 10px">
+            <img src="p1.jpg" style="max-height: 300px;margin-bottom: 10px"/>
+            <br/>
+            <button class="btn" onclick="suoFang(1,-1)">有趣的变化，你猜猜我用啥了</button>
+        </p>
+        <br/>
+        <p>这里图片缩放不改变位置，但会遮住其它元素</p>
+    </article>
+    <h2>例283</h2>
+    <article>
+        <blockquote>扭曲的图片</blockquote>
+        <p style="text-align: center">
+            <img src="p1.jpg" style="max-height: 300px;margin-bottom: 10px"/>
+            <br/>
+            <button class="btn" style="width: 100px" onclick="niuQu(1)">x轴</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="btn" style="width: 100px" onclick="niuQu(-1)">y轴</button>
+        </p>
+        <p>css3的transform中skew方法</p>
+    </article>
+    <h2>例284</h2>
+    <article>
+        <blockquote>图片立体旋转<small><i>这里用的是skew，我推荐rotateZ()</i></small></blockquote>
+        <p style="display: table-cell;text-align: center;width: 1%;padding: 0 10px">
+            <img src="p1.jpg" style="max-height: 300px;margin-bottom: 10px"/>
+            <br/>
+            <button class="btn" style="width: 100px" onclick="liTing(1)">横向旋转</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="btn" style="width: 100px" onclick="liTing(-1)">纵向选择</button>
+        </p>
+        <p style="display: table-cell"></p>
+        <p style="display: table-cell;text-align: center;width: 1%;padding: 0 10px;perspective: 100px">
+            <img src="p1.jpg" style="max-height: 300px;margin-bottom: 10px;transform-style: preserve-3d;opacity: 0.9"/>
+            <br/>
+            <button class="btn" style="width: 100px" onclick="liTing(10,1)">&nbsp;横向<sub>我</sub></button>
+            <button class="btn" style="width: 100px" onclick="liTing(10,-1)">&nbsp;纵向<sub>我</sub></button>
+        </p>
+        <br/>
+        <p>这里用css3里transform中rotateZ()得先在父元素设置景深（perspective）、变幻格式（transform-style：preserve-3d）</p>
+    </article>
+    <h2>JavaScript在智能手机上的测试</h2>
+    <article>
+        <blockquote>判断是否为移动浏览器</blockquote>
+        <p>主要是利用navigator对象的userAgent属性，里面包含关于浏览器信息</p>
+        <button class="btn btn-default" onclick="getUserAgent()">获取访问版本</button>
+        <blockquote>测试是否支持滑动事件</blockquote>
+        <p>使用try语句创建一个TouchEvent事件，catch里提示不支持</p>
+        <p>借鉴一下，这里可以通过创建事件来判断是否支持某种事件</p>
+        <button class="btn btn-success" onclick="getTouchIf()">查看是否支持触摸</button>
+        <blockquote>通过滑动修改网页字体大小</blockquote>
+        <p>addEventListener()添加监听事件，touchstart、touchmove、touchend，判断触屏时记录坐标，根据方位设置字体</p>
+        <label class="label label-success" id="te1" style="font-size: 12px">这是一行字，你缩放试试!</label>
+        <blockquote>用手势改变图片大小</blockquote>
+        <p>监听gesturechange事件，通过event.scale来获取，临界点为1</p>
+        <div style="height: 500px"><img src="p3.jpg" id="img1" style="max-height: 300px"/></div>
+    </article>
+</div>
+<hr/>
+</body>
+</html>

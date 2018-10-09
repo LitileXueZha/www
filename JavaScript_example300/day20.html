@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day20</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{
+            text-indent: 2em;
+        }
+        p:first-letter{
+            font-size: 30px;
+            text-shadow: 1px 1px 5px black, 1px 0 5px white, 1px -1px 5px black;
+        }
+    </style>
+    <script type="text/javascript">
+        function Ajax(url, callback, params, method) {
+            this.method = method;
+            this.url = url;
+            this.params = params;
+            this.callback = callback;
+            this.send = function () {
+                if(!this.method){
+                    this.method = 'GET';
+                }
+                if (method == 'POST'){
+                    window.Ajax.client.open(this.method, this.url, true);
+                    window.Ajax.client.send(params);
+                }else if (method == 'GET'){
+                    window.Ajax.client.open(this.method, this.url+'?'+params, true);
+                    window.Ajax.client.send();
+                }
+                window.Ajax.client.onreadystatechange = function () {
+                    if (window.Ajax.client.readyState == 4 && window.Ajax.client.status == 200){
+                        callback();
+                    }
+                }
+            };
+            if (!window.Ajax.client){
+                if(window.ActiveXObject){
+                    window.Ajax.client = new ActiveXObject('Microsoft.XMLHTTP');
+                }else if (window.XMLHttpRequest){
+                    window.Ajax.client = new XMLHttpRequest();
+                }
+            }
+        }  //  其实这是个构造函数
+        function sendAjax() {
+            var ajax = new Ajax('t1.php', function () {
+                alert('发送！');
+            }, '', 'GET');                                 //  这里是在调用构造函数
+            ajax.send();
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>例191</h2>
+    <article>
+        <blockquote>Ajax传输JSON数据实例</blockquote>
+        <label>简要代码如下：</label>
+        <pre>
+            //  sendAjax() 发送请求
+            client.open(type, url + '?<b>数据</b>', true);
+            //  callback() 回调函数
+            var t = client.responseText;
+            var arr = eval('(' + t + ')');  //  关键在于这一步，eval号称js里最强的函数，用法之一解析服务器数据</pre>
+        <p>把获取到的要传到服务器的值写在url地址后面，再对传回来的数据进行处理</p>
+    </article>
+    <h2>例192</h2>
+    <article>
+        <blockquote>定义一套自己的Ajax框架</blockquote>
+        <pre>
+        function Ajax(url, callback, params, method) {
+            this.method = method;
+            this.url = url;
+            this.params = params;
+            this.callback = callback;
+            this.send = function () {
+                if(!this.method){
+                    this.method = 'GET';
+                }
+                if (method == 'POST'){
+                    window.Ajax.client.open(this.method, this.url, true);
+                    window.Ajax.client.send(params);
+                }else if (method == 'GET'){
+                    window.Ajax.client.open(this.method, this.url+'?'+params, true);
+                    window.Ajax.client.send();
+                }
+                window.Ajax.client.onreadystatechange = function () {
+                    if (window.Ajax.client.readyState == 4 && window.Ajax.client.status == 200){
+                        callback();
+                    }
+                }
+            };
+            if (!window.Ajax.client){
+                if(window.ActiveXObject){
+                    window.Ajax.client = new ActiveXObject('Microsoft.XMLHTTP');
+                }else if (window.XMLHttpRequest){
+                    window.Ajax.client = new XMLHttpRequest();
+                }
+            }
+        }                                 //  其实这是个构造函数
+        function sendAjax() {
+            var ajax = new Ajax('t1.php', function () {
+                alert('发送！');
+            }, '', 'GET');                                 //  这里是在调用构造函数
+            ajax.send();
+        }        </pre>
+        <p>把ajax写成一个构造函数，jQuery里的ajax()方法估计就是这样，特牛皮</p>
+    </article>
+    <h2>例193</h2>
+    <article>
+        <blockquote>定义一个类</blockquote>
+        <pre>
+            function MyClass(){
+                this.name;
+                this.fun = function(){
+                    alert(this.name);    //  调用
+                }
+            }
+            var obj = new MyClass();
+            obj.name = 'afd';
+            obj.fun();</pre>
+        <p>JavaScript并不提供对类的支持，而是一种构造函数的形式；提供了关键词 new</p>
+    </article>
+    <h2>例194</h2>
+    <article>
+        <blockquote>利用prototype为类创建静态成员</blockquote>
+        <pre>
+            function MyClass(){
+                this.name;
+                this.fun = function(){
+                    alert(this.name);    //  调用
+                }
+            }
+            MyClass.prototype.myStatic = 123;
+            MyClass.prototype.myStaticFun = function(){
+                alert('这是一个static方法！');
+            }
+            var obj = new MyClass();
+            obj.name = 'afd';
+            obj.fun();    //  调用原方法
+            obj.myStaticFun();   //  调用原型方法，继承了原构造函数的prototype的所有属性</pre>
+        <p>
+            prototype是JavaScript为每一个对象内置的隐藏属性，它会随着这个对象一直存在，因此本例利用它定义
+            了一个静态变量和静态函数。尽管它是定义在MyClass上的，但通过new语句实例化后，对象也就有了prototype
+            的所有属性。
+            <b>专业术语来讲，prototype是一个构造函数的原型。</b>
+        </p>
+    </article>
+    <h2>例195</h2>
+    <article>
+        <blockquote>模拟继承机制</blockquote>
+        <pre>
+            function Animal(name, age){
+                this.name = name;
+                this.age = age;
+                this.say = function (){};
+            }
+            function Dog(name, age){
+                this.name = name;
+                this.age = age;
+            }
+            Dog.prototype = new Animal();     <b>//  这里模拟继承</b>
+            Dog.prototype.say = function(){
+                alert('dog say: my name is'+this.name+',and i'm '+this.age);
+            }
+            var dog = new Dog('tom', 20);
+            dog.say();</pre>
+        <p>这里实际上是通过原型prototype来继承</p>
+    </article>
+    <h2>例196</h2>
+    <fieldset>
+        <legend>为String类型的变量扩展一个replaceAll()函数</legend>
+        <label>扩展代码：</label>
+        <pre>
+            String.prototype.replaceAll = function (src, tgt){
+                return this.replace(new RegExp(src, 'ig'), tgt);
+            }</pre>
+        <p>...我真的不太懂，也没用过replaceAll()的情况</p>
+    </fieldset>
+    <h2>例197</h2>
+    <fieldset>
+        <legend>为对象扩展一个动态属性</legend>
+        <pre>
+            var obj = {};            //  空的，什么都没
+            (function (){
+                obj[name] = value;   //  这里就是扩展，就跟数组一样
+            })();</pre>
+        <p>就跟数组一样扩展，<b>. </b>和<b>[ ]</b>都能访问对象的属性，而动态添加只能通过[]</p>
+    </fieldset>
+    <h2>例198</h2>
+    <fieldset>
+        <legend>为对象扩展一个方法</legend>
+        <label>类似的，与上段代码</label>
+        <pre>
+            obj[functionName] = function (){
+                //  函数;
+                //  如果是根据用户字段，得先解析，这得用到eval()这个函数了;
+                eval(fun);  //  这里fun是用户定义的方法
+            }</pre>
+        <p>Javascript里对象的添加很简单，和数组一样的操作一样，非常easy</p>
+    </fieldset>
+    <h2>例199</h2>
+    <fieldset>
+        <legend>.。。</legend>
+        <p>。。。。。。。</p>
+        <p>。。。。。。。</p>
+    </fieldset>
+    <h1 align="center">以下是javascript的经典框架</h1>
+    <ul class="list-group">
+        <li class="list-group-item"><h4 align="center">Prototype.js</h4></li>
+        <li class="list-group-item"><h4 align="center">Dojo.js</h4></li>
+        <li class="list-group-item"><h4 align="center">YUI</h4></li>
+    </ul>
+</div>
+<hr/>
+</body>
+</html>

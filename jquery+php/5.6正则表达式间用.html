@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用正则表达式验证电子邮件和网站地址</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        fieldset{
+            padding: .35em .625em .75em;
+            margin: 0 2px;
+            border: 2px dotted silver
+        }
+        legend{
+            padding: .5em;
+            border: 0;
+            width:auto
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#mail').blur(function () {
+                var mail = $(this);
+                var errorM = $('#errorM');
+                errorM.html('&nbsp;');
+                var emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+                if (!emailReg.test(mail.val())){
+                    errorM.html('<p>请重新输入！</p>').css('color','red');
+                }
+            });
+            $('#site').blur(function () {
+                var site = $(this);
+                var errorW = $('#errorW');
+                errorW.html('&nbsp;');
+                var urlReg = /^(http(s?))\:\/\/www.([0-9a-zA-Z\-]+\.)+[a-zA-Z]{2,6}(\:[0-9]+)?(\/\S*)?$/;
+                if (!urlReg.test(site.val())){
+                    errorW.html('<p>请重新输入！</p>').css('color','red');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <form>
+        <fieldset>
+            <legend><b>写写 </b><small>你的东西</small></legend>
+            <table>
+                <tbody>
+                <tr>
+                    <td class="col-lg-3">
+                        <label>电子邮箱：</label>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="mail" placeholder="XXX@XX.com"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-lg-1"></td>
+                    <td><p id="errorM">&nbsp;</p></td>
+                </tr>
+                <tr>
+                    <td class="col-lg-2">
+                        <label>网站：</label>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="site" placeholder="http://www.XXX.com"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-lg-1"></td>
+                    <td><p id="errorW">&nbsp;</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </form>
+    <br/>
+    <div class="col-lg-7">
+        <h2>实时验证</h2>
+    <pre class="form-control" style="height: 90px">
+           <label>就是当用户聚焦focus和键盘弹起时keyup验证</label>
+        $('input:text').bind('focus keyup',function(){
+            ...
+        });
+    </pre>
+    </div>
+</div>
+</body>
+</html>

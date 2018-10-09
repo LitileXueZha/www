@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var altPressed = true;
+            $(document).keydown(function (e) {
+                var E = e||event;
+                if(E.which == 18)
+                    altPressed = true;
+                if(altPressed){
+                    switch (E.which){
+                        case 83:
+                            $('#div1').slideToggle('slow');
+                            return false;
+                            break;
+                        case 71:
+                            $('#div2').slideToggle('slow');
+                            return false;
+                            break;
+                        case 66:
+                            $('#div1,#div2').slideToggle('slow');
+                            return false;
+                            break;
+                    }
+                }
+            });
+            $(document).keyup(function (e) {
+                if(e.which == 18)
+                    altPressed = false;
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5" id="div1">
+            <div class="panel panel-default">
+                <div class="panel-heading">第一个</div>
+                <div class="panel-body">切换这个panel按下<kbd>alt+S</kbd>键</div>
+                <div class="panel-footer pull-right">————帅气涛</div>
+            </div>
+        </div>
+        <div class="col-lg-5" id="div2">
+            <div class="panel panel-default">
+                <div class="panel-heading">第二个个</div>
+                <div class="panel-body">切换这个panel按下<kbd>alt+G</kbd>键</div>
+                <div class="panel-footer pull-right">————帅气涛</div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="div3">
+        <label>按<kbd>alt+B</kbd>键切换这两个panel</label>
+    </div>
+</div>
+<div class="navbar navbar-fixed-bottom">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+
+</body>
+</html>

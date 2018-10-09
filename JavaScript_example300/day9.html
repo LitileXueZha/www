@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day 9</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        body{
+            user-select: none;
+            -moz-user-select: none;
+        }
+        p{
+            text-indent: 2em;
+        }
+        p:first-letter{
+            font-size: 35px;
+            text-shadow: 2px 2px 10px black;
+        }
+        a{
+            padding: 2px 5px;
+        }
+        #toTop{
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 30px;
+            line-height: 28px;
+            font-weight: bolder;
+            width: 50px;
+            height: 35px;
+            border-radius: 2px;
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+        }  /*  回顶部样式  */
+        #toTop:hover{
+            background: rgba(0, 0, 0, 0.6);
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 2px 2px 10px white;
+            transition: 1s;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        function forbidClone() {
+            document.onselectstart = new Function('event.returnValue = false');
+        }  //  初始化时禁止复制文本，嘿嘿嘿
+
+        function CloseWin() {
+            window.close();
+        }  //  单击 X 链接关闭窗口
+        function subForm() {
+            document.getElementById('form1').submit();
+        }  //  链接代替提交按钮
+        function modifyUrl() {
+            with (document){
+                var a1 = getElementById('a1');
+                var in1 = getElementById('in1');
+            }
+            if(in1.value){
+                a1.href = 'http://'+in1.value;
+            }
+        }  //  动态修改链接地址
+        function abateLink() {
+            var field = document.getElementById('example87');
+            var links = field.getElementsByTagName('a');
+            for (var i=0;i<links.length;i++){
+                links[i].onclick = null;
+                links[i].href = 'javascript: void(0)';
+            }
+        }  //  链接失效代码
+        function addParam() {
+            var a2 = document.getElementById('a2');
+            var aHref = a2.href;
+            if (aHref.indexOf('?') > 0){
+                a2.href = aHref + '&param=001';
+            }
+            else{
+                a2.href = aHref + '?param=001';
+            }
+        }  //  添加链接参数
+        function returnTop() {
+            document.documentElement.scrollTop = 0;
+        }  //  回到顶部
+        function confirmOpen(link) {
+            if (confirm('你确定打开'+link+'吗？')){
+                return true;
+            } else{
+                return false;
+            }
+        }  //  确认打开方法
+    </script>
+</head>
+<body>
+<div class="container" onload="forbidClone()">
+    <h1>例81</h1>
+    <article>
+        <blockquote>改变链接的单击事件</blockquote>
+        <a href="#">点我啊，小样</a>
+        <p>不要被惯性思维定住，.onclick不止可用于按钮，也可用于链接；最后加上句<code>return false;</code></p>
+    </article>
+    <h1>例82</h1>
+    <article>
+        <blockquote>关闭窗口的那个 &times;<sub>(实体引用符& times;)</sub></blockquote>
+        <label>关闭窗口链接 ==></label>
+        <a href="#" style="font-size: 30px;margin-left: 50px" onclick="CloseWin()">&times;</a>
+        <p>这招貌似在火狐行不通！！！</p>
+    </article>
+    <h1>例83</h1>
+    <article>
+        <blockquote>用链接模拟按钮</blockquote>
+        <a>链接</a>
+        <p>这里按钮无非是样式比较深入人心，so我们把链接样式改成大家心目中的按钮就行了。我推荐再加上<code>role="button"</code></p>
+        <a class="btn btn-default" role="button">链接</a>
+        <label>这里我用了Bootstrap的链接按钮样式，就是这么方便</label>
+    </article>
+    <h1>例84</h1>
+    <article>
+        <blockquote>链接替代表单提交按钮</blockquote>
+        <form id="form1" style="width: 500px;margin: 0 auto">
+            <fieldset>
+                <legend><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;登陆</legend>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3"><span class="glyphicon glyphicon-user"></span> 用户名：</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" placeholder="username"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3"><span class="glyphicon glyphicon-eye-close"></span> 密码：</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" placeholder="password"/>
+                        </div>
+                    </div>
+                </div>
+                <h5 align="center"><a href="#" onclick="subForm()">提交表单</a></h5>
+            </fieldset>
+        </form>
+        <p>在链接的onclick方法里获取表单DOM再.submit()即提交</p>
+    </article>
+    <h1>例85</h1>
+    <article>
+        <blockquote>动态修改一个链接地址</blockquote>
+        <div class="input-group col-lg-5" style="margin: 0 auto">
+            <span class="input-group-addon"><a href="javascript: void(0)" id="a1" style="color: black">Go !</a></span>
+            <input type="text" class="form-control" id="in1" placeholder="新地址"/>
+            <span class="input-group-btn">
+                <button class="btn btn-primary" onclick="modifyUrl()">修改！</button>
+            </span>
+        </div>
+        <br/>
+        <p>链接的onclick方法里获取链接DOM再.href修改地址，记得加上http头，否则只在服务器域里跳转，导致失败</p>
+    </article>
+    <h1>例86</h1>
+    <fieldset>
+        <legend>让链接在新窗口打开</legend>
+        <p>无非是利用<code>target="_blank"</code>，so我推荐还是写在行间，免得添加js代码</p>
+        <pre>
+            function newWin(){
+               var myLink = document.getElementById('myLink');
+               myLink.target = '_blank';
+            }  //  链接的onclick方法</pre>
+        <table class="table table-hover" align="center">
+            <caption><h3 align="center">关于链接target的值</h3></caption>
+            <thead>
+            <tr>
+                <th>值</th>
+                <th>说明<small>-instruction</small></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="active" data-toggle="tooltip" data-original-title="这个用的比较多！">
+                <td>_blank</td>
+                <td>在新窗口中打开</td>
+            </tr>
+            <tr>
+                <td>_self</td>
+                <td>在本窗口打开</td>
+            </tr>
+            <tr>
+                <td>_parent</td>
+                <td>在父窗口/框架中打开</td>
+            </tr>
+            <tr>
+                <td>_top</td>
+                <td>在顶级窗口中打开</td>
+            </tr>
+            <tr>
+                <td>XX框架名称</td>
+                <td>在指定框架中打开</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <h1>例87</h1>
+    <fieldset id="example87">
+        <legend>让页面所有超级链接失效</legend>
+        <p>没有什么特别的。。。就是用js把链接DOM的onclick为null，其次把href设为javascript: void(0)，这样点了不做任何事</p>
+        <a href="http://www.baidu.com" data-toggle="tooltip" data-original-title="百度">链接一</a>
+        <a href="http://www.ningtaostudy.cn" data-toggle="tooltip" data-original-title="我的网站">链接二</a>
+        <a>链接三</a><a>链接四</a><a>链接五</a>
+        <br/>
+        <h3 align="center">
+            <button class="btn btn-danger"
+                    data-toggle="tooltip"
+                    data-original-title="abate"
+                    onclick="abateLink()">失效</button>
+        </h3>
+    </fieldset>
+    <h1>例88</h1>
+    <fieldset>
+        <legend>为链接地址中多加一个参数</legend>
+        <a href="index.php" data-toggle="tooltip" title="index.php">原始链接</a>
+        <a href="index.php?page=1" id="a2" data-toggle="tooltip" title="index.php?page=1">有参数链接</a>
+        <br/>
+        <button class="btn btn-block" onclick="addParam()">多加上个参数</button>
+        <p>通常来讲，我们设计的动态网页地址参数变化是显而易见的，这里即添加参数，</p>
+        <ol style="position: relative;left: 8%;">
+            <li>检测 ？是否存在，用.indexOf()，返回值大于0即存在</li>
+            <li>用 & 添加参数</li>
+        </ol>
+    </fieldset>
+    <h1>例89</h1>
+    <fieldset>
+        <legend>回到顶部的链接</legend>
+        <p>通常我们都不用个链接来回到顶部，通常会像下面这样</p>
+        <a id="toTop" href="javascript: returnTop()">&nbsp;&and;</a>
+        <br/>
+        <pre>
+    &lt;!-- html部分 --&gt;
+            &lt;a id="toTop" href="javascript: returnTop()"&gt;&nbsp;&and;&lt;/a&gt;
+    //  js部分
+            function returnTop() {
+                document.documentElement.scrollTop = 0;
+            }         </pre>
+        <p>这里使用的是<code>document.documentElement.scrollTop = 0;</code></p>
+        <p>其实我推荐a链接的锚机制：把href设成一个在顶部元素的id，毕竟懒得写js</p>
+    </fieldset>
+    <h1>例90</h1>
+    <fieldset>
+        <legend>需要确认的按钮<small>——还是有自己不会的东西的，我倒是觉得有很多，装逼，技巧于演练</small></legend>
+        <a href="http://www.baidu.com" onclick="return(confirmOpen(this.href))">这是一个链接，唉呀呀！</a>
+        <pre>
+    &lt;!-- html部分 --&gt;
+            &lt;a href="http://www.baidu.com" onclick="return(confirmOpen(this.href))"&gt;这是一个链接，唉呀呀！&lt;/a&gt;
+    //  js部分
+            function confirmOpen(link) {
+                if(confirm('你确认打开'+link+'吗？')){
+                    return true;
+                }else{
+                    return false;
+                }
+            }         </pre>
+        <p>什么鬼？方法confirmOpen返回一个布尔值，若真则跳转，而confirmOpen则是通过内置window的confirm窗口来判断用户是否确定</p>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

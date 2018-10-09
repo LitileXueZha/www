@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day5</title>
+    <!--<link rel="SHORTCUT ICON" href="pic/china.ico"/>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        legend:first-letter{
+            font-size: 30px;
+            text-shadow: 1px 1px 5px firebrick;
+            font-style: italic;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        function batchComment() {
+            var f = document.getElementById('form1');
+            var childs = f.childNodes;
+//            console.log(1);
+//            console.log(childs.length);
+            var arr = [];
+            var j = 0;
+            for(var i=0;i<childs.length;i++){
+                arr[j++] = childs[i];
+                if(childs[i].tagName == 'INPUT' || childs[i].tagName == 'SELECT'){
+                    arr[j++] = document.createTextNode('说明！');
+                }
+            }
+            f.innerHTML = '';
+            for(var m=0;m<arr.length;m++){
+                f.appendChild(arr[m]);
+            }
+        }  //  添加批量说明
+        function setSelectVal() {
+            var sle1 = document.getElementById('sle1');
+            setTimeout(function () {
+                var d = new Date();
+                sle1.value = d.getFullYear();
+            },1);   //  关于这里为什么用延时器：由于万恶的ie6可能设置不成功，而我这里就是保证设置默认值
+        }  //  设置下拉菜单的值
+        function showParams() {
+            var f = document.getElementById('form2');
+            var str = '表单数据：<br/>';
+            str += '名字：'+f.user.value+'<br/>';
+            str += '密码：'+f.password.value+'<br/>';
+            str += '性别：'+f.sex[0].value+'<br/>';
+            str += '语言：'+f.language.value+'<br/>';
+            str += '隐藏的：'+f.myHidden.value;
+            document.getElementById('res').innerHTML = str;
+        }  //  显示表单的值
+        function checkAll(e) {
+//            alert(e);
+            var arr = document.getElementsByName('myG');
+            if(e){
+                for (var i=0;i<arr.length;i++){
+                    arr[i].checked = true;
+                }
+            }
+            else{
+                for (var j=0;j<arr.length;j++){
+                    arr[j].checked = false;
+                }
+            }
+        }  //  全选或不选
+        function init() {
+            var f = document.getElementById('form3');
+            var elems = f.elements;
+            var str = '';
+            for (var i=0;i<elems.length;i++){
+                elems[i].onfocus = function () {
+                    this.style.border = '1px solid yellow';
+                };
+                elems[i].onblur = function () {
+                    this.style.border = '';
+                };
+            }
+        }  //  突出聚焦控件
+        function getIframeNum() {
+            var frames = window.frames;
+            document.getElementById('res1').innerHTML = frames.length;
+        }  //  获取框架数量
+        function referFrame4() {
+            var frames = window.frames;
+            var frame3 = frames[2];
+            var subFrames = frame3.frames;
+            var frame4 = subFrames[0];
+            alert(frame4.document);
+        }  //  获取子框架
+    </script>
+</head>
+<body onload="init()">
+<div class="container">
+    <h1>例41</h1>
+    <article>
+        <blockquote>批量的为所有表单控件添加一个说明</blockquote>
+        <p>.createTextNode()创建一个文本节点，然后添加即可</p>
+        <form id="form1">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-1">用户名</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="user" placeholder="精彩在我"/>
+                    </div>
+                    <label class="control-label col-lg-1">密码</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="password" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button class="btn btn-default" onclick="batchComment()"
+                data-toggle="tooltip"
+                data-original-title="没啥用，childNodes获取的是直接子元素，在bootstrap繁杂的组织代码下并不适用"
+                data-placement="right">i need 说明！</button>
+    </article>
+    <h1>例42</h1>
+    <article>
+        <blockquote>设置下拉菜单的值</blockquote>
+        <label for="sle1">下拉菜单</label>
+        <select id="sle1" class="form-control">
+            <option value="">==选择==</option>
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+        </select>
+        <button class="btn btn-info" onclick="setSelectVal()"
+                data-original-title="貌似又没啥用，没事，反正用处不大"
+                data-placement="bottom"
+                data-toggle="tooltip">修改</button>
+    </article>
+    <h1>例43</h1>
+    <article>
+        <blockquote>使用隐藏控件为表单添加参数</blockquote>
+        <form id="form2">
+            <input type="hidden" name="myHidden" value="你看不到我，啊哈哈"/>  <!--隐藏控件-->
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-1">用户名</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="user" placeholder="精彩在我"/>
+                    </div>
+                    <label class="control-label col-lg-1">密码</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="password" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <button class="btn btn-block" onclick="showParams()">表单的值</button>
+            </div>
+            <div class="panel-body">
+                <p id="res" style="text-align: center"></p>
+            </div>
+            <div class="panel-footer">——————阿涛</div>
+        </div>
+        <p style="font-size: 17px">关于为什么要吃饱没事搞这个看不到的控件。我举个例子啊：买东西的在改他买的东西的信息
+            时候，这个东西的id他不知道，但是这个id是我们后台数据库的标识，不可缺少，so就用类型为hidden
+            的控件<sub>input</sub>来隐藏喽~
+        </p>
+    </article>
+    <h1>例44</h1>
+    <article>
+        <blockquote>勾选所有复选框</blockquote>
+        <p>利用.getElementsByName("name")方法获取多个复选框，然后再.checked = true/false;选中或不选</p>
+        <label for="in">全选</label> <input type="checkbox" id="in" name="myAll" onclick="checkAll(this.checked)"/><br/>
+        <label for="in1">选1</label> <input type="checkbox" id="in1" name="myG"/>
+        <label for="in2">选2</label> <input type="checkbox" id="in2" name="myG"/>
+        <label for="in3">选3</label> <input type="checkbox" id="in3" name="myG"/>
+        <label for="in4">选4</label> <input type="checkbox" id="in4" name="myG"/>
+    </article>
+    <h1>例45</h1>
+    <article>
+        <blockquote>突出表单的聚焦控件</blockquote>
+        <form id="form3">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-lg-1">用户名</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="user" placeholder="精彩在我"/>
+                    </div>
+                    <label class="control-label col-lg-1">密码</label>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" name="password" placeholder="精彩在我"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">单选框</label>
+                    <div class="col-lg-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="man"/>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="woman"/>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">下拉框</label>
+                    <div class="col-lg-5">
+                        <select class="form-control" name="language" multiple>
+                            <option class="form-control" value="html">Html</option>
+                            <option class="form-control" value="css">Css</option>
+                            <option class="form-control" value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <p>也就是用onfocus()给边框加颜色,.onblur()去掉.顺便说句，只对有边框的生效，哦呕~</p>
+    </article>
+    <h1>例46</h1>
+    <fieldset>
+        <legend>计算窗口内框架数量</legend>
+        <iframe id="iframe1"></iframe>
+        <iframe id="iframe2"></iframe>
+        <button class="btn btn-default btn-block" onclick="getIframeNum()">数量：<span class="badge" id="res1"></span></button>
+        <p>通常我们引用第一个框架<code>window.frames[0]</code></p>
+    </fieldset>
+    <h1>例47</h1>
+    <fieldset>
+        <legend>父框架对子框架的引用</legend>
+        <iframe id="iframe3" src="day1.html"></iframe>
+        <button class="btn btn-primary" onclick="referFrame4()">子框架获取</button>
+        <p>这里涉及到跨域问题，懒得弄了，没用反正</p>
+        <pre>function referFrame4() {
+            var frames = window.frames;
+            var frame3 = frames[2];
+            var subFrames = frame3.frames;
+            var frame4 = subFrames[0];
+            alert(frame4.document);
+        }  <span style="color: blue">//&nbsp;&nbsp;获取子框架</span></pre>
+    </fieldset>
+    <h1>例48</h1>
+    <fieldset>
+        <legend>子 框架互相引用</legend>
+        <p>先获取一个框架，再用.parent获取父框架，接下来很明显了.我们不一直用.frames搞框架么</p>
+        <pre>
+            function iframeUse(){
+               var frames = window.frames;
+               var frame1 = frames[0];
+               var frame2 = frame1.parent.frames[1];
+            }</pre>
+    </fieldset>
+    <h1>例49</h1>
+    <fieldset>
+        <legend>用top操作顶部框架</legend>
+        <pre>
+            function alertFrames(){
+                var topFrame = top;  //  top变量
+                alert(topFrame.document.body.innerHTML);
+            }</pre>
+    </fieldset>
+    <h1>例50</h1>
+    <fieldset>
+        <legend>确保网页只能被框架载入</legend>
+        <pre>
+            function init(){
+                if(self == top){
+                    alert("本网页只能在框架内载入");
+                    document.body.innerHTML = '&lt;h2&gt;只能在框架内载入&lt;/h2&gt;';
+                    window.close();
+                }
+            }
+        </pre>
+        <p>这里主要是利用self<sub>当前窗口</sub>及top<sub>顶层窗口</sub>两个变量来判断的</p>
+        <p>顺便说句，这里函数init()放在body标签的onload=" "里</p>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

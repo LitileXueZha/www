@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day13</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="Font-Awesome-master/css/font-awesome.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{  text-indent: 2em;-moz-user-select: none;  }
+        p:first-letter{
+            font-size: 35px;
+            text-shadow: 2px 2px 10px black;
+        }
+        a{  padding: 2px 5px;color: black;  }
+        caption{  text-align: center;  }
+        .note{  color: mediumblue;  }  /*  注释文本  */
+        #m1{
+            list-style: none;
+            width: 400px;
+            margin: 1px auto;
+            padding: 0;
+        }
+        #m1>li{
+            float: left;
+            border: 1px solid silver;
+            width: 99px;
+            text-align: center;
+        }
+        #m1>li>a{
+            color: #000;
+            width: 100%;
+            display: inline-block;
+        }
+        #m1>li>a:hover{
+            background: black;
+            color: white;
+            transition: 1.5s;
+        }
+        /*  以上是第一个  */
+        #m2{
+            width: 400px;
+            height: 24px;
+            margin: 0 auto;
+            list-style: none;
+            padding: 0;
+            display: block;
+        }
+        #m2>li{
+            float: left;
+            width: 100px;
+            text-align: center;
+            border: 1px solid black;
+        }
+        #m2>li>a{
+            display: block;
+            text-decoration: none;
+            color: black;
+        }
+        #m2>li>a:hover{
+            color: white;
+            background: black;
+        }
+        #m2:after{
+            visibility: hidden;
+            display: block;
+            content: '';
+            font-size: 0;
+            clear: both;
+            height: 0;
+        }
+        #m2_u{
+            width: 400px;
+            margin: 0 auto;
+        }
+        .m2{
+            width: 100px;
+            margin: 0;
+            border: 1px solid black;
+            float: left;
+            display: none;
+        }
+        /*  以上是第二个  */
+        #m3{
+            list-style: none;
+            padding: 0;
+            width: 500px;
+            height: 25px;
+            margin: 0 auto;
+        }
+        #m3>li{
+            float: left;
+            font-size: 16px;
+            width: 100px;
+            border: 1px solid mediumturquoise;
+        }
+        #m3>li:nth-child(n+2){  border-left: none;  }
+        #m3>li>a{
+            width: 100%;
+            display: inline-block;
+        }
+        #m3>li>a:hover{
+            color: red;
+            font-weight: bold;
+            text-decoration: none;
+            background: rgba(154, 205, 50, 0.73);
+            transition: 1s;
+        }
+        .m3_1, .m3_2{
+            list-style: none;
+            width: 100px;
+            padding: 0;
+            margin: 0;
+            border: 1px dotted blueviolet;
+            float: left;
+            display: none;
+        }
+        .menu{   font-size: 18px;cursor: pointer;   }
+        .menu1_1, .menu1_2, .menu1_3 {  text-indent: 3em;font-size: 16px;cursor: pointer  }
+        .menu2_1, .menu2_2, .menu2_3{  text-indent: 4.5em;cursor: pointer  }
+        .menu3_11{  text-indent: 6em;font-size: 12px;cursor: pointer  }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $('#m2').children().children('a').each(function () {
+                $(this).mouseover(function () {
+                    var index = $('#m2').children().children('a').index(this);
+                    $('.m2').hide().eq(index).show().css('margin-left', 100*index + 'px');
+                });
+            });
+            ///   二级导航代码
+            $('#m3 a').each(function () {
+                $(this).mouseover(function () {
+                    $('.m3_1, .m3_2').hide();
+                    var index = $('#m3 a').index(this);
+                    $('.m3_1').eq(index).show().css('margin-left', 100*index+'px');
+                });
+            });
+            $('.m3_1').mouseover(function () {
+                var index = $('.m3_1').index(this);
+                switch (index){
+                    case 0:
+                        $('.m3_2').eq(0).show().css('margin-top','20px');
+                        break;
+                    case 3:
+                        $('.m3_2').eq(1).show().css('margin-top','40px');
+                        break;
+                }
+            });
+//            console.log($('#m2').children().children('a'));
+//            console.log($('#m2 a'));
+//            for(var i=0;i<aas.length;i++){
+//                var aa = aas[i];
+//                $(aa).mouseover(function () {
+//                    var index = $('#m2').children('a').index(this);
+//                    $('.m2').hide().eq(index).show().css('margin-left', 100*index + 'px');
+//                    console.log(1);
+//                });
+//            }
+            /*
+            *
+            *      以上为没用的，乱改的，最好别改(书上)
+            *
+            *           */
+            $('#tree').children('p').nextAll().hide();
+            $('#tree p').click(function () {
+                var t = $(this).attr('class');
+                switch(t){
+                    case 'menu':
+                        $('.menu').nextAll().slideToggle();
+                        break;
+                    case 'menu1_1':
+                        $('.menu1_1').nextAll('.menu2_1').slideToggle();
+                        $('.menu3_11').slideUp();
+                        break;
+                    case 'menu1_2':
+                        $('.menu1_2').nextAll('.menu2_2').slideToggle();
+                        break;
+                    case 'menu1_3':
+                        $('.menu1_3').nextAll('.menu2_3').slideToggle();
+                        break;
+                }
+            });
+            $('.menu2_1').click(function () {
+                $(this).nextAll('.menu3_11').slideToggle()
+            });
+        });
+
+        function delRow(num) {
+            num = parseInt(num) - 1;
+            var t = document.getElementById('tb1');
+            t.deleteRow(num);
+        }  //  删除表格行
+        var hasHide = false;  //  判断是否隐藏的变量
+        function hideTb(elem) {
+            var row = elem.rows;
+            var len = row.length;
+            for(var i=1;i<len;i++){
+                if (hasHide){
+                    row[i].style.opacity = '1';
+//                    row[i].style.border = '';
+                    row[i].style.transition = '1s';
+                }
+                else{
+                    row[i].style.opacity = 0;
+//                    row[i].style.border = '0';
+                    row[i].style.transition = '2s';
+                }
+            }
+            hasHide = !hasHide;
+            console.log(hasHide);
+        }  //  隐藏表格设计
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>例121</h1>
+    <article>
+        <blockquote>删除表格中任意一行</blockquote>
+        <div class="form-horizontal" style="width: 600px;margin: 0 auto;">
+            <div class="form-group" style="float: left">
+                <label class="control-label col-lg-4" for="rowNum">删除的行数：</label>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" id="rowNum" placeholder="不推荐1，那是表头"/>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="delRow(document.getElementById('rowNum').value)">删除</button>
+        </div>
+        <table class="table table-striped" id="tb1">
+            <tr>
+                <th>飞机型号</th><th>出发地</th><th>目的地</th>
+            </tr>
+            <tr>
+                <td>MH-301</td><td>吉安</td><td>淮南</td>
+            </tr>
+            <tr>
+                <td>MH-309</td><td>江西</td><td>北京</td>
+            </tr>
+            <tr>
+                <td>MH-505</td><td>广东</td><td>安徽</td>
+            </tr>
+            <tr>
+                <td>长征七号</td><td>地球</td><td>月球</td>
+            </tr>
+        </table>
+        <p>原理：使用deleteRow(num),删除第num行</p>
+    </article>
+    <h1>例122</h1>
+    <article>
+        <blockquote>隐藏表格数据</blockquote>
+        <table class="table table-condensed">
+            <caption>这个点下表头就能隐藏</caption>
+            <tr class="active" onclick="hideTb(this.parentNode)">
+                <th>商品ID</th><th>商品名</th><th>商品价格</th>
+            </tr>
+            <tr>
+                <td>1</td><td>鞋</td><td>￥ 149.98</td>
+            </tr>
+            <tr>
+                <td>2</td><td>灯笼</td><td>￥ 20.00</td>
+            </tr>
+            <tr>
+                <td>3</td><td>bootstrap</td><td>￥ 0.00</td>
+            </tr>
+            <tr>
+                <td>4</td><td>于帆</td><td>￥ ????</td>
+            </tr>
+        </table>
+        <p>
+            即遍历表格的行，本来我是想隐藏全部的，不过表头最好不要隐藏，毕竟要看的嘛，还有我并不推荐透明
+            度，毕竟还有表格边框。你知道的，bootstrap里的样式太强大，改不动 <mark>T_T</mark>
+        </p>
+    </article>
+    <h1>例123</h1>
+    <article>
+        <blockquote>用背景色突出表格行</blockquote>
+        <p>。。。</p>
+        <p>。。。</p>
+        <p>。。。</p>
+        <p>这我就不写了，table-hover不错的嘛</p>
+    </article>
+    <h1>例124<small>——这例以下我会附上bootstrap的导航以作参考</small></h1>
+    <article>
+        <blockquote>简单的导航菜单</blockquote>
+        <ul id="m1">
+            <li><a href="javascript: void(0)">菜单</a></li>
+            <li><a href="javascript: void(0)">menu</a></li>
+            <li><a href="javascript: void(0)">菜单</a></li>
+            <li><a href="javascript: void(0)">menu</a></li>
+        </ul>
+        <!--<br/><br/>-->
+        <ul class="nav nav-tabs nav-justified" style="clear: both;">
+            <li><a href="javascript: void(0)">菜单</a></li>
+            <li><a href="javascript: void(0)">menu</a></li>
+            <li><a href="javascript: void(0)">菜单</a></li>
+            <li><a href="javascript: void(0)">menu</a></li>
+        </ul>
+    </article>
+    <h1>例125</h1>
+    <article>
+        <blockquote>凸显正在浏览的菜单项的导航菜单</blockquote>
+        <p>此意于用JS给正在浏览的那一菜单项添加类</p>
+        <pre style="font-size: 16px">
+            var currIndex = 1;  <span class="note">//  一个变量，保存浏览的位置</span>
+            function init(){
+                var menu = document.getElementById('menu');
+                var lis = menu.children;
+                for(var i=0;i&lt;lis.length;i++){
+                    var li = lis[i];
+                    if (i == currIndex){
+                        item.className = 'curr';
+                    }
+                }
+            }</pre>
+    </article>
+    <h1>例126</h1>
+    <article>
+        <blockquote>二级导航菜单</blockquote>
+        <ul id="m2">
+            <li><a href="javascript: void(0)">菜单</a></li>
+            <li><a href="javascript: void(0)">menu</a></li>
+            <li><a href="javascript: void(0)">菜单</a></li>
+            <li><a href="javascript: void(0)">menu</a></li>
+        </ul>
+        <div id="m2_u">
+            <ul class="m2">
+                <li><a href="javascript: void(0)">菜单</a></li>
+            </ul>
+            <ul class="m2">
+                <li><a href="javascript: void(0)">menu</a></li>
+                <li><a href="javascript: void(0)">menu</a></li>
+            </ul>
+            <ul class="m2">
+                <li><a href="javascript: void(0)">菜单</a></li>
+            </ul>
+            <ul class="m2">
+                <li><a href="javascript: void(0)">menu</a></li>
+                <li><a href="javascript: void(0)">menu</a></li>
+            </ul>
+        </div>
+        <ul class="nav nav-pills" role="tablist" style="clear: left">
+            <li class="active"><a href="javascript: void(0)">首页</a></li>
+            <li><a href="javascript: void(0)">帅哥</a></li>
+            <li><a href="javascript: void(0)">帅气哥哥</a></li>
+            <li>
+                <a href="javascript: void(0)" data-toggle="dropdown">
+                    一箩筐帅气哥哥<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript: void(0)">帅气涛</a></li>
+                    <li><a href="javascript: void(0)">帅气涛</a></li>
+                    <li><a href="javascript: void(0)">帅气涛</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">宇宙超级无敌大帅哥</li>
+                    <li><a href="#">宁涛</a></li>
+                </ul>
+            </li>
+        </ul>
+        <p style="clear: both">我觉得这个不错，性能上很好</p>
+        <pre>
+                $(this).mouseover(function () {
+                    var index = $('#m2').children().children('a').index(this);
+                    <span class="note">/*                                                                    *
+                     *  这里的index()方法能够获取选择器$选到DOM的顺序，再利用显示二级导航，不错不错  *
+                     *                                                                    */</span>
+                    $('.m2').hide().eq(index).show().css('margin-left', 100*index + 'px');
+                });</pre>
+    </article>
+    <h1>例127</h1>
+    <article>
+        <blockquote>三级导航菜单</blockquote>
+        <p>一般来说，导航最多到第三级，否则可读性并不咋地</p>
+        <ul id="m3">
+            <li><a href="javascript: void(0)">第一个</a></li>
+            <li><a href="javascript: void(0)">我的天</a></li>
+            <li><a href="javascript: void(0)">登徒子</a></li>
+            <li><a href="javascript: void(0)">雷霆半月斩</a></li>
+        </ul>
+        <div style="width: 500px;clear: both;margin: 0 auto;height: 100px;">
+            <ul class="m3_1">
+                <li>二级斗者</li>
+                <li>二级斗师</li>
+            </ul>
+            <ul class="m3_2">
+                <li>三星斗者</li>
+                <li>三星斗师</li>
+                <li>三星大斗师</li>
+            </ul>
+            <ul class="m3_1">
+                <li>二级斗者</li>
+                <li>二级斗师</li>
+                <li>二级大斗师</li>
+            </ul>
+            <ul class="m3_1">
+                <li>二级斗王</li>
+                <li>二级斗皇</li>
+            </ul>
+            <ul class="m3_1">
+                <li>二级斗者</li>
+                <li>二级斗师</li>
+                <li>二级大斗师</li>
+            </ul>
+            <ul class="m3_2">
+                <li>三星斗王</li>
+                <li>三星斗皇</li>
+            </ul>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="navbar-brand" style="padding: 0"><a href="javascript: void(0)">帅气涛</a></li>
+            <li><a href="javascript: void(0)">姓名</a></li>
+            <li><a href="javascript: void(0)">年龄</a></li>
+            <li><a href="javascript: void(0)">体重</a></li>
+            <li>
+                <a href="javascript: void(0)" data-toggle="dropdown">
+                    更多...<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="javascript: void(0)">学校</a>
+                    </li>
+                    <li><a href="javascript: void(0)">星座</a></li>
+                    <li><a href="javascript: void(0)">血型</a></li>
+                </ul>
+            </li>
+        </ul>
+        <p>貌似bootstrap并不提供三级菜单下拉项</p>
+    </article>
+    <h1>例128</h1>
+    <article>
+        <blockquote>动态加载导航菜单</blockquote>
+        <p>这里所谓的动态加载也不是完全的<strong style="font-size: 17px">数组</strong>，从一个数组里加载而已</p>
+        <pre><var>
+            var arr = [];
+            arr[0] = [
+                {'name': '菜单1',url: '#'},
+                {'name': '菜单2',url: '#'}
+            ];
+            arr[1] = [
+                {'name': '菜单2',url: '#'}
+            ];
+            arr[2] = [
+                {'name': '菜单3',url: '#'},
+                {'name': '菜单31',url: '#'},
+                {'name': '菜单32',url: '#'}
+            ];
+        </var></pre>
+        <label>接着循环遍历数组，加载到html字符串再添加</label>
+    </article>
+    <h1>例129</h1>
+    <fieldset>
+        <legend>三级联动菜单</legend>
+        <br/><br/><br/>
+        <p>这个和上例一样，需要一个数组，真正动态从服务器端接收数据的AJAX技术</p>
+    </fieldset>
+    <h1>例130</h1>
+    <fieldset>
+        <legend>树形导航菜单</legend>
+        <div id="tree">
+            <p class="menu">
+                <i class="fa fa-desktop"></i> 桌面
+            </p>
+            <p class="menu1_1">
+                <span class="glyphicon glyphicon-folder-open"></span> 文档
+            </p>
+            <p class="menu2_1">
+                <span class="glyphicon glyphicon-folder-close"></span> 扣扣文件
+            </p>
+            <p class="menu3_11">
+                <span class="glyphicon glyphicon-file"></span> 张猥琐的系统设计.docx
+            </p>
+            <p class="menu3_11">
+                <span class="glyphicon glyphicon-picture"></span> psb1.png
+            </p>
+            <p class="menu3_11">
+                <span class="glyphicon glyphicon-picture"></span> psb2.png
+            </p>
+            <p class="menu2_1">
+                <span class="glyphicon glyphicon-file"></span> 我的简历.doc
+            </p>
+            <p class="menu2_1">
+                <span class="glyphicon glyphicon-film"></span> 一分钟.swf
+            </p>
+            <p class="menu2_1">
+                <span class="glyphicon glyphicon-picture"></span> 图片1.jpg
+            </p>
+            <p class="menu1_2">
+                <span class="glyphicon glyphicon-trash"></span> 资源回收站
+            </p>
+            <p class="menu2_2">
+                <span class="glyphicon glyphicon-folder-close"></span> 下载的软件安装程序
+            </p>
+            <p class="menu2_2">
+                <span class="glyphicon glyphicon-folder-close"></span> QQDownload
+            </p>
+            <p class="menu2_2">
+                <span class="glyphicon glyphicon-facetime-video"></span> 天降雄狮.mp4
+            </p>
+            <p class="menu1_3">
+                <span class="glyphicon glyphicon-globe"></span> 控制面板
+            </p>
+            <p class="menu2_3">
+                <span class="glyphicon glyphicon-inbox"></span> 程序和功能
+            </p>
+            <p class="menu2_3">
+                <span class="glyphicon glyphicon-heart"></span> 个性化
+            </p>
+            <p class="menu2_3">
+                <span class="glyphicon glyphicon-road"></span> 时间、语言和区域
+            </p>
+            <p class="menu2_3">
+                <span class="glyphicon glyphicon-cog"></span> 系统和安全
+            </p>
+        </div>
+        <p>我也是醉了，三级以上的树形导航我就得靠class名来弄了，累</p>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

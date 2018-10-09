@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用服务器代理发送跨域请求</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p:first-letter{
+            font-size: 25px;
+        }
+        p{
+            white-space: pre;  /*  与pre标签一样保留空格    */
+            text-indent: 2em;  /*  文本缩进                */
+        }
+        #search{
+            border: 1px solid rgba(0, 0, 0, 0.62);
+        }
+        img{
+            padding: 2%;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $(window).scroll(flo);
+            flo();
+
+            $('#search').click(function () {
+//                console.log($('form').serialize());
+                if (jQuery.trim($('#tag').val()) != ''){
+                    $.ajax({
+                        url: '9_1search.php',
+                        type: 'post',
+                        data: $('form').serialize(),
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data['stat'] == 'ok'){
+                                var photos = data.photos.photo;
+                                var str = '';
+                                $.each(photos,function (index,value) {
+                                    var farmId = value.farm;
+                                    var serverId = value.server;
+                                    var id = value.id;
+                                    var secret = value.secret;
+                                    var size = $('#size').val();
+                                    var title = value.title;
+                                    var imageUrl = 'https://farm'+farmId+'.static.flickr.com/'
+                                            +serverId+'/'+id+'_'+secret+'_'+size+'.jpg';
+
+                                    str+= '<img src="'+imageUrl+'" alt="'+title+'">';
+                                });
+                                $('#flo').after(str);
+                            }
+                            else {
+                                $('.jumbotron').after('<h3>出现错误！</h3>');
+                            }
+                        },
+                        error: function (data) {
+                            $('#res').html(data.responseText);
+                        }
+                    });
+//                    $.post(
+//                            '9_1search.php',
+//                            $('form').serialize(),
+//                            function (data) {
+//                                $('.jumbotron').after(data);
+//                                if (data['stat'] == 'ok'){
+//                                    var photos = data.photos.photo;
+//                                    var str = '';
+//                                    $.each(photos,function (index,value) {
+//                                        var farmId = value.farm;
+//                                        var serverId = value.server;
+//                                        var id = value.id;
+//                                        var secret = value.secret;
+//                                        var size = $('#size').val();
+//                                        var title = value.title;
+//                                        var imageUrl = 'http://farm'+farmId+'.static.flickr.com/'
+//                                        +serverId+'/'+id+'_'+secret+'_'+size+'.jpg';
+//
+//                                        str+= '<img src="'+imageUrl+'" alt="'+title+'">';
+//                                    });
+//                                    $('.jumbotron').after(str);
+//                                }
+//                                else {
+//                                    $('.jumbotron').after('<h3>出现错误！</h3>');
+//                                }
+//                            },
+//                            'json'
+//                    );
+                }
+            });
+
+            function flo() {
+                var offsetTop = $(document).scrollTop() - 100;
+                $('#flo').animate({
+                    top: offsetTop+'px'
+                },{
+                    duration: 500, queue: false
+                })
+            }
+        });
+    </script>
+</head>
+<body>
+<label class="label label-danger pull-right" style="font-size: 18px">需翻墙才能使用！！！</label>
+<div class="jumbotron">
+    <div class="container">
+        <p>处于安全考虑,浏览器不允许脚本发送跨域请求，虽然不知道为什么，但估计有用，也就是说
+            js的跨域请求实现不了。</p>
+        <h2 align="center">服务器代码跨域</h2>
+        <p>在服务器端使用PHP脚本绕过此限制。下面我会在flickr上搜索图片，它是雅虎旗下的图片网站</p>
+        <label>flickr会返回一个json,jQuery将解析并显示</label>
+    </div>
+</div>
+<div class="container" id="flo" style="position: relative" data-toggle="tooltip" data-original-title="我测试了下，中、原始图片不能显示" data-placement="bottom">
+    <table align="center"><tr><td width="50%">
+        <form>
+            <fieldset style="background: rgba(59, 214, 96, 0.42)">
+                <legend style="text-align: right"><em>搜索图片&nbsp;&nbsp;</em></legend>
+                <ul class="list-unstyled">
+                    <li>
+                        <div class="form-horizontal form-group">
+                            <label class="control-label" for="tag">内容 &nbsp;<span class="glyphicon glyphicon-hand-left"></span></label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" id="tag" name="Tag"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-horizontal form-group">
+                            <label class="control-label" for="numImage">数量 &nbsp;<span class="glyphicon glyphicon-hand-left"></span></label>
+                            <div class="col-lg-9">
+                                <select class="form-control" name="NumImage" id="numImage">
+                                    <option class="form-control" value="10">10</option>
+                                    <option class="form-control" value="20">20</option>
+                                    <option class="form-control" value="25">25</option>
+                                    <option class="form-control" value="30">30</option>
+                                </select>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-horizontal form-group">
+                            <label class="control-label" for="size">大小 &nbsp;<span class="glyphicon glyphicon-hand-left"></span></label>
+                            <div class="col-lg-9">
+                                <select class="form-control" id="size">
+                                    <option class="form-control" value="s">小_Small</option>
+                                    <option class="form-control" value="t">缩略图_Thumbnail</option>
+                                    <option class="form-control" value="-">中_Medium</option>
+                                    <option class="form-control" value="b">大_Large</option>
+                                    <option class="form-control" value="o">原始大小_Original</option>
+                                </select>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <input type="button" class="btn btn-block" id="search" value="搜索！"/>
+            </fieldset>
+        </form>
+    </td></tr></table>
+</div>
+<p id="res"></p>
+</body>
+</html>

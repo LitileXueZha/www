@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day16</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{
+            text-indent: 2em;
+            text-align: left;
+            -moz-user-select: none;
+        }
+        p:first-letter{
+            font-size: 35px;
+            text-shadow: 2px 2px 10px black;
+        }
+        .myError{
+            border: 2px dashed red;
+        }
+    </style>
+    <script type="text/javascript">
+        function showOrHide() {
+            var t = document.getElementById('text1');
+            if (t.style.display == 'none'){
+                t.style.display = 'inline';
+            }else{
+                t.style.display = 'none';
+            }
+        }  //  显示隐藏切换效果
+        function linkAble() {
+            var t = document.getElementById('text2');
+            t.style.cursor = 'pointer';
+            t.style.color = '#428bca';
+            t.onmouseover = function () {
+                t.style.textDecoration = 'underline';
+                t.style.color = '#2a6496';
+            };
+            t.onmouseout = function () {
+                t.style.textDecoration = 'none';
+                t.style.color = '#428bca';
+            };
+            t.onclick = function () {
+                window.open();
+            }
+        }  //  模拟链接效果
+        function checkSave(elem) {
+            if (elem.value == ''){
+                elem.className = 'myError';
+            }
+        }  //  自定义错误样式
+        var scope = '我是全局变量';
+        function look() {
+            console.log(scope);
+            var scope = '我是局部变量';
+            console.log(scope);
+        }  //  不同变量
+        function fun() {
+            var len = arguments.length;
+            alert(len+' 个参数！');
+        }  //  传入参数，arguments数组
+        function funing() {
+            var va = document.getElementById('text3').value;
+            window[va].call(this);  //  调用call()或apply()
+        }  //  调用用动态函数
+        function f1() {
+            alert('我是动态函数1！');
+        }  //  动态函数1
+        function f2() {
+            alert('我不是动态函数2！');
+        }  //  动态函数2
+    </script>
+</head>
+<body onload="linkAble();">
+<a href="#">呵呵呵呵</a>
+<div class="container">
+    <h1>例151</h1>
+    <article>
+        <blockquote>隐藏和显示的切换效果</blockquote>
+        <span id="text1">测试文本</span>
+        <br/>
+        <button class="btn btn-default" onclick="showOrHide()">隐藏/显示</button>
+    </article>
+    <h1>例152</h1>
+    <article>
+        <blockquote>js代码实现css链接效果</blockquote>
+        <span id="text2">我只是个span啊，T_T。</span>
+        <br/>
+    </article>
+    <h1>例153</h1>
+    <article>
+        <blockquote>自定义错误样式</blockquote>
+        姓名：<input type="text" onfocus="this.className = ''" onblur="checkSave(this)" class=""/>
+        <br/><br/>
+        年龄：<input type="text" onfocus="this.className = ''" onblur="checkSave(this)" class=""/>
+    </article>
+    <h1>例154</h1>
+    <article>
+        <blockquote>无处不在的变量</blockquote>
+        <p>
+            涛：we can say,the application can't run without variable.for javascript,we can see
+            it everywhere.even we can regard thing which can be named element as variable.
+        </p>
+        <pre>
+            var a, b, c;
+            function abc(){
+                a = 10;
+                b = 'tao';
+                c = function (){};
+            }  //  赋值函数
+            abc();
+            console.log(a, b, c);</pre>
+    </article>
+    <h1>例155</h1>
+    <article>
+        <blockquote>应用不同场景的变量类型</blockquote>
+        <label>几种数据类型：</label>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label>undefined ----</label>
+                <var>var a;</var>
+            </li>
+            <li class="list-group-item">
+                <label>boolean -------</label>
+                <var>a = true;</var>
+            </li>
+            <li class="list-group-item">
+                <label>null --------------</label>
+                <var>a = null;</var>
+            </li>
+            <li class="list-group-item">
+                <label>Number -------</label>
+                <var>a = 10;</var>
+            </li>
+            <li class="list-group-item">
+                <label>String ----------</label>
+                <var>a = 'tao';</var>
+            </li>
+            <li class="list-group-item">
+                <label>Object ---------</label>
+                <var>a = { name: 'myGod' };</var>
+            </li>
+            <li class="list-group-item">
+                <label>Array -----------</label>
+                <var>a = [1,2,3,4];</var>
+            </li>
+        </ul>
+        <p>几种常见的比较经常用，权威的数据类型还不如实用呢，是吧。。。</p>
+    </article>
+    <h1>例156</h1>
+    <fieldset>
+        <legend>无所不能的变量载体</legend>
+        <pre>
+            window.onload = function(){
+                f();  //  通过()进行调用
+            }
+            var f = function(){
+                console.log(111);
+            }</pre>
+        <p>以上代码我用变量f定义了一个函数，再文档加载完毕后调用</p>
+    </fieldset>
+    <h1>例157</h1>
+    <fieldset>
+        <legend>巧妙地使用内部变量</legend>
+        <button class="btn btn-default" onclick="look()">看看呗！打开控制台哦</button>
+        <pre>
+        var scope = '我是全局变量';
+        function look() {
+            console.log(scope);   //  输出 undefined
+            var scope = '我是局部变量';
+            console.log(scope);
+        }  //  不同变量</pre>
+        <p>这就有趣了，否管你是全局变量，放到函数里用var重定义了就是局部的，第一个还是undefined</p>
+    </fieldset>
+    <h1>例158</h1>
+    <fieldset>
+        <legend>闭包的概念和使用</legend>
+        <pre>
+            function a(){
+                var n = 100;
+                var b = fucntion(){
+                     n ++;
+                     return n;
+                };
+                return b;
+            }
+            var c = a();
+            alert(c());  //  101</pre>
+        <p>
+            读者看完代码后可能会很惊讶，为什么这个局部变量的函数会被保存下来呢？其实，这正是闭包的
+            用武之地，它的真正目的就是<strong>把局部的函数永久地保存下来，被外部变量和代码所访问</strong>
+            。那如何称为一个闭包呢？当a内部的函数被a以外的函数所访问时，就称为一个闭包。
+        </p>
+        <p>
+            闭包最常见的用途 就是把一个变量永久的保存下来，而不是随着函数的执行完毕而被JavaScript
+            的垃圾回收器所回收。因此，闭包又一个潜在问题，就是内存得不到及时回收，有可能导致内存溢
+            出的危险，尤其是IE老版本浏览器。
+        </p>
+        <p>
+            闭包是对一种功能或一个数据进行包装，因此它经常出现在JavaScript第三方的框架中，比如jQuery、
+            Extjs等。它们就是通过类似闭包的机制将功能和数据进行封装，然后提供给开发者使用。
+        </p>
+    </fieldset>
+    <h1>例159</h1>
+    <fieldset>
+        <legend>使用动态的函数参数</legend>
+        <div class="btn-group">
+            <button class="btn btn-default" onclick="fun()">你点啊</button>
+            <button class="btn btn-default" onclick="fun(1,2)">你点啊</button>
+            <button class="btn btn-default" onclick="fun(1,2,3,4,5,6)">你点啊</button>
+        </div>
+        <p>每个函数与生俱来的<strong>arguments</strong>数组，记录传入的参数；另外，arguments.callee表示这个函数本身</p>
+    </fieldset>
+    <h1>例160</h1>
+    <fieldset>
+        <legend>调用动态函数</legend>
+        <div class="form-horizontal">
+            <label class="control-label col-lg-3" for="text3">输入函数名：</label>
+            <div class="col-lg-4 input-group">
+                <input type="text" class="form-control" id="text3"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" onclick="funing()">
+                        <span class="glyphicon glyphicon-play"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day11</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        body{
+            user-select: none;
+            -moz-user-select: none;
+        }
+        p{
+            text-indent: 2em;
+        }
+        p:first-letter{
+            font-size: 35px;
+            text-shadow: 2px 2px 10px black;
+        }
+        a{
+            padding: 2px 5px;
+        }
+        dl dd{
+            text-indent: 3em;
+        }
+        #box{
+            width: 600px;
+            height: 400px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.83);
+            border-radius: 2px;
+            position: relative;
+        }  /* 灯箱效果广告 */
+        .close{
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: white;
+        } /* 关闭按钮  */
+        #box1{
+            width: 400px;
+            height: 200px;
+            border: 1px solid black;
+            border-radius: 0 0 5px 5px;
+            cursor: move;
+            z-index: 99;
+        }
+        #boxTitle{
+            background: black;
+            margin: 0;
+            padding: 3px;
+        }
+        #boxTitle span{
+            color: white;
+        }
+        /*  以上是对可移动的样式设置  */
+        #div1, #div2{
+            width: 80px;
+            height: 80px;
+            position: absolute;
+        }
+        #div1{
+            background: indianred;
+            left: 100px;
+            top: 50px;
+            z-index: 1;
+        }
+        #div2{
+            background: forestgreen;
+            left: 140px;
+            top: 90px;
+            z-index: 2;
+        }
+        /*  以上是对叠层的样式设置  */
+        #lunContainer{
+            height: 667px;
+            position: relative;
+        }
+        #lunPhoto input{
+            max-width: 1000px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        #lunBar{
+            position: absolute;
+            bottom: 0;
+            width: 1000px;
+            height: 60px;
+            background: black;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            z-index: 9;
+        }
+        .lunBtn{
+            background-color: #d2d3d4;
+            float: right;
+            width: 20px;
+            height: 20px;
+            margin: 20px 10px 0 0;
+            border: 0;
+            cursor: pointer;
+            /*opacity: 0.7;*/
+        }
+        .btn-on{
+            background-color: #30b1eb;
+        }
+        /*  以上是轮播图设置  */
+        #ad{
+            width: 200px;
+            height: 300px;
+            background: gray;
+            opacity: 0.5;
+            position: fixed;
+            top: 50%;
+            left: 0;
+            z-index: 999;
+        }
+    </style>
+    <script type="text/javascript">
+        function validateIn() {
+            var in1 = document.getElementById('in1');
+            var t = in1.value;
+            if(!/\b[0-9]+\b/.test(t) && t.length != 11){
+                in1.style.border = '1px solid red';
+            }else{
+                in1.style.border = '1px solid green';
+            }
+        }  //  迅速验证
+        var timer = null;
+        function blinkingBorder(elem) {
+//            elem.style.borderWidth = '1px 1px 1px 1px';
+            timer = setInterval(function () {
+                var c = elem.style.borderColor;
+                if (c == 'yellow'){
+                    elem.style.borderColor = '';
+                }else{
+                    elem.style.borderColor = 'yellow';
+                }
+            },500);
+            elem.onblur = function () {
+                clearInterval(timer);
+                elem.style.borderColor = '';
+            }
+        }  //  闪烁边框
+        function init104() {
+            with(document){
+                var container = getElementById('container');
+                var col1 = getElementById('col1');
+                var col2 = getElementById('col2');
+            }
+            col2.innerHTML = col1.innerHTML;
+            timer = setInterval(myMarquee, 30);
+            container.onmouseover = function () {
+                clearInterval(timer);
+            };
+            container.onmouseout = function () {
+                timer = setInterval(myMarquee, 30);
+            };
+
+            function myMarquee() {
+                if (col2.offsetHeight <= container.scrollTop){
+                    container.scrollTop -= col1.offsetHeight;
+                }else{
+                    container.scrollTop++;
+                }
+            }
+        }  //  信息滚动特效
+        var isOver = false;  //  这是一个判断是否在移动的bool变量
+        var x, y, l, r;
+        function init106() {
+            var bTitle = document.getElementById('boxTitle');
+            var box = document.getElementById('box1');
+            bTitle.onmousedown = function (e) {
+                var E = e || event;
+                x = E.clientX;
+                y = E.clientY;
+                l = parseInt(box.style.left);
+                t = parseInt(box.style.top);
+                console.log(x, y, l, t);
+                isOver = true;  //  判断正在移动
+            };
+            bTitle.onmousemove = function (e) {
+                if(isOver){
+                    var E = e || event;
+                    var newL = l + E.clientX - x;
+                    var newR = t + E.clientY - y;
+                    box.style.left = newL + 'px';
+                    box.style.top = newR + 'px';
+                }
+            };
+            bTitle.onmouseup = function () {
+                if (isOver){
+                    isOver = false;
+                }
+            }
+        }  //  可拖动的层
+        function changeZ() {
+            var div1 = document.getElementById('div1');
+            var div2 = document.getElementById('div2');
+            if(div1.style.zIndex == 1){
+                div1.style.zIndex = 2;
+                div2.style.zIndex = 1;
+            }
+            else{
+                div1.style.zIndex = 1;
+                div2.style.zIndex = 2;
+            }
+        }  //  改变层的层次
+        var currIndex = 1;
+        var timer1 = null;
+        function init109() {
+            var btns = document.getElementsByClassName('lunBtn');
+            btns[6].className += ' btn-on';
+            for (var i=0;i<7;i++){
+                btns[i].onclick = function () {
+                    changeLun(this.title);
+                };
+            }
+            timer1 = setInterval(function () {
+                if (currIndex  > 7){
+                    currIndex = 1;
+                }
+                changeLun(currIndex + 1);
+            },1000);
+        }  //  新闻切换特效
+        function changeLun(index) {
+            index = parseInt(index);  //  解析数字？？？？？大人，我不懂啊~~
+            var lunP = document.getElementById('lunPhoto');
+            var imgA = lunP.getElementsByTagName('input');
+            var lunB = document.getElementById('lunBar');
+            var btns = document.getElementsByClassName('lunBtn');
+            lunB.onmouseover = function () {
+                clearInterval(timer1);
+            };
+            lunB.onmouseout = function () {
+                timer1 = setInterval(function () {
+                    if (currIndex  > 7){
+                        currIndex = 1;
+                    }
+                    changeLun(currIndex + 1);
+                },1000);
+            };
+            for (var i=0;i<imgA.length;i++){
+                if (imgA[i].value == index){
+                    imgA[i].style.zIndex = 2;
+                    currIndex = index;
+                }
+                else{
+                    imgA[i].style.zIndex = 1;
+                }
+            }
+            for (var j=0;j<btns.length;j++){
+                if (btns[j].title == index){
+                    btns[j].className = 'lunBtn btn-on';
+                }
+                else{
+                    btns[j].className = 'lunBtn';
+                }
+            }
+            currIndex ++;
+        }  //  上个方法的定时器方法
+    </script>
+</head>
+<body onload="init104(); init106(); init109()">
+<div class="container">
+    <h1>例101</h1>
+    <article>
+        <blockquote>用户输入完后立即进行格式化校验</blockquote>
+        哎呀呀呀，一个输入框：<input type="text" id="in1" onblur="validateIn()"/>
+        <p>给我你的爱让我陪着你去未来</p>
+        <p>咳咳~这里调用的是onblur事件，我推荐用的是onkeydown</p>
+    </article>
+    <h1>例102</h1>
+    <article>
+        <blockquote>鼠标进去文本框变色<sub>--我并不推荐这样做，最好的做法是改变边框的颜色</sub></blockquote>
+        <input type="text" />
+        <br/>
+        <input type="text"
+               onmouseover="this.style.background = 'yellow'"
+               onmouseout="this.style.background = 'none'"/>
+        <pre>
+            &lt;input type="text"
+                   onmouseover="this.style.background = 'yellow'"
+                   onmouseout="this.style.background = 'none'"/></pre>
+        <p>这里我把方法写进了行间，原理是利用onmouseover进去变色</p>
+    </article>
+    <h1>例103</h1>
+    <article>
+        <blockquote>输入文字时边框闪烁<sub>--就跟扣扣消息一样</sub></blockquote>
+        <input type="text" style="margin-left: 200px" onfocus="blinkingBorder(this)"/>&nbsp;：第一个
+        <input type="text" style="margin-left: 200px"/>&nbsp;：第二个
+        <p>在onfocus事件定义定时器，若边框颜色为黄色，则改为无；若无，则改为黄色，如此反复，生生不息也</p>
+        <p>Ps: 这里的onblur方法可以放在onfocus的方法里</p>
+    </article>
+    <h1>例104</h1>
+    <article>
+        <blockquote>从下往上的信息滚动特效</blockquote>
+        <div id="container" style="overflow: hidden;width: 500px;height: 200px;margin: 0 auto;border-radius: 2px">
+            <table>
+                <tr>
+                    <td id="col1">
+                        <img src="1.jpg" style="max-width: 500px"/>
+                        <img src="11.jpg" style="max-width: 500px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="col2"></td>
+                </tr>
+            </table>
+        </div>
+        <p>定义一个定时器滚动容器里的东西，，</p>
+        <pre>
+            //  定时器函数代码
+            function myMarquee() {
+                if (col2.offsetHeight <= container.scrollTop){
+                    container.scrollTop -= col1.offsetHeight;
+                }else{
+                    container.scrollTop++;
+                }
+            }</pre>
+        <dl>
+            <dt>掌握以下几项</dt>
+            <dd>scrollTop</dd>
+            <dd>offsetHeight</dd>
+        </dl>
+    </article>
+    <h1>例105</h1>
+    <article>
+        <blockquote>灯箱效果</blockquote>
+        <div id="box">
+            <table align="center"><tr><td>
+                <img src="pic/爆炸.gif" style="position: relative;top: 127px"/>
+            </td></tr></table>
+            <button class="close" onclick="this.parentNode.style.display = 'none'">&times;</button>
+        </div>
+        <button class="btn btn-default btn-block"
+                onclick="document.getElementById('box').style.display = 'block'"
+        >显示广告，，</button>
+        <p>这里主要是显示一种灯箱效果一样的广告，，，对z-index及display属性设置即可，不过通常我们喜欢关灯效果</p>
+    </article>
+    <h1>例106</h1>
+    <fieldset>
+        <legend>可以拖动的层</legend>
+        <div id="box1" style="position: relative;left: 400px;top: 1px;">
+            <h4 id="boxTitle" align="center">
+                <span>这是标题栏！</span>
+            </h4>
+            <div id="boxMsg" style="padding: 2%;position: relative;z-index: -1">我是一个小层层呐，随便放点东西在我里面我都无所谓啊,咳咳~简单来说，我可以被拖</div>
+        </div>
+        <p>一个很经典的例子，拖动div，一些不错的效果</p>
+    </fieldset>
+    <h1>例107</h1>
+    <fieldset>
+        <legend>让层<sub>div</sub>的叠放层次分明</legend>
+        <button class="btn btn-default btn-block" onclick="changeZ()">叠汉罗</button>
+        <div id="div" style="height: 200px;position: relative">
+            <div id="div1"></div>
+            <div id="div2"></div>
+        </div>
+        <p>对层的z-index进行判断并修改</p>
+    </fieldset>
+    <h1>例108</h1>
+    <fieldset>
+        <legend>随意改变层的尺寸</legend>
+        <br/><br/><br/><br/><br/><br/><br/>
+        <p>简单来说，就是对div.style.width进行获取并修改</p>
+    </fieldset>
+    <h1>例109</h1>
+    <fieldset>
+        <legend>新闻切换特效</legend>
+        <p>其实就是设置图片的z-index</p>
+        <div id="lunContainer">
+            <div id="lunPhoto">
+                <input type="image" src="p1.jpg" value="1"/>
+                <input type="image" src="p2.jpg" value="2"/>
+                <input type="image" src="p3.jpg" value="3"/>
+                <input type="image" src="p4.jpg" value="4"/>
+                <input type="image" src="p5.jpg" value="5"/>
+                <input type="image" src="p6.jpg" value="6"/>
+                <input type="image" src="p7.jpg" value="7"/>
+            </div>
+            <div id="lunBar">
+                <div class="lunBtn" title="7"></div>
+                <div class="lunBtn" title="6"></div>
+                <div class="lunBtn" title="5"></div>
+                <div class="lunBtn" title="4"></div>
+                <div class="lunBtn" title="3"></div>
+                <div class="lunBtn" title="2"></div>
+                <div class="lunBtn" title="1"></div>
+            </div>
+        </div>
+        <p>说好的slide呢，只是设置z-index而已，这里也许是突出层的层次<strong>&nbsp;z-index&nbsp;</strong></p>
+    </fieldset>
+    <h1>例110</h1>
+    <fieldset>
+        <legend>悬浮的广告层<sub>又是无聊的广告</sub></legend>
+        <div id="ad">一个广告</div>
+        <p>这里我倒觉得用fixed定位更好，毕竟懒得写js</p>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

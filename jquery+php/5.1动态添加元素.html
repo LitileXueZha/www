@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#add').click(function () {
+                var str= '<li class="list-group-item btnRL">';
+                str+= '<div class="row">';
+                str+= '<div class="col-lg-2">';
+                str+= '<label style="line-height: 30px">名字</label>';
+                str+= '</div>';
+                str+= '<div class="col-lg-4">';
+                str+= '<input type="text" class="form-control" placeholder=""/>';
+                str+= '</div>';
+                str+= '<div class="col-lg-1 btnRD">';
+                str+= '<button class="btn btn-block btnRemove" type="button">拿走</button>';
+                str+= '</div>';
+                str+= '</div>';
+                $('#sites').append(str);
+            });
+
+            $('#sites').on('click','.btnRemove',function () {
+                $(this).parent().parent().parent().remove();
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <!--<form action="5.process.php" method="post">-->
+    <form action="5.process.php" method="post">
+        <fieldset>
+            <legend>你天天会浏览哪几个网站：</legend>
+            <ul id="sites">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label style="line-height: 30px">名字：</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" placeholder=""/>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </fieldset>
+    </form>
+    <button class="btn btn-primary" id="add">添加</button>
+</div>
+</body>
+</html>

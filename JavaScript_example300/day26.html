@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day26</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        table td{
+            text-align: right;
+            vertical-align: middle;
+        }
+        table td>input{
+            border: none;
+            width: 100%;
+        }
+        .table-hovered td{
+            text-align: left;
+            vertical-align: middle !important;
+        }
+        /*  以下是我的抽奖设置  */
+        /*@-moz-keyframes chou {*/
+            /*0%{*/
+                /*width: 50%;*/
+            /*}*/
+            /*100%{*/
+                /*width: 0;*/
+            /*}*/
+        /*}*/
+        #start, #stop{
+            width: 100%;
+            border: none;
+            padding: 10px;
+            color: black;
+            background: rgba(238, 238, 238, 0.5);
+            position: relative;
+            z-index: 99;
+        }
+        .left, .right{
+            height: 100%;
+            position: absolute;
+            top: 0;
+            z-index: -1;
+            background: rgb(238, 238, 238);
+        }
+        .left{
+            left: 0;
+        }
+        .right{
+            right: 0;
+        }
+        #tr1>td{
+            border: 1px solid silver;
+        }
+    </style>
+    <script type="text/javascript">
+        function toggleCheckbox(elem) {
+            var ch = elem.querySelector('input');
+            ch.checked = !(ch.checked);
+        }  //  切换按钮里的
+        function login() {
+            console.log(document.cookie);
+            document.cookie = '';
+            var user = document.forms[0]['user'];
+            var ch = document.forms[0]['isChecked'];
+            if(ch.checked == true){
+                document.cookie = 'username='+ user.value +';isChecked=true';
+//                var ms = 10*24*3600*1000;  //  设置时间10天，这里以毫秒为单位
+//                var d = new Date();
+//                d.setDate(d.getTime()+ ms);
+//                document.cookie += '; expires='+ d.toGMTString();
+            } else{
+                document.cookie = 'isChecked=false';
+            }
+            console.log(document.cookie);
+        }  //  保存登陆信息
+        function init1() {
+            var user = document.forms[0]['user'];
+            var c = document.cookie;
+            console.log(c);
+//            if(c != '' && c.indexOf('username') > -1){
+//                var arr = c.split(';');
+//                for(var i=0;i<arr.length;i++){
+//                    var key = arr[i].split('=');
+//                    if(key[0] == 'username'){
+//                        user.value = key[1];
+//                    } else if(key[0] == 'isChecked'){
+//                        document.forms[0]['isChecked'].checked = key[1];
+//                    }
+//                }
+//            }
+        }  //  加载登陆信息
+        function doEval() {
+            var s = document.getElementById('in1').value;
+            try{
+                eval(s);
+            } catch(e){
+                document.getElementById('in1').value = '请输入有效代码：'+ e.message;
+            }
+        }  //  eval()函数的用处
+        function jsReplace() {
+            var t1 = document.getElementById('in2').value;
+            var t2 = document.getElementById('in3').value;
+            var res = document.getElementById('res1');
+            while(true){
+                if(t1.indexOf(t2) > -1){
+                    t1 = t1.replace(t2, '');
+                } else{
+                    break;
+                }
+            }
+            res.textContent = t1;
+        }  //  js替换，replace()
+        function regReplace() {
+            var t1 = document.getElementById('in2').value;
+            var t2 = document.getElementById('in3').value;
+            var res = document.getElementById('res1');
+            res.textContent = t1.replace(new RegExp(t2, 'g'), '');
+        }  //  正则替换
+        function paiXu() {
+            var i1 = document.getElementById('in4');
+            var i2 = document.getElementById('in5');
+            var arr = i1.value.split(' ');
+            arr.sort(function (a, b) {
+                return a.localeCompare(b);
+            });
+            i2.value = arr.join(' ');
+        }  //  字符串的排序，localeCompare()
+        function tryCatch() {
+            var s = document.getElementById('fu').innerHTML;
+            with(document){
+                var i1 = getElementById('in6').value;
+                var i2 = getElementById('in7').value;
+                var res = getElementById('in8');
+            }
+//            console.log(typeof s);
+            try{
+                switch(s){
+                    case '+':
+                        res.value = parseInt(i1) + parseInt(i2);
+                        break;
+                    case '-':
+                        res.value = parseInt(i1) - parseInt(i2);
+                        break;
+                    case '*':
+                        res.value = parseInt(i1) * parseInt(i2);
+                        break;
+                    case '/':
+                        res.value = parseInt(i1) / parseInt(i2);
+                        break;
+                }
+            } catch(e){
+                var d = document.createElement('div');
+                d.classList.add('alert', 'alert-danger');
+                d.textContent = '出错：'+ e.message;
+                document.getElementById('in6').parentNode.appendChild(d);
+            }
+        }  //  友好的try-catch语句
+        var time = 0;
+        function showInfo() {
+            var m = document.getElementById('msg');
+            var user = document.forms[1]['user'].value.trim();
+            var password = document.forms[1]['password'].value.trim();
+            if(user == '帅气涛' && password == '123456'){
+                m.innerHTML = '登陆成功！';
+                time = 0;
+            } else if(user == '' || password == ''){
+                m.innerHTML = '请输入用户名或密码！';
+            } else{
+                time ++;
+                m.innerHTML = '你猜！看你能猜到密码不<span class="badge">'+ time +'</span>';
+            }
+        }  //  不用ajax刷新
+        function doJSON() {
+            var i1 = document.getElementById('in9');
+            var i2 = document.getElementById('in10');
+            var json = {
+                "user": i1.value,
+                "age": i2.value
+            };
+            console.log(json);
+//            console.log(JSON.parse(json));
+            json = JSON.stringify(json);
+            document.getElementById('res2').innerHTML = json;
+        }  //  保存数据格式为JSON
+        function look(elem) {
+            var tr = elem.parentNode.parentNode;
+            var property = tr.querySelectorAll('td')[0].innerHTML;
+            var res = tr.querySelectorAll('td')[2];
+            try{
+                res.innerHTML = screen[property];
+            } catch(e){
+                res.innerHTML = '不支持：'+ e.message;
+            }
+        }  //  screen对象的各种属性
+        var ar = ['刘芬','周雯','于霄霄','林进江','陈阳','刘全发','宁涛'];
+        var timer1 = null;
+        function kaiShi() {
+            timer1 = setInterval(function () {
+                var i = parseInt(Math.random() * ar.length);
+                document.getElementById('res3').value= ar[i];
+            }, 100);
+        }  //  开始抽奖
+        function tingZhi() {
+            clearInterval(timer1);
+        }  //  停止抽奖
+
+        //  以下是我自己写的抽奖，用canvas实现的
+
+        window.onload = function () {
+            var tr = document.getElementById('tr1');
+            var timerx = null;  //  延时器
+            var timery = null;  //  定时器
+            var rangle = 0;  //  角度
+            var c = document.getElementById('c1');
+            c.width = 600;
+            c.height = 300;
+            var pen = c.getContext('2d');
+            pain(0);
+            tr.onclick = function (e) {
+                clearTimeout(timerx);
+                var E = e || event;
+                var tt = E.target || E.srcElement;
+                var mx = E.clientX;
+                var dx = tt.offsetLeft - window.scrollX;
+                var dm = mx - dx;
+                var l = tt.querySelector('.left');
+                var f = tt.querySelector('.right');
+                l.style.width = dm +'px';
+                f.style.width = (300-dm) +'px';
+                l.style.transition = '0s';
+                f.style.transition = '0s';
+                timerx = setTimeout(function () {
+                    l.style.width = 0;
+                    f.style.width = 0;
+                    l.style.transition = '1.5s ease-out';
+                    f.style.transition = '1.5s ease-out';
+                }, 10);
+                //  以上是按钮事件
+                switch(tt.id){
+                    case 'start':
+//                        rangle = 0;
+                        timery = setInterval(function () {
+                            pain(rangle);
+                            rangle ++;
+                        }, 1);
+                        break;
+                    default:
+                        clearInterval(timery);
+                        if(rangle >= 360){
+                            rangle = rangle % 360;
+                        }
+                        if((rangle > 0 && rangle <= 45) || (rangle > 225 && rangle <= 270)){
+                            alert('三等奖！');
+                        } else if(rangle > 90 && rangle <= 135){
+                            alert('一等奖！');
+                        } else if(rangle > 180 && rangle <= 225){
+                            alert('二等奖！')
+                        } else{
+                            alert('谢谢惠顾！');
+                        }
+//                                rangle = rangle + 360;
+                        console.log(rangle);
+                        break;
+                }  //  旋转事件
+            };
+            //  以上是点击事件
+            function pain(i) {
+                pen.clearRect(0, 0, 600, 300);
+                pen.beginPath();
+                pen.arc(300, 150, 150, 0, 2*Math.PI, false);
+                pen.lineTo(300, 150);
+                pen.lineTo(300+150*Math.sqrt(1/2), 150+150*Math.sqrt(1/2));
+                pen.moveTo(300, 150);
+                pen.lineTo(300, 300);
+                pen.moveTo(300, 150);
+                pen.lineTo(300-150*Math.sqrt(1/2), 150+150*Math.sqrt(1/2));
+                pen.moveTo(300, 150);
+                pen.lineTo(150, 150);
+                pen.moveTo(300, 150);
+                pen.lineTo(300-150*Math.sqrt(1/2), 150-150*Math.sqrt(1/2));
+                pen.moveTo(300, 150);
+                pen.lineTo(300, 0);
+                pen.moveTo(300, 150);
+                pen.lineTo(300+150*Math.sqrt(1/2), 150-150*Math.sqrt(1/2));
+//            pen.translate(300, 150);
+//            pen.rotate(1);
+                pen.stroke();
+                //  以上是圆盘
+                pen.beginPath();
+                pen.fillStyle = 'white';
+                pen.arc(300, 150, 30, 0, 2*Math.PI, false);
+                pen.fill();
+                pen.stroke();
+                //  以上是内圈
+                pen.save();
+                pen.beginPath();
+                pen.shadowColor = 'red';
+                pen.shadowOffsetX = 1;
+                pen.shadowOffsetY = 1;
+                pen.shadowBlur = 5;
+                pen.strokeStyle = 'red';
+//                pen.lineWidth = 3;
+                pen.translate(300, 150);
+                pen.rotate(Math.PI/180*i);
+                pen.arc(0, 0, 10, 0, Math.PI, false);
+                pen.moveTo(-10, 0);
+                pen.lineTo(0, -100);
+                pen.lineTo(10, 0);
+                pen.stroke();
+                pen.restore();
+                //  以上是指针
+//                pen.beginPath();
+//                pen.lineWidth = 1;
+//                pen.fillStyle = 'white';
+//                pen.arc(300, 150, 10, 0, 2*Math.PI, false);
+//                pen.fill();
+//                pen.stroke();
+                //  以上是指针圈
+                pen.save();
+                pen.textAlign = 'center';
+//                pen.textBaseline = 'top';
+                pen.font = 'bolder 18px 幼圆';
+                pen.fillStyle = 'black';
+                pen.translate(300, 150);
+                pen.rotate(Math.PI/8);
+                pen.save();
+                pen.fillStyle = 'red';
+                pen.shadowColor = 'red';
+                pen.shadowOffsetX = 1;
+                pen.shadowOffsetY = 1;
+                pen.shadowBlur = 10;
+                pen.fillText('一等奖', 100, 0);
+                pen.restore();
+                pen.rotate(Math.PI/4);
+                pen.fillText('谢谢惠顾', 100, 0);
+                pen.rotate(Math.PI/4);
+                pen.save();
+                pen.fillStyle = 'red';
+                pen.shadowColor = 'red';
+                pen.shadowOffsetX = 1;
+                pen.shadowOffsetY = 1;
+                pen.shadowBlur = 10;
+                pen.fillText('二等奖', 100, 0);
+                pen.rotate(Math.PI/4);
+                pen.fillText('三等奖', 100, 0);
+                pen.restore();
+                pen.rotate(Math.PI/2);
+                pen.fillText('谢谢惠顾', 100, 0);
+                pen.rotate(Math.PI/4);
+                pen.fillText('谢谢惠顾', 100, 0);
+                pen.rotate(Math.PI/4);
+                pen.save();
+                pen.fillStyle = 'red';
+                pen.shadowColor = 'red';
+                pen.shadowOffsetX = 1;
+                pen.shadowOffsetY = 1;
+                pen.shadowBlur = 10;
+                pen.fillText('三等奖', 100, 0);
+                pen.restore();
+                pen.rotate(Math.PI/4);
+                pen.fillText('谢谢惠顾', 100, 0);
+                pen.restore();
+            }
+        }
+    </script>
+</head>
+<body>
+<hr/>
+<div class="container">
+    <h2>例291</h2>
+    <article>
+        <blockquote>利用浏览器cookie保存用户名</blockquote>
+        <div class="row">
+            <div class="col-lg-4">
+                <form class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 align="center">登陆</h2>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered" style="margin: 10px 0">
+                            <tr>
+                                <td>用户名：</td>
+                                <td><input type="text" name="user"/></td>
+                            </tr>
+                            <tr>
+                                <td>密码：</td>
+                                <td><input type="password" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="btn-group btn-group-justified">
+                            <button type="button" class="btn btn-default" style="width: 50%" onclick="toggleCheckbox(this)" title="默认10天">
+                                记住用户名&nbsp;<input type="checkbox" name="isChecked" style="vertical-align: top"/>
+                            </button>
+                            <button class="btn btn-primary" type="button" style="width: 50%" onclick="login()">登陆</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-8" style="-moz-column-count: 3">
+                <p>浏览器的cookie用来存储一些少量的网站信息，对于提高用户体验非常有帮助。cookie是浏览器的一种特殊机制，它不
+                属于JavaScript的自身范畴，只是提供了一个接口给JavaScript脚本，这个接口也就是document的cookie属性值。通过
+                    <strong>expires</strong>来控制保存时间
+                </p>
+            </div>
+        </div>
+    </article>
+    <h2>例292</h2>
+    <article>
+        <blockquote>eval()函数大行其道</blockquote>
+        <div class="input-group">
+            <input type="text" id="in1" class="form-control"/>
+            <span class="input-group-btn">
+                <button class="btn btn-success" onclick="doEval()">试试看哦</button>
+            </span>
+        </div>
+        <br/>
+        <p>把一段字符串当成代码执行</p>
+    </article>
+    <h2>例293</h2>
+    <article>
+        <blockquote>妙用正则表达式来减少js代码</blockquote>
+        <table class="table table-bordered" style="width: 50%;margin: 0 auto">
+            <thead>
+            <tr>
+                <td colspan="2" style="text-align: center">请输入字符和替换字符</td>
+            </tr>
+            </thead>
+            <tr>
+                <td>需要替换的字符：</td>
+                <td><input type="text" id="in2" style="text-align: center"/></td>
+            </tr>
+            <tr>
+                <td>去掉的字符：</td>
+                <td><input type="text" id="in3" style="text-align: center"/></td>
+            </tr>
+            <tr>
+                <td>结果：</td>
+                <td style="text-align: center"><mark id="res1">&nbsp;</mark></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-block" onclick="jsReplace()">js替换</button></td>
+                <td><button class="btn btn-block" onclick="regReplace()">正则替换</button></td>
+            </tr>
+        </table>
+        <br/>
+        <div class="col-lg-6">
+            <pre>
+                function jsReplace() {
+                    var t1 = document.getElementById('in2').value;
+                    var t2 = document.getElementById('in3').value;
+                    var res = document.getElementById('res1');
+                    while(true){
+                        if(t1.indexOf(t2) > -1){
+                            t1 = t1.replace(t2, '');
+                        } else{
+                            break;
+                        }
+                    }
+                    res.textContent = t1;
+                }  //  js替换，replace()</pre>
+        </div>
+        <div class="col-lg-6">
+            <pre><br/><br/>
+                function regReplace() {
+                    var t1 = document.getElementById('in2').value;
+                    var t2 = document.getElementById('in3').value;
+                    var res = document.getElementById('res1');
+                    res.textContent = t1.replace(new RegExp(t2, 'g'), '');
+                }  //  正则替换<br/><br/><br/><br/><br/></pre>
+        </div>
+    </article>
+    <h2>例294</h2>
+    <article>
+        <blockquote>按拼音首字母排序</blockquote>
+        <P>鉴于这里呢，要先搞到拼音首字母，有点麻烦了！那就搞英语单词就行了，主要是字符串自带的localeCompare()方法</P>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-lg-5">单词输入：</label>
+                <div class="col-lg-4">
+                    <input type="text" id="in4" class="form-control" placeholder="word1 word2 word3">
+                </div>
+            </div>
+        </div>
+        <div class="input-group" style="width: 40%;margin: 0 auto">
+            <input type="text" id="in5" class="form-control" readonly/>
+            <span class="input-group-btn">
+                <button class="btn btn-success" onclick="paiXu()">排序</button>
+            </span>
+        </div>
+    </article>
+    <h2>例295</h2>
+    <article>
+        <blockquote>使用try-catch语句</blockquote>
+        <div class="input-group" style="width: 50%;margin: 0 auto">
+            <input type="text" class="form-control" id="in6">
+            <span class="input-group-addon" style="position: relative" data-toggle="dropdown">
+                <b id="fu">+</b> <span class="caret"></span>
+            </span>
+            <ul class="dropdown-menu" style="text-align: center;left: 86px">
+                <li><a onclick="document.getElementById('fu').innerHTML = this.textContent">+</a></li>
+                <li><a onclick="document.getElementById('fu').innerHTML = this.textContent">-</a></li>
+                <li><a onclick="document.getElementById('fu').innerHTML = this.textContent">*</a></li>
+                <li><a onclick="document.getElementById('fu').innerHTML = this.textContent">/</a></li>
+            </ul>
+            <input type="text" class="form-control" id="in7">
+            <span class="input-group-addon">=</span>
+            <input type="text" class="form-control" id="in8">
+            <span class="input-group-btn">
+                <button class="btn btn-success" onclick="tryCatch()">计算</button>
+            </span>
+        </div>
+    </article>
+    <h2>例296</h2>
+    <fieldset>
+        <legend>不用ajax刷新页面</legend>
+        <p>一般来说，提交表单浏览器会自动刷新；利用这一点，给表单指定目标，然后它刷新的就是目标的内容。一般这个目标是框架，好像也就这个框架能用了</p>
+        <br/>
+        <form class="col-lg-6 form-horizontal" action="day26_iframe.html" target="fr">
+            <div class="form-group">
+                <label class="control-label col-lg-6">用户名：</label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" name="user">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-6">密码：</label>
+                <div class="col-lg-6">
+                    <input type="password" class="form-control" name="password">
+                </div>
+            </div>
+            <div style="text-align: right">
+                <button class="btn btn-primary">登陆</button>
+            </div>
+        </form>
+        <div class="col-lg-6">
+            <br/><br/>
+            <p id="msg" style="text-align: center"></p>
+            <iframe src="" name="fr" id="fr" style="display: none"></iframe>
+        </div>
+    </fieldset>
+    <h2>例297</h2>
+    <fieldset>
+        <legend>让输入的英文字母自动大写</legend>
+        <input type="text" class="form-control text-uppercase" style="width: 40%;margin: 0 auto"/>
+        <br/>
+        <p>通常我们得监听keyup事件，然后调用toUpperCase()方法转化。Bootstrop有一个更好的选择，就是设置类text-uppercase</p>
+    </fieldset>
+    <h2>例298</h2>
+    <fieldset>
+        <legend>用JSON格式保存数据</legend>
+        <div class="col-lg-6">
+            <table class="table table-bordered">
+                <caption style="text-align: center;font-weight: bolder">输入</caption>
+                <tr>
+                    <td>姓名：</td>
+                    <td><input type="text" id="in9"/></td>
+                </tr>
+                <tr>
+                    <td>年龄：</td>
+                    <td><input type="text" id="in10"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <button class="btn btn-success btn-sm" style="width: 200px" onclick="doJSON()">添加</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <p id="res2">&nbsp;</p>
+            <br/>
+            <ul class="list-group">
+                <li class="list-group-item">这里书上是把数据保存成数组格式，[{name: value, age: value}]这样的</li>
+                <li class="list-group-item">我推荐保存成JSON对象，{ "name": value, "age": value }。然后再调用JSON.stringify(json对象)来转成字符串！直接输出</li>
+            </ul>
+        </div>
+    </fieldset>
+    <h2>例299</h2>
+    <fieldset>
+        <legend>得到用户显示器的最大分辨率</legend>
+        <p>主要就是BOMD对象里screen的用法,用处并不大，下面是详细列表：</p>
+        <table class="table table-hovered" style="text-align: center">
+            <thead>
+            <tr>
+                <th>属性</th><th>说明</th><th>效果</th><th>Go！</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>availHeight</td>
+                <td>屏幕高度减系统部件.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>availLeft</td>
+                <td>未被系统占用最左侧像素值.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>availTop</td>
+                <td>未被系统占用最上方像素值.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>availWidth</td>
+                <td>屏幕宽-系统部件宽.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>bufferDepth</td>
+                <td>读、写用于呈现屏外位图的位数</td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>colorDepth</td>
+                <td>用于表现颜色的位数；一般为32为.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>deviceXDPI</td>
+                <td>屏幕实际的水平DPI.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>deviceYDPI</td>
+                <td>屏幕实际的垂直DPI.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>fontSmoothingEnabled</td>
+                <td>是否启用字体平滑.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>height</td>
+                <td>屏幕高</td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>left</td>
+                <td>当前屏幕距左边像素值</td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>logicalXDPI</td>
+                <td>屏幕逻辑的水平DPI.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>logicalYDPI</td>
+                <td>屏幕逻辑的垂直DPI.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>pixelDepth</td>
+                <td>屏幕位深.<small>只读</small></td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>top</td>
+                <td>当前屏幕距上边像素值</td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>updateInterval</td>
+                <td>读、写以毫秒表示的屏幕刷新时间间隔</td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+            <tr>
+                <td>width</td>
+                <td>屏幕宽</td>
+                <td></td>
+                <td><button class="btn btn-success" onclick="look(this)">看看</button></td>
+            </tr>
+        </table>
+    </fieldset>
+    <h2>例300</h2>
+    <fieldset>
+        <legend>抽奖程序</legend>
+        <div class="input-group" style="margin: 0 auto;width: 40%">
+            <span class="input-group-btn">
+                <button class="btn btn-default" onclick="kaiShi()">开始抽奖</button>
+            </span>
+            <input type="text" class="form-control" id="res3" readonly/>
+            <span class="input-group-btn">
+                <button class="btn btn-primary" onclick="tingZhi()">停止</button>
+            </span>
+        </div>
+        <br/>
+        <p>使用定时器即可</p>
+    </fieldset>
+</div>
+<table align="center">
+    <tr>
+        <td colspan="2">
+            <canvas id="c1"></canvas>
+        </td>
+    </tr>
+    <tr id="tr1">
+        <td>
+            <button id="start">
+                <span class="left"></span>
+                开始
+                <span class="right"></span>
+            </button>
+        </td>
+        <td>
+            <button id="stop">
+                <span class="left"></span>
+                停止
+                <span class="right"></span>
+            </button>
+        </td>
+    </tr>
+</table>
+<hr/>
+</body>
+</html>

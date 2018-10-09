@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        label{
+            line-height: 35px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn1').click(function () {
+                if($('input').val() == ''){
+                    $('#res').html('请输入文件名 ！');
+                    return;
+                }
+                $.ajax({
+                    url: $('input').val(),
+                    method: 'get',
+                    success: function (data) {
+                        $('#res').html(data);
+                    },
+                    error: function () {
+                        $('#res').html('ajax请求出错了，被我发现了，哈哈哈');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <h2>ajax请求错误处理</h2>
+    <p>ajax()方法里的error参数绑定错误时触发的函数；DOM元素的ajaxError()方法，特直接，每次错了就出现</p>
+    <h3>禁止ajax缓存AJAX请求：<small>cache参数，设置为false即可。</small></h3>
+</div>
+<div class="container">
+    <br/> <br/> <br/>
+    <div class="row">
+        <div class="col-lg-2">
+            <label>输入要加载的文件：</label>
+        </div>
+        <div class="col-lg-5">
+            <input type="text" class="form-control" placeholder="XXX.html"/>
+        </div>
+        <div class="col-lg-1">
+            <button class="btn btn-primary" id="btn1">Load...</button>
+        </div>
+        <div class="col-lg-3 container">
+            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可选文件列表：</label>
+            <ul>
+                <li class="list-group-item">2.8_2books.html</li>
+                <li class="list-group-item">book.html</li>
+                <li class="list-group-item">2.7_2footer.html</li>
+                <li class="list-group-item">head.html</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <ul>
+            <li class="list-group-item" ><label id="res"></label></li>
+        </ul>
+    </div>
+</div>
+<!--========================================================-->
+<div class="navbar navbar-fixed-bottom" style="opacity: 0.7">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+</body>
+</html>

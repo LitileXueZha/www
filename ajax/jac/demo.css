@@ -1,0 +1,121 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+a {
+	text-decoration: none;
+	color: rgba(147,181,230, .5);
+	text-shadow: 2px 2px 7px rgba(100,100,250, .5);
+	box-shadow: 1px 1px 40px rgba(100,100,250, .3);
+}
+body {
+	font-family: "微软雅黑";
+	color: rgba(147,181,230, .7);
+	background: -webkit-radial-gradient(rgba(0,0,0, .8), #333, #222, #111, #000); /* Safari 5.1 - 6.0 */
+  background: -o-radial-gradient(rgba(0,0,0, .8), #333, #222, #111, #000); /* Opera 11.6 - 12.0 */
+  background: -moz-radial-gradient(rgba(0,0,0, .8), #333, #222, #111, #000); /* Firefox 3.6 - 15 */
+  background: radial-gradient(rgba(0,0,0, .8), #333, #222, #111, #000); /* 标准的语法 */
+	background: #000\9;
+}
+.clickfls {
+	position: absolute;
+	top: 294px;
+	left: 577px;
+	z-index: 100;
+}
+.login {
+	position: relative;
+	width: 400px;
+	height: 270px;
+	border: 1px solid rgba(100,100,250, .5);
+	border-radius: 3px;
+	box-shadow: 1px 1px 90px rgba(100,100,250, .4);
+	box-shadow: 1px 1px 50px inset rgba(100,100,250, .4);
+	margin: 150px auto;
+	background: #000;
+	z-index: 13;
+	background: -webkit-radial-gradient(#333, #222, #111,#101010); /* Safari 5.1 - 6.0 */
+  background: -o-radial-gradient(#333, #222, #111,#101010); /* Opera 11.6 - 12.0 */
+  background: -moz-radial-gradient(#333, #222, #111,#101010); /* Firefox 3.6 - 15 */
+  background: radial-gradient(#333, #222, #111,#101010); /* 标准的语法 */
+}
+.login img {
+	width: 380px;
+	height: 40px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+.yourn {
+	width: 100px;
+	height: 40px;
+	margin: 10px auto;
+	text-shadow: 2px 2px 7px rgba(100,100,250, .7);
+}
+.name {
+	width: 160px;
+	height: 40px;
+	margin-left: 120px;
+	background: #222;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	border-bottom: 1px solid rgba(100,100,250, .3);
+	color: rgba(37,88,191, .8);
+	text-shadow: 2px 2px 7px rgba(100,100,250, .7);
+	line-height: 40px;
+	text-align: center;
+}
+.enter {
+	position: relative;
+	top: 30px;
+    margin: auto;
+	cursor: pointer;
+	width: 100px;
+	height: 40px;
+	border: 0;
+	border-radius: 4px;
+	color: #666;
+	background: rgba(100,100,250, .1);
+	border: 1px solid rgba(100,100,250, .2);
+	text-align: center;
+	line-height: 40px;
+	text-shadow: 2px 2px 7px rgba(100,100,250, .5);
+	box-shadow: 1px 1px 10px rgba(100,100,250, .3);
+}
+.inhere {
+	position: absolute;
+	width: 100px;
+	height: 22px;
+	top: 228px;
+	left: 150px;
+	font-size: 12px;
+	line-height: 22px;
+	text-align: center;
+	color: #666;
+	text-shadow: 2px 2px 7px rgba(100,100,250, .5);
+}
+#mycanvas {
+	position: absolute;
+	top: -80px;
+	left: 100px;
+	z-index: 100;
+	
+}
+/*border: 1px solid #fff;
+	@media screen and(-webkit-min-device-pixel-ratio:0) {
+		.enter {
+			top: -174px;
+		}
+	}
+	@media all and(min-width: 0px){
+		.enter {
+			border: 1px solid #fff;
+			top: -174px;
+		}
+	}
+
+@-moz-document url-prefix(){
+	.enter {
+		top: 30px;
+	}
+}*/

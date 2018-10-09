@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='zh'>
+<head>
+<meta charset="utf-8" />
+<script type="text/javascript" src="jsp/js/jquery-3.1.0.js"></script>
+<style>
+	body{
+		margin: 200px;
+		position: relative;
+	}
+	#d1{
+		width: 200px;
+		height: 200px;
+		background: red;
+	}
+	#d2{
+		width: 200px;
+		height: 200px;
+		background: blue;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	#d2 button{
+		z-index: 100;
+	}
+</style>
+<script>
+	window.onload = function(){
+		var btn = document.getElementsByTagName('button')[0];
+		var d = document.getElementById('d2');
+		btn.onclick = function(){
+			d.style.width = '0';
+			d.style.height = '0';
+			d.style.borderRadius = '0 0 100% 0';
+			d.style.transition = '2s';
+		}
+		console.log($(document.forms[0]).serialize());
+	}
+</script>
+</head>
+<body>
+<div id='d1'></div>
+<div id='d2'></div>
+<button>下一页</button>
+<form>
+	<input type='text' name='j1' value='wode'/>
+	<label name='j2' value='nide'>这也是一个呢</label>
+	<a name="j3" value="tade">我的</a>
+	<input type='submit'/>
+</form>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#loadF').click(function () {
+                $('#footer').load('2.7_2footer.html');
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div id="head" class="jumbotron">
+        <h2 align="center">加载footer.html的脚注</h2>
+        <p>使用.load()方法，里面写加载地址</p>
+    </div>
+    <div class="content">
+        <p>
+            abort 事件在音频/视频(audio/video)终止加载时触发。
+            该事件是在多媒体数据终止下载时触发，而不是发生错误时触发。
+            提示： 影响多媒体数据加载的事件有：
+        <ul>
+            <li>emptied</li>
+            <li> error</li>
+            <li>stalled</li>
+            <li> suspend</li>
+        </ul>
+        <p>
+    </div>
+    <hr/>
+    <div id="footer">
+        <a href="#" class="btn btn-block" id="loadF">__显示脚注__</a>
+    </div>
+</div>
+
+<div class="navbar navbar-fixed-bottom">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+</body>
+</html>

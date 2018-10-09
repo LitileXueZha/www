@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我是子窗口</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        function toParent(event) {
+            if (event.keyCode == 13){
+                var t = document.getElementById('in1').value;
+                window.opener.toParent(t);
+                window.close();
+            }
+        }  //  传回参数
+        function flashIt() {
+            self.location.reload();
+        }  //  刷新此框架
+    </script>
+</head>
+<body>
+<h1>广告！广告！我是广告！！！</h1><br/>
+<h2>我给窗口设置了个 fullScreen=1，so 它始终是全屏打开的。哈哈</h2>
+<div class="container">
+    <input type="text" class="form-control" id="in1" placeholder="输入数据，我将传回父窗口" onkeypress="toParent(event)"/>
+    <br/><br/><br/><br/>
+    <button class="btn btn-default btn-block" onclick="flashIt()">刷新此框架</button>
+</div>
+</body>
+</html>

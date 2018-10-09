@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>浮动方框</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        pre{
+            width: 600px;
+        }
+        #float{
+            width: 100px;
+            height: 100px;
+            border: 2px solid silver;
+            border-radius: 5px;
+            position: absolute;
+            right: 50px;
+            background: rgba(255, 255, 0, 0.49);
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $(window).scroll(flo);
+            flo();
+            function flo() {
+                var offsetTop = $(document).scrollTop() + 50;
+                console.log($(document).scrollTop());
+                $('#float').animate({
+                    top: offsetTop+'px'    //距离浏览器顶部值
+                },{
+                    duration: 500,      //时间
+                    queue: false     //无需等待动画完成即可启动新动画
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <div class="container">
+        <h2>这效果让我想起了难用的bootstrap插件Affix</h2>
+    </div>
+</div>
+<div class="container">
+    <pre>   1.我实在想不出其它修饰文本域的bootstrap方法了<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </pre>
+    <pre>   2.我也实在想不出其它修饰文本域的bootstrap方法了<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </pre>
+    <pre>   3.我终于实在想不出其它修饰文本域的bootstrap方法了<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </pre>
+    <div id="float" data-toggle="tooltip" data-original-title="这是个浮动的东东" data-placement="left"></div>
+</div>
+</body>
+</html>

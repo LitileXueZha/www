@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day6</title>
+    <!--<link rel="SHORTCUT ICON" href="pic/china.ico"/>-->
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        .btn-group button:nth-child(1){ cursor: text; }
+        .btn-group button:nth-child(2){ cursor: auto; }
+        .btn-group button:nth-child(3){ cursor: pointer; }
+        .btn-group button:nth-child(4){ cursor: move; }
+        .btn-group button:nth-child(5){ cursor: not-allowed; }
+        .btn-group button:nth-child(6){ cursor: no-drop; }
+        .btn-group button:nth-child(7){ cursor: wait; }
+        .btn-group button:nth-child(8){ cursor: help; }
+        .btn-group button:nth-child(9){ cursor: crosshair; }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        function l51() {
+            var img = document.getElementById('img');
+            img.style.height = 0;
+            img.style.transition = '5s';
+        }  //  例51，点击图片消失
+        function openWin() {
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+            window.open('day4.html','第四天',
+                    'height=300,width=500,location=yes,resizable=no,toolbar=no,titlebar=no' +
+                    ',depended=yes,scrollbars=no,left='+(w/2-250)+',top='+(h/2-150)
+            );
+        }  //  例51，打开另一个窗口
+        function createFrame() {
+            var btn = document.getElementsByTagName('button');
+            var frame = document.createElement('iframe');
+            frame.src = 'day2.html';
+            btn[0].parentNode.appendChild(frame);
+        }  //  动态创建框架
+        function openNewWin() {
+            window.open('day6_.html');
+        }  //  获取子窗口数据
+//        function alertAD() {
+//            setTimeout(function () {
+//                window.open('day6_.html','广告','width=400,height=300,left=500,top=230');
+//            },5000);
+//        }  //  弹出广告
+        document.onmousedown = function (event) {
+            if (event.button == 2)
+                alert('鼠标右键被禁用');
+        };  //  禁用鼠标右键
+    </script>
+</head>
+<body onload="alertAD()">
+<div class="container">
+    <h1>例51</h1>
+    <article>
+        <blockquote>打开一个子窗口</blockquote>
+        <div id="img" style="width: 100%;height: 500px;background-image: url('1.jpg');background-size: contain" onclick="l51()"></div>
+        <table class="table table-hover">
+            <caption style="text-align: center;font-size: 20px">window.open属性控制</caption>
+            <tr>
+                <th>参数</th><th>取值范围</th><th>说明</th>
+            </tr>
+            <tr>
+                <td>alwaysLowered</td><td>yes/no</td><td>指定窗口隐藏在所有窗口之下</td>
+            </tr>
+            <tr>
+                <td>alwaysRaised</td><td>yes/no</td><td>指定窗口悬浮在所有窗口之上</td>
+            </tr>
+            <tr>
+                <td>depended</td><td>yes/no</td><td>是否和父窗口同时关闭</td>
+            </tr>
+            <tr>
+                <td>directories</td><td>yes/no</td><td>Nav 2和Nav 3的目录栏是否可见</td>
+            </tr>
+            <tr>
+                <td>height</td><td>像素</td><td>窗口高度</td>
+            </tr>
+            <tr>
+                <td>hotkeys</td><td>yes/no</td><td>在没有菜单栏的窗口中设置安全退出热键</td>
+            </tr>
+            <tr>
+                <td>innerHeight</td><td>像素</td><td>窗口中文档的像素高度</td>
+            </tr>
+            <tr>
+                <td>innerWidth</td><td>像素</td><td>窗口中文档的像素宽度</td>
+            </tr>
+            <tr>
+                <td>location</td><td>yes/no</td><td>位置栏是否可见</td>
+            </tr>
+            <tr>
+                <td>menubar</td><td>yes/no</td><td>菜单栏是否可见</td>
+            </tr>
+            <tr>
+                <td>outerHeight</td><td>像素</td><td>设定窗口（包括装饰边框）的像素高度</td>
+            </tr>
+            <tr>
+                <td>outerWidth</td><td>像素</td><td>设定窗口（包括装饰边框）的像素高度</td>
+            </tr>
+            <tr>
+                <td>resizable</td><td>yes/no</td><td>窗口大小是否可调整</td>
+            </tr>
+            <tr>
+                <td>screenX</td><td>像素</td><td>窗口距屏幕左边界的像素长度</td>
+            </tr>
+            <tr>
+                <td>screenY</td><td>像素</td><td>窗口距屏幕上边界的像素长度</td>
+            </tr>
+            <tr>
+                <td>scrollbars</td><td>yes/no</td><td>窗口是否有滚动条</td>
+            </tr>
+            <tr>
+                <td>titlebar</td><td>yes/no</td><td>窗口标题栏是否可见</td>
+            </tr>
+            <tr>
+                <td>toolbar</td><td>yes/no</td><td>窗口工具栏是否可见</td>
+            </tr>
+            <tr>
+                <td>width</td><td>像素</td><td>窗口的像素宽度</td>
+            </tr>
+            <tr>
+                <td>z-look</td><td>yes/no</td><td>窗口被激活后是否浮在其他窗口之上</td>
+            </tr>
+        </table>
+        <button class="btn btn-danger" onclick="openWin()">芝麻开门！</button>
+        <p>关于这里窗口的位置，用的是top/left，真是搞不懂screenX/Y有什么用</p>
+    </article>
+    <h1>例52</h1>
+    <article>
+        <blockquote>动态创建框架</blockquote>
+        <button class="btn btn-default" onclick="createFrame()">搞一个</button>
+    </article>
+    <h1>例53</h1>
+    <article>
+        <blockquote>得到是谁打开了子窗口</blockquote>
+        <p>window.opener属性，专为window.open而生，获取其父窗口</p>
+    </article>
+    <h1>例54</h1>
+    <article>
+        <blockquote>通过子窗口获取数据输入</blockquote>
+        <button class="btn btn-primary" onclick="openNewWin()">芝麻开门点芝麻！</button>
+        <pre>
+            function passValue(){
+                var val = document.getElementById('myText').value;
+                window.opener.passValue(val);
+                self.close();
+            }</pre>
+        <p>我只想说一句，有passValue()这个方法吗，反正firebug控制台提示没这个方法</p>
+    </article>
+    <h1>例55</h1>
+    <article>
+        <blockquote>随意改变框架的大小组合</blockquote>
+        <p>frameset标签，html5弃用的标签，我猜是因为框架之间的使用有问题导致被弃用</p>
+        <pre>
+            &lt;frameset rows="*" cols="50%,*" framespacing="0" frameborder="1" border="1"&gt;
+                &lt;frame src="1.html" name="leftFrame" noresize="noresize" scrolling="no" border="1"&gt;
+                &lt;frame src="w.html" name="righttFrame" noresize="noresize" scrolling="no" border="1"&gt;
+            &lt;/framset&gt;
+            &lt;noframes&gt;
+                不支持frame
+            &lt;/noframes&gt;</pre>
+    </article>
+    <h1>例56</h1>
+    <fieldset>
+        <legend>巧用self操作当前文档所在窗口</legend>
+        <iframe></iframe>
+        <iframe src="day6_.html"></iframe>
+        <p>在另一个框架里使用self.location.reload()方法，即可刷新此框架</p>
+    </fieldset>
+    <h1>例57</h1>
+    <fieldset>
+        <legend>iframe自适应高度</legend>
+        <pre>
+            function resizeIframe(){
+               var myframe = document.getElementById('myframe');
+               try{       <label style="color: blue">//  try语句捕获可能的错误</label>
+                  var bodyHeight = myframe.contentWindow.document.body.scrollHeight;
+                  var scrollHeight = myframe.contentWindow.document.documentElement.scrollHeight;
+                  var myHeight = Math.max(bodyHeight, scrollHeight);
+               } catch (ex) {}
+            }
+        </pre>
+        <p>一般来说并没有什么用，现在框架的应用我倒是没咋见过</p>
+    </fieldset>
+    <h1>例58</h1>
+    <fieldset>
+        <legend>弹出广告，5，4，3，2，1</legend>
+        <p>在body标签里的onload事件，调用window.open方法！</p>
+        <p>我觉得这个方法通常用来关联账号登陆，例如用QQ账号登陆微博</p>
+    </fieldset>
+    <h1>例59</h1>
+    <fieldset>
+        <legend>禁用鼠标右键</legend>
+        <p>nice 我觉得这个想法不错，利用鼠标点击时定义一个回调事件来占用焦点</p>
+        <pre>
+            document.onmousedown = function (event) {
+                if (event.button == 2)  //  判断为鼠标右键
+                    alert('鼠标右键被禁用');
+            };  //  禁用鼠标右键</pre>
+        <table class="table table-responsive">
+            <caption>事件的.button值</caption>
+            <tr>
+                <th>值</th><th>说明</th>
+            </tr>
+            <tr>
+                <td>0</td><td>没按键</td>
+            </tr>
+            <tr class="active">
+                <td>1</td><td>按左键</td>
+            </tr>
+            <tr class="active">
+                <td>2</td><td>按右键</td>
+            </tr>
+            <tr>
+                <td>3</td><td>按左和右键</td>
+            </tr>
+            <tr>
+                <td>4</td><td>按中间键</td>
+            </tr>
+            <tr>
+                <td>5</td><td>按左和中间键</td>
+            </tr>
+            <tr>
+                <td>6</td><td>按右和中间键</td>
+            </tr>
+            <tr>
+                <td>7</td><td>按所有键</td>
+            </tr>
+        </table>
+    </fieldset>
+    <h1>例60</h1>
+    <fieldset>
+        <legend>动态定义指针形状</legend>
+        <p>关于这里的指针形状，我推荐使用css,以免增加js代码</p>
+        <div class="btn-group">
+            <button class="btn btn-default" data-toggle="tooltip" title="文本状">text</button>
+            <button class="btn btn-default" data-toggle="tooltip" title="自动">auto</button>
+            <button class="btn btn-default" data-toggle="tooltip" title="手型">pointer</button>
+            <button class="btn btn-default" data-toggle="tooltip" title="按左键和右键">move</button>
+            <button class="btn btn-default" data-toggle="tooltip" title="不允许">not-allowed</button>
+            <button class="btn btn-default" data-toggle="tooltip" title="无法释放">no-drop</button>
+            <button class="btn btn-default" data-toggle="tooltip" title="不停转的圈圈">wait</button>
+            <button class="btn btn-default" data-toggle="tooltip" title="问号">help</button>
+            <button class="btn btn-default" data-toggle="tooltip" title="十字星">crosshair</button>
+        </div>
+    </fieldset>
+</div>
+<hr/>
+</body>
+<!--<frameset cols="50%,50%">-->
+    <!--<frame src="day3.html" name="leftFrame">-->
+    <!--<frame src="day4.html" name="rightFrame">-->
+<!--</frameset>-->
+</html>

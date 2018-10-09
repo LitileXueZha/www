@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input:button').click(function () {
+                $('#in1').submit();
+//                $('#in2').submit(function () {
+//                    return false;
+//                });
+                $('#in2').submit(function (e) {
+                    e.preventDefault();
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <h2>1.5jquery提交表单</h2>
+</div>
+<div class="container">
+    <form class="form-group">
+        <div class="form-group form-inline">
+            <label class="control-label">输入：</label>
+            <input type="text" class="form-control" placeholder=""/>
+        </div>
+        <input class="btn btn-success" type="submit" id="in1" value="提交"/>
+        <input class="btn btn-success" type="submit" id="in2" value="不许提交"/>
+    </form>
+</div>
+<div class="navbar navbar-fixed-bottom">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+</body>
+</html>

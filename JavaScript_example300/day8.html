@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day7</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        #form1{
+            width: 500px;
+            margin: 0 auto;
+        }
+        #imgBtn{
+            width: 300px;
+            height: 200px;
+            background-image: url("11.jpg");
+            background-size: contain;
+            font-weight: bolder;
+            color: white;
+            border: 1px solid silver;
+            margin: 0 auto;
+        }
+    </style>
+    <script type="text/javascript">
+        function autoFormEnter(e) {
+            if (e.keyCode == 13){
+                document.getElementById('form1').submit();
+            } else {
+                return false;
+            }
+        }  //  Enter自动提交表单
+        function onceClick() {
+            document.getElementById('btn1').disabled = true;
+        }  //  点击一次失效
+        function deleteInfo() {
+            var confirmDel = false;
+            confirmDel = window.confirm('你确定吗？');
+            if (confirmDel){
+                document.getElementById('btn2').remove();
+            }
+            else{
+                return false;
+            }
+        }  //  ‘删除’按钮的提示功能
+        function modifyStatus() {
+            window.status = '我在这里修改了！！！！';
+        }  //  修改底部状态栏
+        function startTimer() {
+            var btn = document.getElementById('btn');
+            var res = document.getElementById('res');
+            var sec = 10;
+            var timer = null;
+            btn.disabled= false;
+            timer = setInterval(function () {
+                if (sec>0){
+                    res.innerHTML = '倒计时'+sec+'秒！';
+                }
+                else{
+                    res.innerHTML = '不可用了啊';
+                    btn.disabled= true;
+                    clearInterval(timer);
+                }
+                sec--;
+            },1000);
+        }  //  倒计时开始
+        function colofulBtn() {
+            var btn3 = document.getElementById('btn3');
+            btn3.onmouseover = function () {
+                this.style.background = '#d9534f';
+                this.style.color = 'white';
+                this.style.transition = '2s';
+            };
+            btn3.onmouseout = function () {
+                this.style.background = '';
+                this.style.color = 'black';
+                this.style.transition = '2s';
+            };
+        }  //  变色按钮i
+        function addLine() {
+            var links = document.getElementsByTagName('a');
+            for (var i=0;i<links.length;i++){
+                links[i].style.textDecoration = 'underline';
+            }
+        }  //  添加下划线
+    </script>
+</head>
+<body onload="colofulBtn()">
+<div class="container">
+    <h1>例71</h1>
+    <article>
+        <blockquote>Enter键提交地址</blockquote>
+        <form id="form1">
+            <table cellpadding="5">
+                <tr>
+                    <td><label style="margin: 0 10px">姓名：</label></td>
+                    <td width="300"><input type="text" class="form-control"/></td>
+                </tr>
+                <tr>
+                    <td><label style="margin: 0 10px">年龄：</label></td>
+                    <td width="300"><input type="text" class="form-control" onkeypress="autoFormEnter()"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button class="btn" style="width: 150px;margin-left: 135px;">保存</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <p>onkeypress事件监听键盘，当.keycode为13时，即按Enter时提交</p>
+    </article>
+    <h1>例72</h1>
+    <article>
+        <blockquote>按钮单击后失效</blockquote>
+        <button class="btn btn-default" id="btn1" onclick="onceClick()">我只能被点一次哦</button>
+        <p>在点击事件里设置<code>.disabled = true</code>;</p>
+    </article>
+    <h1>例73</h1>
+    <article>
+        <blockquote>‘删除’按钮的提示功能</blockquote>
+        <button class="btn btn-warning" id="btn2" onclick="deleteInfo()">删除</button>
+        <p>调用window.confirm('string')来提示，若确定则是删除数据，是‘删除’按钮，不是删除按钮哦</p>
+    </article>
+    <h1>例74</h1>
+    <article>
+        <blockquote>图片式按钮</blockquote>
+        <button id="imgBtn">这是个按钮！</button>
+        <p>.background-image设置背景图片，在按钮设置就成了图片式按钮</p>
+    </article>
+    <h1>例75</h1>
+    <article>
+        <blockquote>单击按钮改变状态栏<sub>（浏览器底部）</sub>信息</blockquote>
+        <button class="btn btn-info" onclick="modifyStatus()">修改底部</button>
+        <p>window.status修改，，通常用于IE，，，烦哪！！</p>
+    </article>
+    <h1>例76</h1>
+    <fieldset>
+        <legend>不同状态下的按钮</legend>
+        <button class="btn btn-default">正常状态</button>
+        <button class="btn btn-default" disabled>不可用状态</button>
+        <button class="btn btn-default" onclick="startTimer()">倒计时开始！</button>
+        <span style="margin-left: 300px">当前状态：</span><mark id="res">正常</mark><br/>
+        <button class="btn btn-default" id="btn">我是一个小按钮，小啊小按钮</button>
+        <p>disabled属性设置不可用，倒计时则用万能的定时器，，，</p>
+    </fieldset>
+    <h1>例77</h1>
+    <fieldset>
+        <legend>注册按钮倒计时效果</legend>
+        <div style="width: 300px;margin: 0 auto;padding: 5px;border: 1px solid silver;">
+            <h3 align="center">请认真阅读本协议...</h3>
+            <button class="btn btn-default" style="margin: 0 35%">注册(7)</button>
+        </div>
+        <p>万能的定时器，，再对button引用disabled属性</p>
+    </fieldset>
+    <h1>例78</h1>
+    <fieldset>
+        <legend>阅读完协议注册按钮<sub>--这个时候好像还有个我接受的复选框，噢哦~</sub></legend>
+        <div style="width: 300px;height: 100px;margin: 0 auto;overflow-y: scroll;border: 1px solid silver;">
+            <h4>以下是我们的协议，请认真阅读</h4>
+            <ol>
+                <li>...</li><li>...</li><li>...</li>
+                <li>...<br/>
+                    <ul>
+                        <li>.....</li><li>.....</li><li>.....</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        <div style="width: 300px;margin: 0 auto;">
+            <input type="radio" id="ck1" name="acceptProtocol"/><label for="ck1">&nbsp;我接受，已认真阅读完所有协议</label>
+            <br/>
+            <input type="radio" id="ck2" name="acceptProtocol"/><label for="ck2">&nbsp;我不同意</label>
+        </div>
+    </fieldset>
+    <h1>例79</h1>
+    <fieldset>
+        <legend>会变色的按钮</legend>
+        <button class="btn btn-block" id="btn3">变色龙</button>
+        <p>onmouseover和onmouseout的调用，，</p>
+    </fieldset>
+    <h1>例80</h1>
+    <fieldset>
+        <legend>带下划线的链接</legend>
+        <p>这实际上没什么用，突出是个链接，比较适合在文字比较多的网页里，.textDecoration = 'underline'设置</p>
+        <a href="javascript: void(0)">链接一</a><br/>
+        <a href="javascript: void(0)">链接二</a><br/>
+        <a href="javascript: void(0)">链接三</a><br/>
+        <a href="javascript: void(0)">链接四</a><br/>
+        <a href="javascript: void(0)">链接五</a><br/>
+        <button class="btn btn-default" onclick="addLine()">添加下划线</button>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

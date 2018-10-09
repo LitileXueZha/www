@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery验证空字段</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        small{
+            font-weight: bold;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('.yan').blur(function () {
+                var text = $(this).val();
+                $(this).next('span').remove();
+                if($.trim(text) == ''){
+                    $(this).after('<span class="glyphicon glyphicon-remove-sign form-control-feedback"></span>');
+                }
+                else{
+                    $(this).after('<span class="glyphicon glyphicon-ok-sign form-control-feedback"></span>');
+                }
+            });
+            $('.yanN').blur(function () {
+                var the = $(this);
+                the.next().remove();
+                the.parent().parent().removeClass('has-error');
+                if(isNaN(the.val()) || the.val() == ''){
+                    the.after('<span class="glyphicon glyphicon-remove-sign form-control-feedback"></span>');
+                    the.parent().parent().addClass('has-error');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <form>
+        <fieldset>
+            <legend>个人的(<small data-toggle="tooltip" data-original-title="必填字段" data-placement="bottom">&nbsp;*&nbsp;</small>)：</legend>
+            <ul>
+                <li class="list-group-item form-inline">
+                    <label class="control-label" style="padding: 7px 0">名字：</label>
+                    <div class="input-group col-lg-4 has-feedback">
+                        <span class="input-group-addon">*</span>
+                        <input type="text" class="form-control yan" placeholder=""/>
+                    </div>
+                </li>
+                <li class="list-group-item form-inline">
+                    <label class="control-label" style="padding: 7px 0">地址：</label>
+                    <div class="input-group col-lg-4 has-feedback">
+                        <span class="input-group-addon">*</span>
+                        <input type="text" class="form-control yan" placeholder=""/>
+                    </div>
+                </li>
+                <li class="list-group-item form-inline">
+                    <label class="control-label" style="padding: 7px 0">城市：</label>
+                    <div class="input-group col-lg-4 has-feedback">
+                        <input type="text" class="form-control" placeholder=""/>
+                    </div>
+                </li>
+                <li class="list-group-item form-inline">
+                    <label class="control-label" style="padding: 7px 0">国家：</label>
+                    <div class="input-group col-lg-4 has-feedback">
+                        <span class="input-group-addon">*</span>
+                        <input type="text" class="form-control yan" placeholder=""/>
+                    </div>
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>验证数字(<small data-toggle="tooltip" data-original-title="必填数字字段" data-placement="bottom">&nbsp;*&nbsp;</small>)：</legend>
+            <ul>
+                <li class="list-group-item form-horizontal">
+                    <label class="control-label col-lg-2">年龄：</label>
+                    <div class="input-group col-lg-4 has-feedback">
+                        <span class="input-group-addon">*</span>
+                        <input type="text" class="form-control yanN" placeholder=""/>
+                    </div>
+                </li>
+                <li class="list-group-item form-horizontal">
+                    <label class="control-label col-lg-2">电话号码：</label>
+                    <div class="input-group col-lg-4 has-feedback">
+                        <span class="input-group-addon">*</span>
+                        <input type="text" class="form-control yanN" placeholder=""/>
+                    </div>
+                </li>
+            </ul>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>

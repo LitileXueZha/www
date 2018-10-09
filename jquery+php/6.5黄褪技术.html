@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>黄褪技术</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn1').click(function () {
+                var b = 100;
+                var timer = null;
+                $('#res').html('你好啊！'+ $('#in1').val());
+                timer = setInterval(function () {
+                    if(b>255){
+                        clearInterval(timer);
+                    }
+                    else
+                        $('#res').css('background','rgb(255,255,'+(b+=10)+')');
+                },100);
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <div class="container">
+        <fieldset>
+            <legend><strong>YFT,Yellow Fade Technique，黄褪技术</strong></legend>
+            <p> 其出现的由来很简单，当我们使用ajax发出异步请求时，页面已经改变，而用户确无法发现，这个
+                时候我们需要让改变的内容让用户知道哪改了，，美名其曰黄褪技术，其实也就让增加元素的颜色为黄色
+                然后慢慢改变成白色而已</p>
+        </fieldset>
+    </div>
+</div>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>你叫什么？</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-5">
+                <input type="text" id="in1" class="form-control" placeholder=" "/>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <!--使用table居中-->
+            <table align="center"><tr><td>
+                <button class="btn btn-primary" id="btn1">显示</button>
+            </td></tr></table>
+        </div>
+    </div>
+    <label id="res"></label>
+</div>
+</body>
+</html>

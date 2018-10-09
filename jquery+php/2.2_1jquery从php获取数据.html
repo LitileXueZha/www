@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#choice').change(function () {
+                if($(this).val() != ''){
+                    $.get(
+                            '2.2_2data.php',
+                            {what: $(this).val()},
+                            function (data) {
+                                $('#result').html(data);
+                            }
+                    );
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="jumbotron">
+    <h2>jquery从php获取数据</h2>
+</div>
+<div class="container">
+    <form>
+        <p>
+            Show list of:
+            <select class="form-control" id="choice" title="1">
+                <option class="form-control" value="">select</option>
+                <option class="form-control" value="good">Good boys</option>
+                <option class="form-control" value="bad">Bad boys</option>
+            </select>
+        </p>
+        <p id="result"></p>
+    </form>
+</div>
+<div class="navbar navbar-fixed-bottom">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+
+</body>
+</html>

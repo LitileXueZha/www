@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day14</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        p{  text-indent: 2em;-moz-user-select: none;  }
+        p:first-letter{
+            font-size: 35px;
+            text-shadow: 2px 2px 10px black;
+        }
+        #bgd{
+            width: 400px;
+            height: 200px;
+            border: 1px solid black;
+            border-radius: 3px;
+            margin: 0 auto;
+        }
+        td{
+            text-align: center;
+            margin: 1px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        td:hover{
+            background: wheat;
+            box-shadow: 0 0 2px black;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#t').val('');
+        });
+        function modifyTitle() {
+            var d = new Date();
+            document.title = d.toString();
+        }  //  修改标题
+        function welcome(elem) {
+            var d = new Date();
+            var str = '';
+            var hour = d.getHours();
+            if (hour < 12){
+                str = '早上好!';
+            }
+            if (hour >=12 && hour <=18){
+                str = '下午好!';
+            }
+            if (hour >= 18){
+                str = '晚上好！';
+            }
+            $(elem).after('<p>'+str+'</p>');
+        }  //  不同时候显示文字
+        function differMonth() {
+            var d = new Date();
+            var mon = d.getMonth() + 1;
+            if (mon%2 == 0){
+                $('#bgd').css('background', 'blue');
+            }else{
+                $('#bgd').css('background', 'yellow');
+            }
+        }  //  不同月份不同背景
+        function remainingNewYear(e) {
+            setInterval(function () {
+                var now = new Date();
+                var end = new Date(now.getYear() + 1901, 0, 1);
+                var t = end.getTime() - now.getTime();
+                t /= 1000;  //  毫秒 => 秒
+                var days = t / (24*60*60);
+                var hour = t % (24*60*60) / (60*60);
+                var min = t % (24*60*60) % (60*60) / 60;
+                var sec = t % (24*60*60) % (60*60) % 60;
+                var str = '';
+                if (days > 0){
+                    str += Math.floor(days) + '天';
+                }
+                if (hour > 0){
+                    str += Math.floor(hour) + '时';
+                }
+                if (min > 0){
+                    str += Math.floor(min) + '分';
+                }
+                str += Math.floor(sec) + '秒';
+//                console.log(days, hour, min, sec);
+                $('#t').attr('disabled','disabled').css('text-align', 'center').val(str);
+            },1000);
+        }  //  剩下元旦还要多久
+        function todayFun() {
+            var d = new Date();
+            var yea = d.getFullYear();
+            var mon = d.getMonth() + 1;
+            var wek = d.getDay();
+            var day = d.getDate();
+            var str = '';
+            if (wek > 5){
+                str +='是，'+yea+'年'+mon+'月'+day+'日，<mark>星期 '+(wek)+'</mark>';
+            }else{
+                str +='否，'+yea+'年'+mon+'月'+day+'日，<mark>星期 '+(wek)+'</mark>';
+            }
+            $('#res').html(str);
+        }  //  查看‘是否为节假日’
+        function init138() {
+            var y = document.getElementById('y');
+            var m = document.getElementById('m');
+            var str = '';
+            for(var i=1996;i<2017;i++){
+                str += '<option value="'+i+'">'+i+'</option>';
+            }
+            y.innerHTML = str;  //  填充年份
+            str = '';
+            for(var j=1;j<=12;j++){
+                str += '<option value="'+j+'">'+j+'</option>';
+            }
+            m.innerHTML = str;
+        }  //  初始化日期函数
+        function showDay() {
+            var year = document.getElementById('y').value;
+            year = parseInt(year);
+            var month = parseInt(document.getElementById('m').value);
+            var days = 30;
+            if (year%4 == 0 && month == 2){
+                days = 29;
+            }else if (year%4 != 0 && month == 2){
+                days = 28;
+            }else if (isLaYue(month)){
+                days = 31;
+            }  //  设置天数
+            var str = '<tr>';
+            for(var i=1;i<=7;i++){
+                str += '<th>星期'+hanZi(i)+'</th>';
+            }
+            str += '</tr>';
+            var d = new Date(year, month-1, 1);
+            var week1 = d.getDay();
+            var j = 1;
+            var str1 = '';
+            while(true){
+                str1 += '<tr>';
+                for (var k=1;k<=7;k++){
+                    if (j == 1 && k == week1){
+                        str1 += '<td onclick="fillDay('+j+')">1</td>';
+                        j ++;
+                    }else if (j > 1 && j<=days){
+                        str1 += '<td onclick="fillDay('+j+')">'+j+'</td>';
+                        j ++;
+                    }else{
+                        str1 += '<td></td>';
+                    }
+                }
+                str1 += '</tr>';
+                if (j >= days){
+                    break;
+                }
+            }
+            document.getElementById('tb1').innerHTML = str+str1;
+        }  //  面板设置
+        function isLaYue(num) {
+            return num == 1 || num == 3 || num == 5 || num == 7
+                    || num == 8 || num == 10 || num == 12;
+        }  //  判断是否腊月
+        function fillDay(num) {
+            var y = document.getElementById('y').value;
+            var m = document.getElementById('m').value;
+            window.currDateInput.value = y+'年'+m+'月'+num+'日';
+        }  //  填充日期
+        function inputDate(input) {
+            window.currDateInput = input;
+            var d = document.getElementById('d1');
+            var y = document.getElementById('y');
+            var m = document.getElementById('m');
+            var now = new Date();
+            y.value = now.getFullYear();
+            m.value = now.getMonth() + 1;
+            d.style.display = 'block';
+            showDay();
+        }  //  填日期
+        function hanZi(num) {
+            switch (num){
+                case 1:
+                    return '一';
+                case 2:
+                    return '二';
+                case 3:
+                    return '三';
+                case 4:
+                    return '四';
+                case 5:
+                    return '五';
+                case 6:
+                    return '六';
+                case 7:
+                    return '日';
+            }
+        }  //  将相应数字转化成汉字
+        function start() {
+            window.setInterval(function () {
+                var d = new Date();
+                var str = d.getHours()+'：'+d.getMinutes()+'：'+d.getSeconds();
+                document.getElementById('the').innerHTML = str;
+            },1000);
+        }  //  定时器
+        function calTwoTime() {
+            var time1 = document.getElementById('t1').value;
+            var time2 = document.getElementById('t2').value;
+            var t1 = parseTime(time1);
+            var t2 = parseTime(time2);
+            var calResult = Math.abs( (t1.getTime()-t2.getTime()) / 1000 );
+            document.getElementById('res1').innerHTML = '时间差为：'+calResult+'秒！';
+        }  //  计算两个时间之差
+        function parseTime(str) {
+            var date = str.split(' ')[0];
+            var darr = date.split('-');
+            var time = str.split(' ')[1];
+            var tarr = time.split(':');
+            return new Date(darr[0], darr[1], darr[2], tarr[0], tarr[1], tarr[2]);
+        }  //  将字符串转化成js的Date对象日期格式
+    </script>
+</head>
+<body onload="init138()">
+<div class="container">
+    <h1>例131</h1>
+    <article>
+        <blockquote>当网页超过一屏的时候导航菜单始终置顶</blockquote>
+        <br/>
+        <p>对元素进行定位，fixed，跳出文档流</p>
+        <p>另外，元素的scrollTop属性是针对元素的内容，比如说window.scrollTop,是指html内容的滚动；那些新闻特效就是对scrollTop的叠加</p>
+    </article>
+    <h1>例132</h1>
+    <article>
+        <blockquote>标题栏显示当前日期</blockquote>
+        <p>
+            <button class="btn btn-default" onclick="modifyTitle()">修改标题</button>
+        </p>
+    </article>
+    <h1>例133</h1>
+    <article>
+        <blockquote>不同时段显示不同的标题欢迎词</blockquote>
+        <button class="btn btn-default" onclick="welcome(this)">欢迎！</button>
+    </article>
+    <h1>例134</h1>
+    <article>
+        <blockquote>不同月份显示不同背景</blockquote>
+        <div id="bgd"></div>
+        <button class="btn btn-default" onclick="differMonth()">你得点一下哦</button>
+    </article>
+    <h1>例135</h1>
+    <article>
+        <blockquote>倒计时效果</blockquote>
+        <button class="btn btn-default" onclick="remainingNewYear(this)" style="margin-left: 100px">算算距离元旦还有多久</button>
+        <input class="form-control" id="t" disabled/>
+    </article>
+    <h1>例136</h1>
+    <article>
+        <blockquote>查看‘今天是否为节假日’</blockquote>
+        <p id="res">&nbsp;</p>
+        <button class="btn btn-default" onclick="todayFun()">看下啊~</button>
+    </article>
+    <h1>例137</h1>
+    <fieldset>
+        <legend>每秒刷新的时间展示效果</legend>
+        <br/>
+        <p>也就是说，用setInterval定时器，时间定为一秒即可</p>
+    </fieldset>
+    <h1>例138</h1>
+    <fieldset>
+        <legend>日期输入框</legend>
+        <p><input type="text" onfocus="inputDate(this)"/></p>
+        <div id="d1" style="width: 400px">
+            <p style="cursor: pointer">
+                <select id="y"></select> <b>年</b>
+                <select id="m" onchange="showDay()"></select> <b>月</b>
+            </p>
+            <table id="tb1" border="1" align="center"></table>
+        </div>
+        <p>详情请看代码</p>
+    </fieldset>
+    <h1>例139</h1>
+    <fieldset>
+        <legend>使用定时器</legend>
+        <h2 align="center">
+            <button class="btn btn-default" onclick="start()">开始定时</button>
+            <br/><br/>
+            <label id="the"></label>
+        </h2>
+    </fieldset>
+    <h1>例140</h1>
+    <fieldset>
+        <legend>算出两个时间之间的时间差</legend>
+        <div class="input-group col-lg-3" style="margin-bottom: 5px">
+            <span class="input-group-addon">第一个<b> :</b></span>
+            <input type="text" class="form-control" id="t1" placeholder="xxxx-xx-xx xx:xx:xx"/>
+        </div>
+        <div class="input-group col-lg-4">
+            <span class="input-group-addon">第二个<b> :</b></span>
+            <input type="text" class="form-control" id="t2" placeholder="xxxx-xx-xx xx:xx:xx"/>
+            <span class="input-group-btn">
+                <button class="btn btn-primary" onclick="calTwoTime()">计算</button>
+            </span>
+        </div>
+        <label id="res1">&nbsp;</label>
+    </fieldset>
+</div>
+<hr/>
+</body>
+</html>

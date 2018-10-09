@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zhang_1</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        table td,table th{
+            text-align: center;
+        }
+        div.container{
+            background: rgba(255, 0, 0, 0.46);
+            width: 90%;
+            border-radius: 3px;
+            border: 1px solid silver;
+            margin-bottom: 3px;
+        }
+        div.btn-group{
+            margin: 10px;
+        }
+        #xun{
+            width: 120px;
+            text-align: center;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        #noDelete{
+            width: 250px;
+            height: 50px;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 18px;
+            line-height: 50px;
+            text-align: center;
+            z-index: 99;
+            position: fixed;
+            top: 30%;
+            left: 40%;
+            opacity: 0;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: 'get',
+                url: 'loadRole.php',
+                success: function (data) {
+                    $('#xun').append(data);
+                }
+            });  //  加载角色名
+            $.ajax({
+                type: 'get',
+                url: 'loadInfo.php',
+                success: function (data) {
+                    $('#t').children('tbody').html(data);
+                }
+            });  //  加载表信息
+
+            $('#de').click(function () {
+                var i = 0;
+                var a = '';
+                $('input').each(function () {
+                    if(this.checked == true){
+                        i++;
+                        a += this.name;
+                    }
+                });
+                if (i == 1){
+                    if (confirm('确认删除吗？')){
+                        $.ajax({
+                            type: 'get',
+                            data: { name: a},
+                            url: 'loadInfo.php',
+                            success: function (data) {
+                                $('#t').children('tbody').html(data);
+                            }
+                        });
+                    }
+                }
+                else if (i > 1){
+                    $('#noDelete').animate({
+                        'opacity': '1'
+                    },100).delay(1000).animate({
+                        'opacity': '0'
+                    },1000);
+                }
+            });
+        });
+
+        function selectB(elem,num) {
+            var table = document.getElementById('t');
+            if (num == 1){
+                var check = table.getElementsByTagName('input');
+                if (elem.checked == true){
+                    table.style.background = '';
+                    table.style.background = 'rgba(0, 0, 255, 0.38)';
+                    for(var i=0;i<check.length;i++){
+                        check[i].checked = true;
+                    }
+                }
+                else{
+                    table.style.background = '';
+                    for(var j=0;j<check.length;j++){
+                        check[j].checked = false;
+                    }
+                }
+            }
+            else{
+                var a = elem.parentNode.parentNode;
+                if (elem.checked == true){
+                    a.style.background = 'rgba(0, 0, 255, 0.38)';
+                }
+                else{
+                    a.style.background = '';
+                }
+            }
+        }  //  全选复选框
+    </script>
+</head>
+<body>
+<div id="noDelete">只能选中一项删除！</div>
+<div class="container" style="">
+    <div class="btn-group">
+        <button class="btn btn-default">
+            <span class="glyphicon glyphicon-refresh"></span>&nbsp;刷新
+        </button>
+        <button class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>&nbsp;新增
+        </button>
+        <button class="btn btn-default">
+            <span class="glyphicon glyphicon-edit"></span>&nbsp;编辑</button>
+        <button class="btn btn-default" id="de">
+            <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+        </button>
+        <button class="btn btn-default">
+            <span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;重置密码
+        </button>
+        <button class="btn btn-default">
+            <span class="glyphicon glyphicon-search"></span>&nbsp;查询
+        </button>
+    </div>
+    <select class="form-control" id="xun">
+        <option class="form-control">==选择==</option>
+    </select>
+</div>
+<div style="width: 90%;margin: 0 auto;background: rgba(47, 79, 79, 0.46)">
+    <table class="table table-bordered" id="t">
+        <thead>
+        <tr>
+            <th><input type="checkbox" name="all" onclick="selectB(this,1)"/></th>
+            <th>序号</th><th>用户名</th><th>姓名</th>
+            <th>用户角色</th><th>电子邮箱</th><th>状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><input type="checkbox" name="1" onclick="selectB(this)"/></td>
+            <td>1</td><td>1</td><td>1</td>
+            <td>1</td><td>1</td><td>1</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="2" onclick="selectB(this)"/></td>
+            <td>2</td><td>1</td><td>1</td>
+            <td>1</td><td>1</td><td>1</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

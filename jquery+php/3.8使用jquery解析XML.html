@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用jquery解析XML</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        h1{
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.container').on('click','.col-lg-3 h1',function () {
+                $(this).next('ul').toggle('slow');
+            });
+            $.ajax({
+                url: '3.1common.xml',
+                type: 'GET',
+                dataType: 'xml',
+                success: function (data) {
+                    var str = '';
+                    $(data).find('book').each(function () {
+                        var book = $(this);
+                        str+= '<div class="col-lg-3">';
+                        str+= '<h1>'+book.find('name').text()+'</h1>';
+                        str+= '<ul class="form-control">';
+                        book.find('story').each(function () {
+                            str+= '<li class="list-group-item">';
+                            str+= $(this).find('title').text();
+                            str+= '</li>';
+                        });
+                        str+= '</ul>';
+                        str+= '</div>';
+                    });
+                    $('#res').after(str);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container" id="res">
+
+</div>
+<!--============================================================-->
+<div class="navbar navbar-fixed-bottom" style="opacity: 0.7">
+    <a href="index.html" class="btn btn-primary btn-block">首页</a>
+    <br/><br/><br/>
+</div>
+</body>
+</html>

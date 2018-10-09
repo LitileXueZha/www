@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<books>
+    <book id="1">
+        <src>pic/html5+css3.jpg</src>
+        <name>HTML5&amp;Css3编程入门经典</name>
+        <price>79.80</price>
+    </book>
+    <book id="2">
+        <src>pic/bootstrap.jpg</src>
+        <name>Bootstrap基础教程</name>
+        <price>59.00</price>
+    </book>
+    <book id="3">
+        <src>pic/jquery+php.jpg</src>
+        <name>PHP与JQuery开发实例</name>
+        <price>49.00</price>
+    </book>
+    <book id="4">
+        <src>pic/访客至上.jpg</src>
+        <name>点石成金:访客至上的Web和移动端可用性设计秘笈</name>
+        <price>59.00</price>
+    </book>
+</books>

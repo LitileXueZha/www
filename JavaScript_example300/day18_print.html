@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>打印信息</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            var p = window.opener;
+            var f = p.document.forms[1];
+            var str = '';
+            str += '姓名：' + f['name'].value + '<br/>';
+            for(var i=0;i<f['sex'].length;i++){
+                if(f['sex'][i].checked){
+                    str += '性别：' + f['sex'][i].value + '<br/>';
+                    break;
+                }
+            }
+            str += '年龄：' + f['age'].value + '<br/>';
+            document.body.innerHTML = str;
+            document.body.style.textAlign = 'center';
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

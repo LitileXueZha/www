@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="SHORTCUT ICON" href="pic/china.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var jsonR='';
+            $.ajax({
+                url: '4.5_2json.php',
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+                success: displayData,
+                error: function () {
+                    $('#emsg').html('失败');
+                }
+            });
+
+            function displayData(data) {
+                jsonR = data;
+                var str = '<option class="list-group-item" value="">选择</option>';
+                for(var i=0;i<data.length;i++){
+                    str+= '<option class="list-group-item" value="'+data[i].travelD+'">'+data[i].travelD+'</option>'
+                }
+                $('#travelDs').append(str).change(function () {
+                    if($(this).val() != ''){
+                        displayDs($(this).val());
+                    }
+                });
+            }
+
+            function displayDs(selectD) {
+                for(var i=0;i<jsonR.length;i++){
+                    var aR = jsonR[i];
+                    if (aR.travelD == selectD){
+                        $('#origin').html('<strong>出发地：</strong>'+aR.origin);
+                        $('#destination').html('<strong>目的地：</strong>'+aR.destination);
+                        var travellers = aR.passengers;
+                        var strT = '<ul class="list-group">';
+                        for (var j=0;j<travellers.length;j++){
+                            strT+= '<li class="list-group-item">';
+                            strT+= travellers[j].name;
+                            strT+= '</li>';
+                        }
+                        strT+= '</ul>';
+                        $('#Travellers').html('<strong>人：</strong>'+strT);
+                        break;
+                    }
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>选择日期，然后查看旅行计划</h2>
+    <div class="col-lg-3">
+        <select class="form-control" id="travelDs" title="">
+        </select>
+    </div>
+    <div class="col-lg-5">
+        <ul class="form-control">
+            <li class="list-group-item" id="origin">*</li>
+            <li class="list-group-item" id="destination">*</li>
+            <li class="list-group-item" id="Travellers">*</li>
+        </ul>
+    </div>
+</div>
+<label id="emsg"></label>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day3</title>
+    <!--<link rel="SHORTCUT ICON" href="pic/china.ico"/>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        #d1{
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(red,green,blue,black);
+            border-radius: 5px;
+        }
+    </style>
+    <script type="text/javascript">
+        var t = '';
+        function text(elem) {
+            var elems = elem.childNodes;    //  获取子节点
+            for (var i=0;i<elems.length;i++){  //  遍历子节点
+                var e = elems[i];
+                if (e.parentNode == elem && e.nodeType == 1){  //  判断直接父节点
+                    t += e.tagName +' ';
+                    if (e.childNodes.length > 0){
+                        if (e.childNodes.length == 1){
+                            var fe = e.childNodes[0];
+                            if(fe.nodeType == 3)
+                                continue;
+                        }
+                        t += '\n\t';
+                        t += text(e);
+                    }
+                }
+            }
+            return t;
+        }  //  遍历节点并输出
+        function getDOMTree() {
+            document.getElementById('res').innerHTML = text(document.body);
+        }  //  写入遍历文本
+        function createNewDOM() {
+            var p1 = document.getElementById('p1');
+            p1.innerHTML = '<p>这是用innerHTML方法写入的</p>';
+            var spn = document.createElement('span');
+            spn.appendChild(document.createTextNode('这个就比较复杂了，，'));
+            p1.appendChild(spn);
+        }  //  创建元素
+        function delElement() {
+            var p1 = document.getElementById('p1');
+            p1.parentNode.removeChild(p1);
+        }  //  删除元素
+        function fireBtn() {
+            var btn1 = document.getElementById('btn1');
+            btn1.click();
+        }  //  fire这个词用的非常不错
+        function modifyWH() {
+            var div1 = document.getElementById('d1');
+            div1.style.width = '200px';
+            div1.style.height = '50px';
+        }  //  修改属性值
+        function getLevelDOMVal(elem) {
+            var p = elem.parentNode;
+            var zhe = p.childNodes;
+            for (var i=0;i<zhe.length;i++){
+                if (zhe[i] != elem && zhe[i].nodeType == elem.nodeType)
+                    document.getElementById('res1').innerHTML = zhe[i].value;
+            }
+        }  //  获取同级元素值
+        function cloneImg() {
+            var img = document.getElementById('img');
+            var newImg = img.cloneNode(true);
+            document.getElementById('myContent').appendChild(newImg);
+        }  //  克隆元素
+        function showOrHide() {
+            var img1 = document.getElementById('img1');
+            var display = img1.style.display;
+            if(display != 'none'){
+                img1.style.display = 'none';
+            }
+            else {
+                img1.style.display = '';
+            }
+        }  //  隐藏或显示元素
+        function orderChildren() {
+            var ul = document.getElementsByTagName('ul').item(0);
+            if(ul.hasChildNodes()){
+                var len = ul.childNodes.length;
+                var arr = [];
+                for(var i=0;i<len;i++){     //  遍历存入数组
+                    arr[i] = ul.childNodes[0];
+                    ul.removeChild(ul.childNodes[0]);
+                }
+                for (var j=len-1;j>=0;j--){    //  倒序遍历添加元素
+                    ul.appendChild(arr[j]);
+                }
+            }
+        }  //  倒序排列
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>例21</h1>
+    <article>
+        <blockquote data-toggle="modal" data-target="#modal" style="cursor: pointer;" onclick="getDOMTree()">遍历HTML文档内容</blockquote>
+        <div class="modal fade" id="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                        <h2 class="modal-title">遍历结果</h2>
+                     </div>
+                    <div class="modal-body">
+                        <p id="res" class="text-lowercase"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default">ok</button>
+                        <button class="btn btn-danger" data-dismiss="modal">退出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+    <h1>例22</h1>
+    <article>
+        <blockquote>动态创建网页新元素</blockquote>
+        <button class="btn btn-primary" onclick="createNewDOM()">create</button>
+        <p id="p1">这是个段落</p>
+        <pre>function createNewDOM() {
+            var p1 = document.getElementById('p1');
+            p1.innerHTML = '&lt;p&gt;这是用innerHTML方法写入的&lt;/p&gt;';
+            var spn = document.createElement('span');
+            spn.appendChild(document.createTextNode('这个就比较复杂了，，'));
+            p1.appendChild(spn);
+        }</pre>
+    </article>
+    <h1>例23</h1>
+    <article>
+        <blockquote>删除元素</blockquote>
+        <button class="btn btn-success" onclick="delElement()">删除</button>
+        <p>使用removeChild()方法，你知道，我知道，这删除子元素，so我们先.parentNode获取父节点再删除</p>
+    </article>
+    <h1>例24</h1>
+    <article>
+        <blockquote>主动触发按钮单击事件</blockquote>
+        <p>意思就是，点这个按钮触发另一个按钮，在另一个onclick方法里写.click()就行了，so easy</p>
+        <div class="btn-group">
+            <button class="btn btn-info" onclick="fireBtn()">一个按钮</button>
+            <button class="btn btn-info" id="btn1" onclick="alert('我被点了 T-T ')">另一个按钮</button>
+        </div>
+    </article>
+    <h1>例25</h1>
+    <article>
+        <blockquote>替换元素内容</blockquote>
+        <p>居然使用innerHTML,我只想说，这我在苏州的时候就造了，而且这东西把所有都换了，我并不推荐</p>
+    </article>
+    <h1>例26</h1>
+    <fieldset>
+        <legend>修改元素属性值</legend>
+        <p>这里直接使用的是.width/.height方法，醉了，我记得是要加个style的。难道是因为img元素，let's try!</p>
+        <div id="d1">这是一个div</div>
+        <button class="btn btn-default" onclick="modifyWH()">修改</button>
+        <p>是的，只有img才能直接用.width,而且不用加px,否则的话嘿嘿嘿</p>
+    </fieldset>
+    <h1>例27</h1>
+    <fieldset>
+        <legend>引用同级元素</legend>
+        <div class="btn-group btn-group-lg">
+            <button class="btn btn-warning" value="我是一个按钮" onclick="getLevelDOMVal(this)">btn1</button>
+            <button class="btn btn-warning" value="呦呦呦，吼吼吼！" onclick="getLevelDOMVal(this)">btn2</button>
+        </div>
+        <div class="alert alert-success" id="res1">
+            <small><i>噢 噢 噢</i></small>
+        </div>
+        <p><em>关键部分:</em>先获取父节点再得到子节点，遍历子节点时判断不是当前确实同类.nodeType</p>
+        <pre>
+            for (var i=0;i&lt;zhe.length;i++){
+                if (zhe[i] != elem && zhe[i].nodeType == elem.nodeType)
+                    document.getElementById('res1').innerHTML = zhe[i].value;
+            }</pre>
+    </fieldset>
+    <h1>例28</h1>
+    <fieldset id="myContent">
+        <legend>克隆元素</legend>
+        <p>使用cloneNode()函数，boolean参数，为true时会复制所有子节点，一般我们都用这个啦</p>
+        <button class="btn btn-default btn-block" onclick="cloneImg()">克隆</button>
+        <img src="11.jpg" id="img" width="200" height="150"/>
+    </fieldset>
+    <h1>例29</h1>
+    <fieldset>
+        <legend>隐藏或显示元素</legend>
+        <p>.style.display获取display值，再进行判定，若不为none则设置</p>
+        <img src="11.jpg" id="img1" width="400" height="200"/>
+        <button class="btn btn-info" onclick="showOrHide()">toggle</button>
+    </fieldset>
+    <h1>例30</h1>
+    <fieldset>
+        <legend>倒排序子元素</legend>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-danger">我是
+            <li class="list-group-item list-group-item-info">我是风儿</li>
+            <li class="list-group-item list-group-item-success">你是沙</li>
+            <li class="list-group-item list-group-item-warning">缠缠绵绵走天涯</li>
+        </ul>
+        <button class="btn btn-default" onclick="orderChildren()">倒序排列li元素</button>
+    </fieldset>
+</div>
+</body>
+</html>
